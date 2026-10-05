@@ -1,7 +1,12 @@
 projectInfo: |
   # Personal Memory Blueprint
 
-  An AI agent's long-term personal knowledge graph covering people, tasks, projects,
-  calendar events, financial transactions, contacts, places, notes, and habits. A
-  memory-extractor agent builds and maintains the graph from emails, calendar events,
-  and conversations; a daily-briefing agent surfaces what matters each morning.
+  A personal AI agent's long-term knowledge graph covering people, tasks, projects,
+  events, financial transactions, contacts, places, notes, facts, and habits. The
+  memory-extractor agent builds and maintains the graph from emails, events, and
+  conversations; the daily-briefing agent surfaces what matters each morning; the
+  personal-kb-agent saves and recalls information on request.
+
+  This is the combined personal-memory + personal-kb pack (v3.0.0): it adds the
+  Fact type and standardizes on the general Note and Event names (renamed from
+  Memo and CalendarEvent).
