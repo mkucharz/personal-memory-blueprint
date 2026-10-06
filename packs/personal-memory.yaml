@@ -353,6 +353,38 @@ objectTypes:
         type: string
         description: JSON array of tag strings
 
+  - name: File
+    label: File
+    description: >
+      A supporting document, attachment, or file referenced by another object in
+      the knowledge graph, such as a note's source document or a task attachment.
+    properties:
+      name:
+        type: string
+        description: File name
+      path:
+        type: string
+        description: Local file path or storage location
+      url:
+        type: string
+        description: URL where the file can be accessed
+      mime_type:
+        type: string
+        description: MIME type (e.g. application/pdf, image/png)
+      size:
+        type: integer
+        description: File size in bytes
+      source:
+        type: string
+        description: "Where the file originated: email, document, download, manual"
+      source_ref:
+        type: string
+        description: Reference in the source system (e.g. attachment ID, message ID)
+      description:
+        type: string
+        widget: textarea
+        description: Description of the file contents
+
   - name: Fact
     label: Fact
     description: >
@@ -442,7 +474,7 @@ relationshipTypes:
     label: References File
     description: Links a note or task to a relevant file in the file registry.
     sourceType: Note
-    targetType: file
+    targetType: File
 
   - name: triggered_task
     label: Triggered Task

@@ -2,7 +2,7 @@ projectInfo: |
   # Personal Memory Blueprint
 
   A personal AI agent's long-term knowledge graph covering people, tasks, projects,
-  events, financial transactions, contacts, places, notes, facts, and habits. The
+  events, financial transactions, contacts, places, notes, files, facts, and habits. The
   memory-extractor agent builds and maintains the graph from emails, events, and
   conversations; the daily-briefing agent surfaces what matters each morning; the
   personal-kb-agent saves and recalls information on request.

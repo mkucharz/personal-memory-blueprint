@@ -4,11 +4,6 @@ description: >
   conversations, and documents — into the personal knowledge graph. Creates and
   updates Person, Task, Project, Note, Contact, Place, Event, and
   FinancialTransaction objects. This is the primary graph-building agent.
-model:
-  name: gemini-2.5-flash
-  temperature: 0.2
-  maxTokens: 16384
-flowType: agentic
 maxSteps: 50
 tools:
   - entity-search

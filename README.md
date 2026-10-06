@@ -26,6 +26,7 @@ conversations.
 | `Contact` | A raw address-book contact (Apple Contacts, Gmail) | `{source}:{source_id}` |
 | `Place` | A physical location, city, venue, or address | place_id / name |
 | `Note` | A free-form note, idea, or captured memory | auto |
+| `File` | A supporting document or attachment referenced by another object | name |
 | `Fact` | A standalone durable fact | name |
 | `Habit` | A recurring behaviour the user is tracking | name |
 
@@ -39,7 +40,7 @@ conversations.
 | `located_at` | Event → Place | Physical venue |
 | `related_to_contact` | Person → Contact | Person's address-book record |
 | `has_transaction` | Project → FinancialTransaction | Related financial activity |
-| `references_file` | Note → file | Supporting document |
+| `references_file` | Note → File | Supporting document |
 | `triggered_task` | Event → Task | Follow-up tasks from meetings |
 
 ## Agents

@@ -4,11 +4,6 @@ description: >
   knowledge graph. Surfaces today's events, overdue and high-priority tasks,
   habit streaks, financial alerts, and context about people the user will
   interact with today. Read-only — does not modify the graph.
-model:
-  name: gemini-2.5-flash
-  temperature: 0.3
-  maxTokens: 8192
-flowType: agentic
 maxSteps: 25
 tools:
   - entity-query
