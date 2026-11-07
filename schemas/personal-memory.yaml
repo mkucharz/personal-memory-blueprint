@@ -1,70 +1,99 @@
 name: personal-memory
-version: "3.0.0"
+version: "3.1.0"
 author: memory
+repositoryUrl: https://github.com/mkucharz/personal-memory-blueprint
 description: >
   Personal knowledge graph schema for a personal AI agent — the combined
   personal-memory + personal-kb pack. Models the user's life context: people,
-  tasks, projects, events, finances, contacts, places, notes, facts, and habits.
-  Written by the memory-extractor agent and various data-sync tools.
-  v3.0.0 merges the former registry-only personal-kb pack (adds Fact; Note and
-  Event are the canonical names, renamed from Memo and CalendarEvent).
+  tasks, projects, events, finances, contacts, places, notes, files, facts, and
+  habits. Written by the memory-extractor agent and various data-sync tools.
+  v3.1.0 adds semantic property types (email, phone, country, currency, time),
+  real array types, numeric bounds, per-type labels and UI metadata, and
+  relationship-level properties on `involves_person`.
 
 objectTypes:
   - name: Person
     label: Person
+    labels: [person]
+    ui:
+      icon: "👤"
+      color: "#6366F1"
     description: >
       A person in the user's life — family, friend, colleague, or public figure.
       Built and enriched from email, calendar, contacts, and conversation context.
     properties:
       first_name:
         type: string
+        title: First name
         description: First name
       last_name:
         type: string
+        title: Last name
         description: Last name
       display_name:
         type: string
+        title: Display name
         description: Full display name or preferred name
       relationship:
         type: string
+        title: Relationship
         description: "Relationship to the user: family, friend, colleague, acquaintance, public_figure"
       emails:
-        type: string
-        description: JSON array of email addresses
+        type: array
+        title: Email addresses
+        description: Email addresses, most-used first
+        items:
+          type: email
       phones:
-        type: string
-        description: JSON array of phone numbers
+        type: array
+        title: Phone numbers
+        description: Phone numbers, most-used first
+        items:
+          type: phone
       phone:
-        type: string
+        type: phone
+        title: Primary phone
         description: Primary phone number (accepted alias of phones; personal-kb compatibility)
       organization:
         type: string
+        title: Organisation
         description: Company or organisation they belong to
       employer:
         type: string
+        title: Employer
         description: Employer (accepted alias of organization; personal-kb compatibility)
       job_title:
         type: string
+        title: Job title
         description: Job title or role
       occupation:
         type: string
+        title: Occupation
         description: Occupation / role (accepted alias of job_title; personal-kb compatibility)
       birthday:
-        type: string
-        description: Birthday in YYYY-MM-DD format
+        type: date
+        title: Birthday
+        description: Birthday (YYYY-MM-DD, stored as RFC 3339)
       notes:
         type: string
         widget: textarea
+        title: Notes
         description: Free-form notes about this person
       last_contacted:
-        type: string
-        description: Date of last contact or interaction (RFC3339)
+        type: date
+        title: Last contacted
+        description: Date of last contact or interaction
       source:
         type: string
+        title: Source
         description: "Where this record originated: gmail, apple_contacts, calendar, manual"
 
   - name: Task
     label: Task
+    labels: [task]
+    ui:
+      icon: "✅"
+      color: "#10B981"
     description: >
       A to-do item or action the user needs to complete. Created from
       conversations, emails, or explicitly by the user.
@@ -74,6 +103,7 @@ objectTypes:
         description: Short task title
       description:
         type: string
+        widget: textarea
         description: Detailed description or context for the task
       status:
         type: string
@@ -82,23 +112,32 @@ objectTypes:
         type: string
         description: "Priority level: low, medium, high, urgent"
       due_date:
-        type: string
-        description: Due date in YYYY-MM-DD or RFC3339 format
+        type: date
+        title: Due date
+        description: Due date (YYYY-MM-DD or RFC 3339)
       completed_at:
-        type: string
-        description: Timestamp when task was completed (RFC3339)
+        type: date
+        title: Completed at
+        description: Timestamp when task was completed
       source:
         type: string
         description: "Where this task originated: email, calendar, conversation, apple_reminders, manual"
       source_ref:
         type: string
+        title: Source reference
         description: Reference ID in the source system (e.g. Gmail message ID, reminder ID)
       tags:
-        type: string
-        description: JSON array of tag strings
+        type: array
+        description: Free-form tags
+        items:
+          type: string
 
   - name: Project
     label: Project
+    labels: [project]
+    ui:
+      icon: "📁"
+      color: "#0EA5E9"
     description: >
       A collection of related tasks and goals with a defined objective.
       Can represent work projects, personal goals, or life areas.
@@ -108,25 +147,35 @@ objectTypes:
         description: Project name
       description:
         type: string
+        widget: textarea
         description: Purpose and scope of the project
       status:
         type: string
         description: "Current status: active, on_hold, completed, archived"
       start_date:
-        type: string
-        description: Project start date (YYYY-MM-DD)
+        type: date
+        title: Start date
+        description: Project start date
       target_date:
-        type: string
-        description: Target completion date (YYYY-MM-DD)
+        type: date
+        title: Target date
+        description: Target completion date
       completed_at:
-        type: string
-        description: Actual completion date (RFC3339)
+        type: date
+        title: Completed at
+        description: Actual completion date
       tags:
-        type: string
-        description: JSON array of tag strings
+        type: array
+        description: Free-form tags
+        items:
+          type: string
 
   - name: Event
     label: Event
+    labels: [event]
+    ui:
+      icon: "📅"
+      color: "#F59E0B"
     description: >
       Something that happened or is planned — a meeting, appointment, trip, or
       milestone. Also covers calendar events synced from any provider (Google
@@ -137,8 +186,8 @@ objectTypes:
         type: string
         description: Event title / short name
       date:
-        type: string
-        description: Event date or time (RFC3339, YYYY-MM-DD, or free-form)
+        type: date
+        description: Event date (RFC 3339 or YYYY-MM-DD)
       location:
         type: string
         description: Physical or virtual location of the event
@@ -148,12 +197,15 @@ objectTypes:
         description: Additional context about the event
       description:
         type: string
+        widget: textarea
         description: Event description or agenda
       event_id:
         type: string
+        title: Event ID
         description: Event ID in the source calendar
       calendar_id:
         type: string
+        title: Calendar ID
         description: Calendar ID the event belongs to
       account:
         type: string
@@ -162,35 +214,49 @@ objectTypes:
         type: string
         description: Event title as recorded by the calendar source (alias of name)
       start:
-        type: string
-        description: Event start time (RFC3339 or YYYY-MM-DD for all-day)
+        type: date
+        description: Event start time (RFC 3339, or YYYY-MM-DD for all-day)
       end:
-        type: string
-        description: Event end time (RFC3339 or YYYY-MM-DD for all-day)
+        type: date
+        description: Event end time (RFC 3339, or YYYY-MM-DD for all-day)
       all_day:
         type: boolean
+        title: All day
         description: Whether this is an all-day event
       status:
         type: string
         description: "Event status: confirmed, tentative, cancelled"
       html_link:
-        type: string
+        type: url
+        title: Calendar link
         description: URL to view the event in the calendar app
       hangout_link:
-        type: string
+        type: url
+        title: Video call link
         description: Video call link for the event
       attendees:
-        type: string
-        description: JSON array of attendee objects with email, displayName, responseStatus
+        type: array
+        title: Attendees
+        description: >
+          Raw attendee payload from the calendar source (objects with email,
+          displayName, responseStatus). Attendees are also linked to Person
+          objects via the `involves_person` relationship, which carries the
+          participant's role and response status.
+        items:
+          type: object
       organizer_email:
-        type: string
+        type: email
+        title: Organiser email
         description: Email address of the event organiser
       organizer_name:
         type: string
+        title: Organiser name
         description: Display name of the event organiser
       recurrence:
-        type: string
-        description: JSON array of RRULE/EXRULE recurrence strings
+        type: array
+        description: Recurrence rules (RRULE/EXRULE strings)
+        items:
+          type: string
       visibility:
         type: string
         description: "Event visibility: default, public, private, confidential"
@@ -200,6 +266,10 @@ objectTypes:
 
   - name: FinancialTransaction
     label: Financial Transaction
+    labels: [finance]
+    ui:
+      icon: "💳"
+      color: "#EF4444"
     description: >
       A financial transaction from Actual Budget or Enable Banking.
     properties:
@@ -208,30 +278,34 @@ objectTypes:
         description: "Origin system: actual_budget or enable_banking"
       external_id:
         type: string
+        title: External ID
         description: Transaction ID in the source system
       date:
-        type: string
-        description: Transaction date (YYYY-MM-DD)
+        type: date
+        description: Transaction date
       amount:
         type: number
         description: Transaction amount (negative = debit, positive = credit)
       currency:
-        type: string
+        type: currency
         description: ISO 4217 currency code (e.g. EUR, USD, GBP)
       payee:
         type: string
         description: Payee or merchant name
       account_id:
         type: string
+        title: Account ID
         description: Account ID in the source system
       account_name:
         type: string
+        title: Account name
         description: Human-readable account name
       category:
         type: string
         description: Budget category assigned to this transaction
       memo:
         type: string
+        widget: textarea
         description: Transaction memo or notes
       cleared:
         type: boolean
@@ -245,6 +319,10 @@ objectTypes:
 
   - name: Contact
     label: Contact
+    labels: [contact]
+    ui:
+      icon: "📇"
+      color: "#8B5CF6"
     description: >
       A raw address-book contact from Apple Contacts, Gmail, or another source,
       distinct from the enriched Person entity.
@@ -254,73 +332,103 @@ objectTypes:
         description: "Origin: apple_contacts, gmail, manual"
       source_id:
         type: string
+        title: Source ID
         description: Native contact ID in the source system
       first_name:
         type: string
+        title: First name
         description: First name
       last_name:
         type: string
+        title: Last name
         description: Last name
       display_name:
         type: string
+        title: Display name
         description: Full display name
       emails:
-        type: string
-        description: JSON array of email address objects with label and value
+        type: array
+        title: Email addresses
+        description: Email address entries from the source, each an object with label and value
+        items:
+          type: object
       phones:
-        type: string
-        description: JSON array of phone number objects with label and value
+        type: array
+        title: Phone numbers
+        description: Phone number entries from the source, each an object with label and value
+        items:
+          type: object
       organization:
         type: string
+        title: Organisation
         description: Company or organisation name
       job_title:
         type: string
+        title: Job title
         description: Job title or role
       notes:
         type: string
         widget: textarea
         description: Free-form notes field from the contact
       groups:
-        type: string
-        description: JSON array of contact group names
+        type: array
+        description: Contact group names
+        items:
+          type: string
 
   - name: Place
     label: Place
+    labels: [place]
+    ui:
+      icon: "📍"
+      color: "#14B8A6"
     description: >
       A physical location, city, venue, or address.
     properties:
       place_id:
         type: string
+        title: Place ID
         description: Google Places unique identifier
       name:
         type: string
         description: Place name
       country:
-        type: string
-        description: Country
+        type: country
+        description: Country (ISO 3166-1 code, e.g. DE)
       address:
         type: string
         description: Formatted address string
       lat:
         type: number
+        title: Latitude
         description: Latitude coordinate
+        minimum: -90
+        maximum: 90
       lng:
         type: number
+        title: Longitude
         description: Longitude coordinate
+        minimum: -180
+        maximum: 180
       types:
-        type: string
-        description: JSON array of Google Places type strings (e.g. restaurant, cafe)
+        type: array
+        description: Google Places type strings (e.g. restaurant, cafe)
+        items:
+          type: string
       rating:
         type: number
-        description: Google rating (0–5)
+        description: Google rating
+        minimum: 0
+        maximum: 5
       website:
-        type: string
+        type: url
         description: Official website URL
       phone:
-        type: string
+        type: phone
         description: International phone number
       google_maps_url:
-        type: string
+        type: url
+        title: Google Maps URL
         description: Google Maps URL for this place
       notes:
         type: string
@@ -329,6 +437,10 @@ objectTypes:
 
   - name: Note
     label: Note
+    labels: [note]
+    ui:
+      icon: "🗒️"
+      color: "#64748B"
     description: >
       A free-form note, idea, thought, reference, or captured memory — created
       by the user or extracted from conversations, emails, or documents.
@@ -348,13 +460,20 @@ objectTypes:
         description: "Where this note came from: conversation, email, document, manual"
       source_ref:
         type: string
+        title: Source reference
         description: Reference to the source (e.g. Gmail message ID, file path)
       tags:
-        type: string
-        description: JSON array of tag strings
+        type: array
+        description: Free-form tags
+        items:
+          type: string
 
   - name: File
     label: File
+    labels: [file]
+    ui:
+      icon: "📄"
+      color: "#3B82F6"
     description: >
       A supporting document, attachment, or file referenced by another object in
       the knowledge graph, such as a note's source document or a task attachment.
@@ -366,19 +485,22 @@ objectTypes:
         type: string
         description: Local file path or storage location
       url:
-        type: string
+        type: url
         description: URL where the file can be accessed
       mime_type:
         type: string
+        title: MIME type
         description: MIME type (e.g. application/pdf, image/png)
       size:
         type: integer
         description: File size in bytes
+        minimum: 0
       source:
         type: string
         description: "Where the file originated: email, document, download, manual"
       source_ref:
         type: string
+        title: Source reference
         description: Reference in the source system (e.g. attachment ID, message ID)
       description:
         type: string
@@ -387,6 +509,10 @@ objectTypes:
 
   - name: Fact
     label: Fact
+    labels: [fact]
+    ui:
+      icon: "💡"
+      color: "#EAB308"
     description: >
       A standalone fact that does not fit any other category — a durable piece
       of information the agent should recall verbatim.
@@ -401,6 +527,10 @@ objectTypes:
 
   - name: Habit
     label: Habit
+    labels: [habit]
+    ui:
+      icon: "🔁"
+      color: "#EC4899"
     description: >
       A recurring behaviour or routine the user is tracking. Completion is
       monitored and streaks and gaps surface in the daily briefing.
@@ -410,28 +540,37 @@ objectTypes:
         description: Habit name (e.g. Morning run, Read 30 minutes)
       description:
         type: string
+        widget: textarea
         description: Details about the habit and its goal
       frequency:
         type: string
         description: "How often: daily, weekdays, weekly, custom"
       target_time:
-        type: string
-        description: Preferred time of day (e.g. 07:00)
+        type: time
+        title: Target time
+        description: Preferred time of day (24-hour HH:MM, e.g. 07:00)
       status:
         type: string
         description: "Current status: active, paused, archived"
       streak_current:
         type: integer
+        title: Current streak
         description: Current consecutive completion streak (days)
+        minimum: 0
       streak_best:
         type: integer
+        title: Best streak
         description: Best ever consecutive streak (days)
+        minimum: 0
       last_completed:
-        type: string
-        description: Date last completed (YYYY-MM-DD)
+        type: date
+        title: Last completed
+        description: Date last completed
       tags:
-        type: string
-        description: JSON array of tag strings
+        type: array
+        description: Free-form tags
+        items:
+          type: string
 
 relationshipTypes:
   - name: assigned_to
@@ -448,9 +587,21 @@ relationshipTypes:
 
   - name: involves_person
     label: Involves Person
-    description: Links an event or note to a person involved.
+    description: >
+      Links an event or note to a person involved. For events this is the
+      attendee link; the edge's properties record the participant's role and
+      calendar response status.
     sourceType: Event
     targetType: Person
+    properties:
+      role:
+        type: string
+        title: Role
+        description: "Participant role: organizer, required, optional, resource"
+      response_status:
+        type: string
+        title: Response status
+        description: "Calendar response: accepted, declined, tentative, needsAction, none"
 
   - name: located_at
     label: Located At
@@ -482,9 +633,11 @@ relationshipTypes:
     sourceType: Event
     targetType: Task
 
+# Migration hints for projects still on the bundled personal-memory v2.x pack.
+# `from` names the old type (absent from this version), `to` names its
+# replacement here — the server validates that every `to` exists.
 migrations:
   from_version: "2.1.0"
-  to_version: "3.0.0"
   type_renames:
     - from: Memo
       to: Note

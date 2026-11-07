@@ -1,0 +1,47 @@
+version: "3"
+
+# Authoring loop for this blueprint.
+#
+# `memory` is the Memory CLI (https://github.com/emergent-company/emergent.memory);
+# every task below is offline except install/upgrade, which talk to a Memory
+# server. Override the binary with MEMORY_CLI=/path/to/memory if the CLI is not
+# on PATH.
+vars:
+  MEMORY: '{{default "memory" .MEMORY_CLI}}'
+
+tasks:
+  validate:
+    desc: Validate the blueprint offline — packs, agents, types, migrations
+    cmds:
+      - '{{.MEMORY}} blueprints validate .'
+
+  validate:strict:
+    desc: Validate offline and fail on warnings too (the gate to run before a tag)
+    cmds:
+      - '{{.MEMORY}} blueprints validate . --strict'
+
+  inspect:
+    desc: Print what this blueprint installs (types, agents, seed) without applying
+    cmds:
+      - '{{.MEMORY}} blueprints inspect .'
+
+  dry-run:
+    desc: 'Preview an install against a project: task dry-run PROJECT=<project>'
+    requires:
+      vars: [PROJECT]
+    cmds:
+      - '{{.MEMORY}} blueprints install . --project {{.PROJECT}} --dry-run'
+
+  install:
+    desc: 'Install into a project: task install PROJECT=<project>'
+    requires:
+      vars: [PROJECT]
+    cmds:
+      - '{{.MEMORY}} blueprints install . --project {{.PROJECT}}'
+
+  upgrade:
+    desc: 'Re-apply a changed blueprint to an existing project: task upgrade PROJECT=<project>'
+    requires:
+      vars: [PROJECT]
+    cmds:
+      - '{{.MEMORY}} blueprints install . --project {{.PROJECT}} --upgrade'
