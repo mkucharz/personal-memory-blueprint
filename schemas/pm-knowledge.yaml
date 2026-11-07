@@ -1,0 +1,95 @@
+name: pm-knowledge
+version: "1.0.0"
+author: memory
+repositoryUrl: https://github.com/mkucharz/personal-memory-blueprint
+description: >
+  Area pack of the personal-memory blueprint: longer reference documents the
+  user keeps and updates — how-to guides, checklists, policies, and personal
+  profiles (sizes, preferences). Unlike a Note, a Guide is meant to be kept
+  current and has a review date.
+
+objectTypes:
+  - name: Guide
+    label: Guide
+    labels: [guide, reference]
+    ui:
+      icon: "📘"
+      color: "#4338CA"
+    description: >
+      A maintained reference document: a how-to (self-accounting for the JDG),
+      a yearly calendar (business and tax obligations), a checklist, or a
+      profile (buying preferences, sizes). The full text lives in `content`.
+    properties:
+      title:
+        type: string
+        description: Guide title
+      name:
+        type: string
+        description: Guide title (accepted alias of title; personal-kb compatibility)
+      guide_kind:
+        type: string
+        title: Kind
+        description: What sort of guide
+        enum: [how_to, checklist, calendar, policy, profile, inventory, reference, other]
+      topic:
+        type: string
+        description: Area it belongs to (business, tax, health, shopping, infrastructure, travel)
+      content:
+        type: string
+        widget: textarea
+        description: Full text (markdown)
+      sensitive:
+        type: boolean
+        description: True for health or other sensitive content; agents must not quote it outside direct requests
+      last_reviewed:
+        type: date
+        title: Last reviewed
+        description: When the content was last checked as current
+      review_every_days:
+        type: integer
+        title: Review every (days)
+        description: How often it should be re-checked
+        minimum: 0
+      source:
+        type: string
+        description: "Where it came from: drive, document, conversation, manual"
+      source_ref:
+        type: string
+        title: Source reference
+        description: Reference in the source system (e.g. Drive file ID, path)
+
+relationshipTypes:
+  - name: documented_in
+    label: Documented In
+    description: A guide documents how to handle this subject.
+    sourceTypes: [Project, Person, LegalEntity, Obligation, Server, Account]
+    targetType: Guide
+
+  - name: created
+    label: Created
+    description: A person wrote or maintains a guide.
+    sourceType: Person
+    targetType: Guide
+
+  - name: owns
+    label: Owns
+    description: A person owns a guide (whose guide this is).
+    sourceType: Person
+    targetType: Guide
+    properties:
+      share_percent:
+        type: number
+        title: Share (%)
+        description: Ownership share in percent, when shared
+        minimum: 0
+        maximum: 100
+      holder_role:
+        type: string
+        title: Holder role
+        description: "owner, joint_owner, authorised_user"
+
+  - name: sourced_from
+    label: Sourced From
+    description: The file or note a guide was built from.
+    sourceType: Guide
+    targetTypes: [Note, File]

@@ -1,0 +1,119 @@
+name: pm-legal
+version: "1.0.0"
+author: memory
+repositoryUrl: https://github.com/mkucharz/personal-memory-blueprint
+description: >
+  Area pack of the personal-memory blueprint: court and administrative cases
+  the user, their family, or their companies are party to. Hearings are core
+  Event objects linked with `has_hearing`; filing deadlines are core
+  Obligation objects linked with `has_obligation`.
+
+objectTypes:
+  - name: LegalCase
+    label: Legal Case
+    labels: [legal]
+    ui:
+      icon: "⚖️"
+      color: "#9F1239"
+    description: >
+      A court, administrative, or enforcement case, identified by its case
+      number (sygnatura akt). Appeals are separate cases linked with
+      `appeal_of`.
+    properties:
+      name:
+        type: string
+        description: Display name (e.g. "Sprawa II C 2279/23 — house defects")
+      case_number:
+        type: string
+        title: Case number
+        description: Official case number / sygnatura akt (e.g. "II C 2279/23")
+      court:
+        type: string
+        description: Court or authority and division (e.g. "Sąd Rejonowy w Białymstoku, II Wydział Cywilny")
+      case_kind:
+        type: string
+        title: Kind
+        description: What sort of case
+        enum: [civil, appeal, enforcement, administrative, criminal, family, commercial, other]
+      user_role:
+        type: string
+        title: User's role
+        description: The user's (or their side's) role in the case
+        enum: [plaintiff, defendant, participant, appellant, respondent, creditor, debtor, witness, other]
+      status:
+        type: string
+        description: Where the case stands
+        enum: [open, awaiting_judgment, appealed, closed, settled]
+      opened_on:
+        type: date
+        title: Opened on
+        description: When the case was filed
+      closed_on:
+        type: date
+        title: Closed on
+        description: When the case was finally closed
+      subject:
+        type: string
+        widget: textarea
+        description: What the case is about
+      portal_url:
+        type: url
+        title: Portal URL
+        description: Link to the case in the court portal
+      notes:
+        type: string
+        widget: textarea
+        description: Free-form notes
+
+relationshipTypes:
+  - name: party_to
+    label: Party To
+    description: A person, company, or organisation is a party in a case.
+    sourceTypes: [Person, LegalEntity, Organization]
+    targetType: LegalCase
+    properties:
+      role:
+        type: string
+        description: "Role of the party: client, provider, assignor, assignee, landlord, tenant, plaintiff, defendant, participant, appellant, respondent"
+
+  - name: represented_by
+    label: Represented By
+    description: The lawyer or law firm representing the user's side.
+    sourceType: LegalCase
+    targetTypes: [Person, Organization]
+
+  - name: heard_by
+    label: Heard By
+    description: The court handling the case.
+    sourceType: LegalCase
+    targetType: Organization
+
+  - name: appeal_of
+    label: Appeal Of
+    description: This case is an appeal or follow-up of an earlier case.
+    sourceType: LegalCase
+    targetType: LegalCase
+
+  - name: concerns
+    label: Concerns
+    description: What the case is about (a property, vehicle, contract, or company).
+    sourceType: LegalCase
+    targetTypes: [Property, Vehicle, Contract, LegalEntity]
+
+  - name: has_hearing
+    label: Has Hearing
+    description: A hearing or court date for the case.
+    sourceType: LegalCase
+    targetType: Event
+
+  - name: has_obligation
+    label: Has Obligation
+    description: A filing deadline in the case (appeal, response, payment of court fee).
+    sourceType: LegalCase
+    targetType: Obligation
+
+  - name: sourced_from
+    label: Sourced From
+    description: Court letters, portal notifications, and scans for the case.
+    sourceType: LegalCase
+    targetTypes: [Note, File]

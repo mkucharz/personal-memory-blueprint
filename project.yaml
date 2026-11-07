@@ -1,22 +1,32 @@
 name: personal-memory
-version: "3.1.0"
+version: "4.0.0"
 author: memory
 description: >
   A personal AI agent's long-term knowledge graph over a person's life —
-  people, tasks, projects, events, finance, contacts, places, notes, files,
-  facts, and habits — plus the three agents that build and query it.
+  people, organisations, deadlines, tasks, projects, events, finances, and
+  notes, plus area packs for companies, money, assets, legal cases, and
+  guides — and the four agents that build, watch, and query it.
 repositoryUrl: https://github.com/mkucharz/personal-memory-blueprint
 
 projectInfo: |
-  # Personal Memory Blueprint
+  # Personal Memory
 
-  A personal AI agent's long-term knowledge graph covering people, tasks, projects,
-  events, financial transactions, contacts, places, notes, files, facts, and habits.
-  The memory-extractor agent builds and maintains the graph from emails, events, and
-  conversations; the daily-briefing agent surfaces what matters each morning; the
-  personal-kb-agent saves and recalls information on request.
+  A personal AI agent's long-term knowledge graph. Its main job is that no
+  obligation is missed — tax filings and payments, social insurance,
+  subscriptions, insurance and domain renewals, inspections, document
+  expiries, court deadlines — and that the facts behind them (who, which
+  company, which account, which asset) are one search away.
 
-  This is the combined personal-memory + personal-kb pack (v3.1.0): it adds the
-  Fact type, standardizes on the general Note and Event names (renamed from Memo
-  and CalendarEvent), and uses the platform's semantic property types (email,
-  phone, country, currency, time) so values are validated and normalized on write.
+  Core types: Person, Organization, Obligation, Task, Project, Event, Note,
+  File, Fact, Place, Contact, FinancialTransaction, Habit.
+  Area types: LegalEntity, Contract (companies); Account (money); Vehicle,
+  Property, InsurancePolicy, Domain, Server (assets); LegalCase (legal);
+  Guide (knowledge).
+
+  Every due date lives on an Obligation linked from its subject with
+  `has_obligation`. The obligations-watcher turns upcoming obligations into
+  Tasks each morning and rolls them forward when the Task is done; the
+  daily-briefing shows the next 14 days. memory-extractor builds the graph
+  from email, calendar, and conversations; personal-kb-agent saves and
+  recalls on request. Never store passwords, keys, tokens, full card or
+  account numbers, or identity document numbers.

@@ -1,0 +1,238 @@
+name: pm-companies
+version: "1.0.0"
+author: memory
+repositoryUrl: https://github.com/mkucharz/personal-memory-blueprint
+description: >
+  Area pack of the personal-memory blueprint: companies the user owns or runs
+  (sole proprietorships, limited companies, holding companies) and the
+  contracts they hold. Filing and payment deadlines are core Obligation
+  objects linked with `has_obligation`; this pack owns no due dates itself.
+  References core types (Person, Organization, Obligation, Project, Note,
+  File) by name and never redeclares them.
+
+objectTypes:
+  - name: LegalEntity
+    label: Company
+    labels: [company, business]
+    ui:
+      icon: "🏛️"
+      color: "#1D4ED8"
+    description: >
+      A company the user owns, co-owns, or runs: a Polish JDG or sp. z o.o.,
+      a Norwegian AS, a holding company. Covers active, dormant, liquidating,
+      and deregistered entities so history is kept.
+    properties:
+      name:
+        type: string
+        description: Registered name
+      legal_form:
+        type: string
+        title: Legal form
+        description: Legal form of the entity
+        enum: [jdg, sp_zoo, sa, as, enk, ltd, llc, other]
+      country:
+        type: string
+        format: country
+        description: Country of registration (ISO 3166-1 code)
+      status:
+        type: string
+        description: Lifecycle status
+        enum: [active, dormant, in_liquidation, deregistered]
+      tax_id:
+        type: string
+        title: Tax ID
+        description: Tax identifier (NIP in Poland, org number in Norway)
+      registration_number:
+        type: string
+        title: Registration number
+        description: Register entry number (KRS, Brønnøysund org number, CEIDG)
+      statistical_number:
+        type: string
+        title: Statistical number
+        description: REGON or equivalent
+      vat_registered:
+        type: boolean
+        title: VAT registered
+        description: Whether the entity is registered for VAT
+      vat_period:
+        type: string
+        title: VAT period
+        description: How often VAT is filed
+        enum: [monthly, quarterly, biannual, yearly, none]
+      tax_regime:
+        type: string
+        title: Tax regime
+        description: Income tax regime (e.g. "linear 19%", "lump sum 12%", "NO corporate 22%")
+      social_insurance_scheme:
+        type: string
+        title: Social insurance scheme
+        description: ZUS scheme or equivalent (e.g. "ZUS obniżony", "pełny ZUS")
+      registered_address:
+        type: string
+        title: Registered address
+        description: Registered business address
+      share_capital:
+        type: number
+        title: Share capital
+        description: Share capital amount
+      share_capital_currency:
+        type: string
+        format: currency
+        title: Share capital currency
+        description: Currency of share capital (ISO 4217)
+      founded_on:
+        type: date
+        title: Founded on
+        description: Registration date
+      closed_on:
+        type: date
+        title: Closed on
+        description: Deregistration or liquidation completion date
+      accounting_system:
+        type: string
+        title: Accounting system
+        description: Where the books are kept (e.g. inFakt, Fiken, external accountant)
+      notes:
+        type: string
+        widget: textarea
+        description: Free-form notes
+
+  - name: Contract
+    label: Contract
+    labels: [contract]
+    ui:
+      icon: "📜"
+      color: "#7C3AED"
+    description: >
+      A signed agreement: a service or intermediary agreement, an assignment
+      (cesja), a lease, an NDA. Parties are linked with `party_to`; the notice
+      or renewal date is a core Obligation linked with `has_obligation`.
+    properties:
+      title:
+        type: string
+        description: Short title (e.g. "Aexol intermediary agreement")
+      contract_kind:
+        type: string
+        title: Kind
+        description: What sort of agreement this is
+        enum: [service, intermediary, sales, lease, employment, assignment, nda, loan, other]
+      status:
+        type: string
+        description: Lifecycle status
+        enum: [draft, negotiating, active, ended, terminated]
+      signed_on:
+        type: date
+        title: Signed on
+        description: Signature date
+      start_date:
+        type: date
+        title: Start date
+        description: When the agreement takes effect
+      end_date:
+        type: date
+        title: End date
+        description: When it ends, if fixed-term
+      notice_period_days:
+        type: integer
+        title: Notice period (days)
+        description: Notice period for termination, in days
+        minimum: 0
+      auto_renews:
+        type: boolean
+        title: Auto-renews
+        description: Whether it renews automatically
+      value:
+        type: number
+        description: Contract value or rate
+      currency:
+        type: string
+        format: currency
+        description: Currency of value (ISO 4217)
+      terms:
+        type: string
+        widget: textarea
+        description: Key commercial terms (e.g. "10% commission on client revenue")
+      notes:
+        type: string
+        widget: textarea
+        description: Free-form notes
+
+relationshipTypes:
+  - name: owns
+    label: Owns
+    description: A person (or company) owns or co-owns a company.
+    sourceTypes: [Person, LegalEntity]
+    targetType: LegalEntity
+    properties:
+      share_percent:
+        type: number
+        title: Share (%)
+        description: Ownership share in percent, when shared
+        minimum: 0
+        maximum: 100
+      holder_role:
+        type: string
+        title: Holder role
+        description: "owner, joint_owner, authorised_user"
+
+  - name: board_role_in
+    label: Board Role In
+    description: A person holds a formal role in a company (board chair, director, CEO, prokurent).
+    sourceType: Person
+    targetType: LegalEntity
+    properties:
+      role:
+        type: string
+        description: "Formal role: board_chair, board_member, director, ceo, prokurent, signatory"
+      sole_signing:
+        type: boolean
+        title: Sole signing rights
+        description: Whether this person can sign alone
+
+  - name: serviced_by
+    label: Serviced By
+    description: A company uses an outside organisation (accountant, bank, law firm, registrar) or a person (e.g. its accountant).
+    sourceType: LegalEntity
+    targetTypes: [Organization, Person]
+    properties:
+      service:
+        type: string
+        description: What they do for the company (e.g. "bookkeeping", "business bank account")
+
+  - name: party_to
+    label: Party To
+    description: A company, organisation, or person is a party to a contract.
+    sourceTypes: [LegalEntity, Organization, Person]
+    targetType: Contract
+    properties:
+      role:
+        type: string
+        description: "Role of the party: client, provider, assignor, assignee, landlord, tenant, plaintiff, defendant, participant, appellant, respondent"
+
+  - name: supersedes
+    label: Supersedes
+    description: A contract or company replaces an earlier one (e.g. an assignment moving a contract to a new entity).
+    sourceTypes: [Contract, LegalEntity]
+    targetTypes: [Contract, LegalEntity]
+
+  - name: has_obligation
+    label: Has Obligation
+    description: A company or contract has a deadline (tax filing, payment, notice date).
+    sourceTypes: [LegalEntity, Contract]
+    targetType: Obligation
+
+  - name: related_to
+    label: Related To
+    description: A company relates to a project (e.g. the work it invoices for).
+    sourceType: LegalEntity
+    targetTypes: [Project, LegalEntity]
+    properties:
+      relation:
+        type: string
+        description: "For Person → Person: partner, spouse, parent, child, sibling, relative, friend, colleague"
+
+  - name: sourced_from
+    label: Sourced From
+    description: Provenance for company and contract facts.
+    sourceTypes: [LegalEntity, Contract]
+    targetTypes: [Note, File]
