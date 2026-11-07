@@ -1,0 +1,124 @@
+name: pm-documents
+version: "1.1.0"
+author: memory
+repositoryUrl: https://github.com/mkucharz/personal-memory-blueprint
+description: >
+  Area pack of the personal-memory blueprint: a registry of important
+  documents — what exists, what it is about, whether the paper original is
+  held and where, and where the digital copies live (which Drive account,
+  folder, email, or local path). One Document is one real-world document
+  (a deed, a contract, a decision, a policy, a certificate); its copies are
+  core File objects linked with `has_copy`. The registry is also the map
+  for cleaning up Drive and email: a file that is a registered copy is
+  kept, everything else can be archived.
+
+objectTypes:
+  - name: Document
+    label: Document
+    labels: [document, registry]
+    ui:
+      icon: "🗂️"
+      color: "#475569"
+    description: >
+      One important real-world document. Link what it concerns with
+      `concerns` (a property, vehicle, company, person, contract, case,
+      policy, account), who issued it with `issued_by`, its copies with
+      `has_copy`, a newer version with `supersedes`, and an expiry or
+      renewal deadline with `has_obligation`. Register only documents worth
+      finding again — not every receipt.
+    properties:
+      name:
+        type: string
+        description: Display name (e.g. "Notarial deed — terraced house, ul. Egipska (2022)")
+      document_kind:
+        type: string
+        title: Kind
+        description: What sort of document
+        enum: [notarial_deed, contract, agreement_draft, power_of_attorney, court_ruling, court_filing, tax_decision, tax_return, official_letter, permit, registration_certificate, insurance_policy, invoice, receipt, warranty, statement, certificate, protocol, manual, plan_drawing, identity_scan, corporate_resolution, other]
+      document_date:
+        type: date
+        title: Document date
+        description: Date the document was signed, issued, or dated
+      valid_until:
+        type: date
+        title: Valid until
+        description: Expiry date, if the document expires (policy, permit, ID)
+      status:
+        type: string
+        description: Lifecycle status of the document itself
+        enum: [draft, final, signed, filed, superseded, expired, void]
+      original:
+        type: string
+        title: Original
+        description: "Where the legally relevant original is: held_paper (we have the paper original), digital_original (the e-document is the original, e.g. signed PDF or ePUAP), held_by_other (notary, court, bank, other party), lost, unknown"
+        enum: [held_paper, digital_original, held_by_other, lost, unknown]
+      physical_location:
+        type: string
+        title: Physical location
+        description: Where the paper original or copy is kept (e.g. "Waliły, office binder 'Dom'")
+      primary_location:
+        type: string
+        title: Primary digital location
+        description: "Best digital copy: storage plus folder (e.g. \"Drive pylka@kucharz.net / Szeregówka / Akt notarialny szeregówka\")"
+      url:
+        type: url
+        description: Link to the best digital copy
+      language:
+        type: string
+        description: Language of the document (ISO 639-1, e.g. pl, en, no)
+      sensitivity:
+        type: string
+        description: "normal, personal (contains personal data), or restricted (ID numbers, health, legal strategy)"
+        enum: [normal, personal, restricted]
+      summary:
+        type: string
+        widget: textarea
+        description: What the document says that matters (parties, amounts, key terms) — not a copy of it
+      notes:
+        type: string
+        widget: textarea
+        description: Free-form notes (e.g. duplicates to delete, missing pages)
+      source:
+        type: string
+        description: "Where it was registered from: drive, email, local, manual"
+
+relationshipTypes:
+  - name: concerns
+    label: Concerns
+    description: What a document is about — the property, vehicle, company, person, contract, case, policy, account, trip, or obligation.
+    sourceType: Document
+    targetTypes: [Person, Organization, LegalEntity, Property, Vehicle, Contract, InsurancePolicy, LegalCase, IdentityDocument, Account, Invoice, Trip, Obligation, Project, Domain]
+
+  - name: issued_by
+    label: Issued By
+    description: The authority, court, notary, company, or person that issued or drafted the document.
+    sourceType: Document
+    targetTypes: [Organization, LegalEntity, Person]
+
+  - name: party_to_document
+    label: Party To Document
+    description: A person or company that signed or is a party to the document.
+    sourceTypes: [Person, LegalEntity, Organization]
+    targetType: Document
+    properties:
+      role:
+        type: string
+        description: "Role in the document: buyer, seller, assignor, assignee, principal, attorney, insured, taxpayer, plaintiff, defendant, party"
+
+  - name: has_copy
+    label: Has Copy
+    description: A digital or scanned copy of the document (a Drive file, an email attachment, a local file).
+    sourceType: Document
+    targetType: File
+
+  - name: supersedes
+    label: Supersedes
+    description: A newer version, annex, or correction that replaces an older document.
+    sourceType: Document
+    targetType: Document
+
+  - name: has_obligation
+    label: Has Obligation
+    description: An expiry, renewal, or follow-up deadline arising from the document.
+    sourceType: Document
+    targetType: Obligation

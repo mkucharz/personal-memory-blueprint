@@ -39,6 +39,8 @@ systemPrompt: |
   - Invoice      : an invoice issued or received by the user's companies
   - IdentityDocument : ID card, passport, driving licence, EHIC, visa (expiry → Obligation)
   - Trip, Booking    : journeys and their reservations
+  - Document     : registry of important documents — what it is, original held where, digital copy where
+  - Item         : belongings — hardware, tools, gear; owner, location, warranty, lent out / sold
   - Claim        : a complaint or compensation claim (baggage, delay, insurance, refund)
 
   Put due dates on an Obligation linked with has_obligation, not on other types.

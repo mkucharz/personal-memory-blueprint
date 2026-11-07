@@ -30,6 +30,8 @@ schemas/
   pm-legal.yaml           LegalCase
   pm-knowledge.yaml       Guide
   pm-travel.yaml          IdentityDocument, Trip, Booking, Claim
+  pm-documents.yaml       Document (document registry)
+  pm-belongings.yaml      Item (belongings registry)
 agents/
   memory-extractor.yaml     builds and maintains the graph
   obligations-watcher.yaml  daily: upcoming obligations → tasks, roll forward when done
@@ -93,6 +95,8 @@ These keep the packs installable together without type-merge conflicts
 | `pm-legal` 1.0.0 | `LegalCase` | Court and administrative cases |
 | `pm-knowledge` 1.0.0 | `Guide` | Maintained how-tos, checklists, calendars, profiles |
 | `pm-travel` 1.0.0 | `IdentityDocument`, `Trip`, `Booking`, `Claim` | Document expiries, journeys and reservations, complaints and compensation claims |
+| `pm-documents` 1.1.0 | `Document` | Registry of important documents: kind, date, whether the paper original is held and where, best digital copy (Drive account / folder, email); `concerns`, `issued_by`, `party_to_document`, `has_copy`, `supersedes`. Also the map for Drive and email cleanup |
+| `pm-belongings` 1.0.0 | `Item` | Registry of belongings: hardware, tools, appliances, gear; owner (person or company for business assets), `kept_at` a property or vehicle, serials, purchase and warranty data, `lent_to`, `documented_by` a Document |
 
 ## Key links
 

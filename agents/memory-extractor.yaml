@@ -34,6 +34,8 @@ systemPrompt: |
   - Invoice: `inv-<seller>-<invoice number slug>` (e.g. `inv-tmobile-509755310326`)
   - IdentityDocument: `iddoc-<holder>-<kind>` (e.g. `iddoc-self-passport`)
   - Trip: `trip-<yyyy-mm>-<destination>`; Booking: `booking-<provider>-<reference>`
+  - Document: `doc-<subject>-<kind>-<yyyy>` (e.g. `doc-deed-modrzewiowa-91`)
+  - Item: `item-<brand>-<model slug>` (e.g. `item-dell-precision-t5810`)
   - Claim: `claim-<counterparty>-<reference>`
 
   ## Choosing the type
@@ -51,6 +53,15 @@ systemPrompt: |
     issued/received; seller via `issued_by`, buyer via `billed_to`; the
     agreement via `under_contract`). Record received invoices only when they
     matter (business costs, disputes, unusual amounts).
+  - An important document (deed, signed contract, decision, permit, policy
+    PDF, certificate, warranty card) → `Document` in the registry: record
+    kind, date, whether the paper original is held and where, and the best
+    digital copy (Drive account/folder or email); link `concerns` to its
+    subject. Not every receipt — only documents worth finding again.
+  - A durable purchase (hardware, tools, appliances, gear, furniture) →
+    `Item`: brand, model, price, seller, order ref, warranty end; link
+    `owns` (the user, or the company when invoiced to it) and `kept_at`.
+    Skip consumables (screws, cleaning products, food, supplements).
   - ID card, passport, driving licence, EHIC, visa → `IdentityDocument`
     (holder via `holds`), plus an `Obligation` (document_expiry) for renewal,
     due a few months before `expires_on`.

@@ -1,0 +1,192 @@
+name: pm-belongings
+version: "1.0.0"
+author: memory
+repositoryUrl: https://github.com/mkucharz/personal-memory-blueprint
+description: >
+  Area pack of the personal-memory blueprint: a registry of belongings —
+  hardware, electronics, tools, sports and kite gear, appliances, furniture,
+  camping and van equipment — with where each thing is, who owns it (the
+  user or a company, for business assets), serial numbers, purchase and
+  warranty data, and whether it is lent out, in repair, or sold. Vehicles,
+  real estate and servers keep their own types in pm-assets; an Item can be
+  kept in a property or a vehicle. Receipts, manuals and warranty cards are
+  pm-documents Documents linked with `documented_by`.
+
+objectTypes:
+  - name: Item
+    label: Item
+    labels: [belonging, inventory]
+    ui:
+      icon: "📦"
+      color: "#B45309"
+    description: >
+      One belonging (or a set counted as one: "Milwaukee wood drill bit set").
+      Register things worth knowing about later — valuable, warranty-bearing,
+      lendable, insurable, or business assets — not consumables. Link the
+      owner with `owns`, its location with `kept_at`, the seller with
+      `bought_from`, receipts and manuals with `documented_by`, accessories
+      with `part_of`, a borrower with `lent_to`, and a warranty end with
+      `has_obligation`.
+    properties:
+      name:
+        type: string
+        description: Display name (e.g. "MacBook Pro 16 M3 Max", "Duotone Rebel 10 m kite")
+      category:
+        type: string
+        description: What sort of thing it is
+        enum: [computer, phone_tablet, networking, smart_home, audio_video, camera_photo, peripheral, power_tool, hand_tool, garden, appliance, heating_energy, furniture, sports, kite_watersports, bike, camping_van, vehicle_accessory, music_instrument, clothing_gear, jewelry_watch, art_collectible, other]
+      brand:
+        type: string
+        description: Manufacturer or brand
+      model:
+        type: string
+        description: Model name or number
+      serial_number:
+        type: string
+        title: Serial number
+        description: Serial number, IMEI, or MAC address (not a secret; never store PINs or passwords)
+      specs:
+        type: string
+        description: Key specifications as free text (CPU/RAM/storage, size, power, length)
+      os:
+        type: string
+        title: Operating system
+        description: For devices that run software (e.g. "macOS 26", "iOS 26", "UniFi OS")
+      hostname:
+        type: string
+        description: Network name of a device, if any (no IP addresses or access details)
+      quantity:
+        type: integer
+        description: Number of units when the entry is a set (default 1)
+        minimum: 1
+      status:
+        type: string
+        description: Where the item stands
+        enum: [owned, in_use, stored, lent_out, in_repair, for_sale, sold, given_away, lost, stolen, broken, disposed]
+      condition:
+        type: string
+        description: Physical condition
+        enum: [new, good, used, worn, damaged]
+      location_note:
+        type: string
+        title: Location
+        description: Where exactly it is (e.g. "Waliły, boiler room rack", "Trafic, rear drawer")
+      purchased_on:
+        type: date
+        title: Purchased on
+        description: Purchase date
+      purchase_price:
+        type: number
+        title: Purchase price
+        description: Price paid (gross)
+      currency:
+        type: string
+        format: currency
+        description: Currency of the price (ISO 4217)
+      purchased_from:
+        type: string
+        title: Purchased from
+        description: Shop or seller as printed (e.g. "Allegro — TOMEX_BARTOSZYCE", "Apple Store")
+      order_ref:
+        type: string
+        title: Order reference
+        description: Order or auction number, invoice number
+      warranty_until:
+        type: date
+        title: Warranty until
+        description: End of warranty or guarantee
+      estimated_value:
+        type: number
+        title: Estimated value
+        description: Current estimated resale value (same currency)
+      business_asset:
+        type: boolean
+        title: Business asset
+        description: True when bought by or booked in a company (cost or fixed asset)
+      sold_on:
+        type: date
+        title: Sold / disposed on
+        description: When it left the user's possession
+      image_url:
+        type: url
+        title: Image
+        description: Link to a photo of the item
+      notes:
+        type: string
+        widget: textarea
+        description: Free-form notes (specs, accessories, quirks)
+      source:
+        type: string
+        description: "Where it was registered from: allegro, email, invoice, infakt, manual, inventory_md"
+      source_ref:
+        type: string
+        title: Source reference
+        description: ID in the source (Gmail message ID, Allegro order ID, inFakt cost ID)
+
+relationshipTypes:
+  - name: owns
+    label: Owns
+    description: A person or company owns an item (a company for business assets).
+    sourceTypes: [Person, LegalEntity]
+    targetType: Item
+    properties:
+      share_percent:
+        type: number
+        title: Share (%)
+        description: Ownership share in percent, when shared
+        minimum: 0
+        maximum: 100
+      holder_role:
+        type: string
+        title: Holder role
+        description: "owner, joint_owner, authorised_user"
+
+  - name: kept_at
+    label: Kept At
+    description: Where an item is kept — a property, a vehicle (van equipment), or a place.
+    sourceType: Item
+    targetTypes: [Property, Vehicle, Place]
+
+  - name: bought_from
+    label: Bought From
+    description: The shop, seller, or person the item was bought from.
+    sourceType: Item
+    targetTypes: [Organization, Person]
+
+  - name: documented_by
+    label: Documented By
+    description: A receipt, invoice, manual, warranty card, or certificate for the item.
+    sourceType: Item
+    targetTypes: [Document, File, Invoice]
+
+  - name: part_of
+    label: Part Of
+    description: An accessory or component that belongs to another item (charger → laptop, bar → kite).
+    sourceType: Item
+    targetType: Item
+
+  - name: lent_to
+    label: Lent To
+    description: Who currently has the item on loan.
+    sourceType: Item
+    targetType: Person
+    properties:
+      since:
+        type: date
+        description: Date it was lent
+      expected_back:
+        type: date
+        title: Expected back
+        description: When it should come back
+
+  - name: has_obligation
+    label: Has Obligation
+    description: A warranty end, service interval, or return deadline for the item.
+    sourceType: Item
+    targetType: Obligation
+
+  - name: sourced_from
+    label: Sourced From
+    description: Provenance for item facts (the email or note it came from).
+    sourceType: Item
+    targetTypes: [Note, File]
