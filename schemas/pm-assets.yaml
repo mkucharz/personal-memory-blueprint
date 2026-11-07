@@ -1,5 +1,5 @@
 name: pm-assets
-version: "1.0.0"
+version: "1.1.0"
 author: memory
 repositoryUrl: https://github.com/mkucharz/personal-memory-blueprint
 description: >
@@ -72,6 +72,17 @@ objectTypes:
         type: string
         widget: textarea
         description: Free-form notes
+      source:
+        type: string
+        description: "Where the facts came from: email, drive, infakt, document, user, migration, manual"
+      source_ref:
+        type: string
+        title: Source reference
+        description: "Pointer to the evidence: Gmail thread ID, Drive file ID, inFakt ID, file path, or 'user YYYY-MM-DD' when the user said it"
+      confidence:
+        type: string
+        description: "confirmed (by the user or an official document), from_source (read from a source, not confirmed), unverified (old or indirect data; check before relying on it)"
+        enum: [confirmed, from_source, unverified]
 
   - name: Property
     label: Property
@@ -110,6 +121,17 @@ objectTypes:
         type: string
         widget: textarea
         description: Free-form notes
+      source:
+        type: string
+        description: "Where the facts came from: email, drive, infakt, document, user, migration, manual"
+      source_ref:
+        type: string
+        title: Source reference
+        description: "Pointer to the evidence: Gmail thread ID, Drive file ID, inFakt ID, file path, or 'user YYYY-MM-DD' when the user said it"
+      confidence:
+        type: string
+        description: "confirmed (by the user or an official document), from_source (read from a source, not confirmed), unverified (old or indirect data; check before relying on it)"
+        enum: [confirmed, from_source, unverified]
 
   - name: InsurancePolicy
     label: Insurance Policy
@@ -162,6 +184,17 @@ objectTypes:
         type: string
         widget: textarea
         description: Free-form notes
+      source:
+        type: string
+        description: "Where the facts came from: email, drive, infakt, document, user, migration, manual"
+      source_ref:
+        type: string
+        title: Source reference
+        description: "Pointer to the evidence: Gmail thread ID, Drive file ID, inFakt ID, file path, or 'user YYYY-MM-DD' when the user said it"
+      confidence:
+        type: string
+        description: "confirmed (by the user or an official document), from_source (read from a source, not confirmed), unverified (old or indirect data; check before relying on it)"
+        enum: [confirmed, from_source, unverified]
 
   - name: Domain
     label: Domain
@@ -200,6 +233,17 @@ objectTypes:
         type: string
         widget: textarea
         description: Free-form notes
+      source:
+        type: string
+        description: "Where the facts came from: email, drive, infakt, document, user, migration, manual"
+      source_ref:
+        type: string
+        title: Source reference
+        description: "Pointer to the evidence: Gmail thread ID, Drive file ID, inFakt ID, file path, or 'user YYYY-MM-DD' when the user said it"
+      confidence:
+        type: string
+        description: "confirmed (by the user or an official document), from_source (read from a source, not confirmed), unverified (old or indirect data; check before relying on it)"
+        enum: [confirmed, from_source, unverified]
 
   - name: Server
     label: Server
@@ -241,6 +285,17 @@ objectTypes:
         type: string
         widget: textarea
         description: Free-form notes (no secrets)
+      source:
+        type: string
+        description: "Where the facts came from: email, drive, infakt, document, user, migration, manual"
+      source_ref:
+        type: string
+        title: Source reference
+        description: "Pointer to the evidence: Gmail thread ID, Drive file ID, inFakt ID, file path, or 'user YYYY-MM-DD' when the user said it"
+      confidence:
+        type: string
+        description: "confirmed (by the user or an official document), from_source (read from a source, not confirmed), unverified (old or indirect data; check before relying on it)"
+        enum: [confirmed, from_source, unverified]
 
 relationshipTypes:
   - name: owns

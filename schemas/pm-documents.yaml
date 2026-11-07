@@ -1,5 +1,5 @@
 name: pm-documents
-version: "1.1.0"
+version: "1.2.0"
 author: memory
 repositoryUrl: https://github.com/mkucharz/personal-memory-blueprint
 description: >
@@ -81,6 +81,14 @@ objectTypes:
       source:
         type: string
         description: "Where it was registered from: drive, email, local, manual"
+      source_ref:
+        type: string
+        title: Source reference
+        description: "Pointer to the evidence: Gmail thread ID, Drive file ID, inFakt ID, file path, or 'user YYYY-MM-DD' when the user said it"
+      confidence:
+        type: string
+        description: "confirmed (by the user or an official document), from_source (read from a source, not confirmed), unverified (old or indirect data; check before relying on it)"
+        enum: [confirmed, from_source, unverified]
 
 relationshipTypes:
   - name: concerns

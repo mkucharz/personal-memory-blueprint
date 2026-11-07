@@ -1,5 +1,5 @@
 name: pm-knowledge
-version: "1.0.0"
+version: "1.1.0"
 author: memory
 repositoryUrl: https://github.com/mkucharz/personal-memory-blueprint
 description: >
@@ -57,6 +57,10 @@ objectTypes:
         type: string
         title: Source reference
         description: Reference in the source system (e.g. Drive file ID, path)
+      confidence:
+        type: string
+        description: "confirmed (by the user or an official document), from_source (read from a source, not confirmed), unverified (old or indirect data; check before relying on it)"
+        enum: [confirmed, from_source, unverified]
 
 relationshipTypes:
   - name: documented_in

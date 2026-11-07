@@ -1,5 +1,5 @@
 name: personal-memory
-version: "4.0.0"
+version: "4.1.0"
 author: memory
 repositoryUrl: https://github.com/mkucharz/personal-memory-blueprint
 description: >
@@ -103,6 +103,14 @@ objectTypes:
         type: string
         title: Source
         description: "Where this record originated: gmail, apple_contacts, calendar, manual"
+      source_ref:
+        type: string
+        title: Source reference
+        description: "Pointer to the evidence: Gmail thread ID, Drive file ID, inFakt ID, file path, or 'user YYYY-MM-DD' when the user said it"
+      confidence:
+        type: string
+        description: "confirmed (by the user or an official document), from_source (read from a source, not confirmed), unverified (old or indirect data; check before relying on it)"
+        enum: [confirmed, from_source, unverified]
 
   - name: Organization
     label: Organisation
@@ -154,6 +162,17 @@ objectTypes:
         type: string
         widget: textarea
         description: Free-form notes
+      source:
+        type: string
+        description: "Where the facts came from: email, drive, infakt, document, user, migration, manual"
+      source_ref:
+        type: string
+        title: Source reference
+        description: "Pointer to the evidence: Gmail thread ID, Drive file ID, inFakt ID, file path, or 'user YYYY-MM-DD' when the user said it"
+      confidence:
+        type: string
+        description: "confirmed (by the user or an official document), from_source (read from a source, not confirmed), unverified (old or indirect data; check before relying on it)"
+        enum: [confirmed, from_source, unverified]
 
   - name: Obligation
     label: Obligation
@@ -245,6 +264,10 @@ objectTypes:
         type: string
         widget: textarea
         description: Free-form notes
+      confidence:
+        type: string
+        description: "confirmed (by the user or an official document), from_source (read from a source, not confirmed), unverified (old or indirect data; check before relying on it)"
+        enum: [confirmed, from_source, unverified]
 
   - name: Task
     label: Task
@@ -289,6 +312,10 @@ objectTypes:
         description: Free-form tags
         items:
           type: string
+      confidence:
+        type: string
+        description: "confirmed (by the user or an official document), from_source (read from a source, not confirmed), unverified (old or indirect data; check before relying on it)"
+        enum: [confirmed, from_source, unverified]
 
   - name: Project
     label: Project
@@ -327,6 +354,17 @@ objectTypes:
         description: Free-form tags
         items:
           type: string
+      source:
+        type: string
+        description: "Where the facts came from: email, drive, infakt, document, user, migration, manual"
+      source_ref:
+        type: string
+        title: Source reference
+        description: "Pointer to the evidence: Gmail thread ID, Drive file ID, inFakt ID, file path, or 'user YYYY-MM-DD' when the user said it"
+      confidence:
+        type: string
+        description: "confirmed (by the user or an official document), from_source (read from a source, not confirmed), unverified (old or indirect data; check before relying on it)"
+        enum: [confirmed, from_source, unverified]
 
   - name: Event
     label: Event
@@ -422,6 +460,17 @@ objectTypes:
       transparency:
         type: string
         description: "Whether event blocks time: opaque (busy) or transparent (free)"
+      source:
+        type: string
+        description: "Where the facts came from: email, drive, infakt, document, user, migration, manual"
+      source_ref:
+        type: string
+        title: Source reference
+        description: "Pointer to the evidence: Gmail thread ID, Drive file ID, inFakt ID, file path, or 'user YYYY-MM-DD' when the user said it"
+      confidence:
+        type: string
+        description: "confirmed (by the user or an official document), from_source (read from a source, not confirmed), unverified (old or indirect data; check before relying on it)"
+        enum: [confirmed, from_source, unverified]
 
   - name: FinancialTransaction
     label: Financial Transaction
@@ -476,6 +525,14 @@ objectTypes:
       iban:
         type: string
         description: IBAN of the counterpart account (Enable Banking only)
+      source_ref:
+        type: string
+        title: Source reference
+        description: "Pointer to the evidence: Gmail thread ID, Drive file ID, inFakt ID, file path, or 'user YYYY-MM-DD' when the user said it"
+      confidence:
+        type: string
+        description: "confirmed (by the user or an official document), from_source (read from a source, not confirmed), unverified (old or indirect data; check before relying on it)"
+        enum: [confirmed, from_source, unverified]
 
   - name: Contact
     label: Contact
@@ -535,6 +592,14 @@ objectTypes:
         description: Contact group names
         items:
           type: string
+      source_ref:
+        type: string
+        title: Source reference
+        description: "Pointer to the evidence: Gmail thread ID, Drive file ID, inFakt ID, file path, or 'user YYYY-MM-DD' when the user said it"
+      confidence:
+        type: string
+        description: "confirmed (by the user or an official document), from_source (read from a source, not confirmed), unverified (old or indirect data; check before relying on it)"
+        enum: [confirmed, from_source, unverified]
 
   - name: Place
     label: Place
@@ -596,6 +661,17 @@ objectTypes:
         type: string
         widget: textarea
         description: Free-form notes about this place
+      source:
+        type: string
+        description: "Where the facts came from: email, drive, infakt, document, user, migration, manual"
+      source_ref:
+        type: string
+        title: Source reference
+        description: "Pointer to the evidence: Gmail thread ID, Drive file ID, inFakt ID, file path, or 'user YYYY-MM-DD' when the user said it"
+      confidence:
+        type: string
+        description: "confirmed (by the user or an official document), from_source (read from a source, not confirmed), unverified (old or indirect data; check before relying on it)"
+        enum: [confirmed, from_source, unverified]
 
   - name: Note
     label: Note
@@ -629,6 +705,10 @@ objectTypes:
         description: Free-form tags
         items:
           type: string
+      confidence:
+        type: string
+        description: "confirmed (by the user or an official document), from_source (read from a source, not confirmed), unverified (old or indirect data; check before relying on it)"
+        enum: [confirmed, from_source, unverified]
 
   - name: File
     label: File
@@ -668,6 +748,10 @@ objectTypes:
         type: string
         widget: textarea
         description: Description of the file contents
+      confidence:
+        type: string
+        description: "confirmed (by the user or an official document), from_source (read from a source, not confirmed), unverified (old or indirect data; check before relying on it)"
+        enum: [confirmed, from_source, unverified]
 
   - name: Fact
     label: Fact
@@ -686,6 +770,17 @@ objectTypes:
         type: string
         widget: textarea
         description: The fact itself
+      source:
+        type: string
+        description: "Where the facts came from: email, drive, infakt, document, user, migration, manual"
+      source_ref:
+        type: string
+        title: Source reference
+        description: "Pointer to the evidence: Gmail thread ID, Drive file ID, inFakt ID, file path, or 'user YYYY-MM-DD' when the user said it"
+      confidence:
+        type: string
+        description: "confirmed (by the user or an official document), from_source (read from a source, not confirmed), unverified (old or indirect data; check before relying on it)"
+        enum: [confirmed, from_source, unverified]
 
   - name: Habit
     label: Habit
@@ -734,6 +829,17 @@ objectTypes:
         description: Free-form tags
         items:
           type: string
+      source:
+        type: string
+        description: "Where the facts came from: email, drive, infakt, document, user, migration, manual"
+      source_ref:
+        type: string
+        title: Source reference
+        description: "Pointer to the evidence: Gmail thread ID, Drive file ID, inFakt ID, file path, or 'user YYYY-MM-DD' when the user said it"
+      confidence:
+        type: string
+        description: "confirmed (by the user or an official document), from_source (read from a source, not confirmed), unverified (old or indirect data; check before relying on it)"
+        enum: [confirmed, from_source, unverified]
 
 relationshipTypes:
   - name: assigned_to
