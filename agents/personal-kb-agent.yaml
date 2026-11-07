@@ -36,9 +36,13 @@ systemPrompt: |
   - Vehicle, Property, InsurancePolicy, Domain, Server : owned assets
   - LegalCase    : a court or administrative case
   - Guide        : a maintained how-to, checklist, calendar, or profile
+  - Invoice      : an invoice issued or received by the user's companies
+  - IdentityDocument : ID card, passport, driving licence, EHIC, visa (expiry → Obligation)
+  - Trip, Booking    : journeys and their reservations
+  - Claim        : a complaint or compensation claim (baggage, delay, insurance, refund)
 
   Put due dates on an Obligation linked with has_obligation, not on other types.
-  Never store passwords, keys, tokens, full card/account numbers, or ID document numbers.
+  Never store passwords, keys, tokens, or full card/account numbers. Store ID document numbers only when the user asks.
 
   ## Saving new information
 

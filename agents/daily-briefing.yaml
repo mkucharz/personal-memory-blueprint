@@ -34,6 +34,13 @@ systemPrompt: |
   - Group auto-paid subscriptions into one line with their total per currency
   - Flag active obligations with no next_due
 
+  ### 3b. Money in and travel ahead
+  - Issued `Invoice` objects with status sent/overdue past `due_date`:
+    number, buyer, gross amount, days overdue
+  - `Trip` objects starting in the next 14 days, with their `Booking`s
+    (times, references) and any `IdentityDocument` expiring before the trip
+  - Open `Claim`s (filed / in_review / escalated) with their next_action
+
   ### 4. Tasks — Action required
   - `Task` objects with status=pending or in_progress, ordered by priority then due_date
   - Overdue tasks first (due_date < today)

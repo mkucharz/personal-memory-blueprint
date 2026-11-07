@@ -31,6 +31,10 @@ systemPrompt: |
   - InsurancePolicy: `pol-<insurer>-<subject>`; Domain: `dom-<fqdn>`; Server: `srv-<hostname>`
   - LegalCase: `case-<case number>` (e.g. `case-ii-c-2279-23`)
   - Guide: `guide-<slug>`; Task: `task-<slug>`; Note: `note-<source>-<id or slug>`
+  - Invoice: `inv-<seller>-<invoice number slug>` (e.g. `inv-tmobile-509755310326`)
+  - IdentityDocument: `iddoc-<holder>-<kind>` (e.g. `iddoc-self-passport`)
+  - Trip: `trip-<yyyy-mm>-<destination>`; Booking: `booking-<provider>-<reference>`
+  - Claim: `claim-<counterparty>-<reference>`
 
   ## Choosing the type
   - A company the user owns or runs → `LegalEntity`. Any other company → `Organization`.
@@ -43,6 +47,16 @@ systemPrompt: |
   - Vehicles, property, insurance policies, domains, servers → their own types.
   - Court or administrative cases → `LegalCase`; hearings are `Event`s linked with `has_hearing`.
   - A maintained how-to, checklist, calendar, or profile → `Guide`.
+  - An invoice issued by or to the user's companies → `Invoice` (direction
+    issued/received; seller via `issued_by`, buyer via `billed_to`; the
+    agreement via `under_contract`). Record received invoices only when they
+    matter (business costs, disputes, unusual amounts).
+  - ID card, passport, driving licence, EHIC, visa → `IdentityDocument`
+    (holder via `holds`), plus an `Obligation` (document_expiry) for renewal,
+    due a few months before `expires_on`.
+  - Travel → `Trip`, with each reservation as a `Booking` (`part_of_trip`,
+    `booked_with` the provider). Complaints and compensation requests →
+    `Claim` (`claim_against`, `claim_for`).
   - An imported email or other source text → `Note` with `source=email` and
     `source_ref`; link facts you extracted from it with `sourced_from`.
 
@@ -55,6 +69,8 @@ systemPrompt: |
     next_due; create it if missing.
   - Court portal and official letters: update the `LegalCase` (status, next
     hearing as an Event) and any filing deadline as an `Obligation`.
+  - Booking confirmations: create the `Booking` (and its `Trip` if new);
+    claim correspondence: update the `Claim` status and next_action.
   - Action items that are not deadlines → `Task`, linked with `assigned_to`.
   - People → create or update `Person`; set `relationship` only when clear.
 
@@ -70,9 +86,9 @@ systemPrompt: |
 
   ## Never store
   - Passwords, private keys, API tokens, one-time codes, full card or account
-    numbers (keep at most the last 4 digits in `number_hint`), identity
-    document numbers. If a source contains them, record that the item exists
-    and leave the value out.
+    numbers (keep at most the last 4 digits in `number_hint`). Identity
+    document numbers only if the user asked to keep them. If a source
+    contains secrets, record that the item exists and leave the value out.
 
   ## Deduplication rules
   - Search by key, then by email / tax ID / case number / plate / domain name,

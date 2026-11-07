@@ -1,16 +1,100 @@
 name: pm-money
-version: "1.0.0"
+version: "1.1.0"
 author: memory
 repositoryUrl: https://github.com/mkucharz/personal-memory-blueprint
 description: >
   Area pack of the personal-memory blueprint: where the user's money and
   online services live — bank and fintech accounts, tax and social-insurance
-  payment accounts, and online service accounts (cloud, SaaS, airline
-  profiles). Recurring charges are core Obligation objects
-  (obligation_kind=subscription) linked with `has_obligation`. Store only
-  account hints (last 4 digits), never full numbers or credentials.
+  payment accounts, online service accounts (cloud, SaaS, airline profiles),
+  and the invoices the user's companies issue and receive. Recurring charges
+  are core Obligation objects (obligation_kind=subscription) linked with
+  `has_obligation`. Store only account hints (last 4 digits), never full
+  numbers or credentials. v1.1.0 adds Invoice.
 
 objectTypes:
+  - name: Invoice
+    label: Invoice
+    labels: [invoice, finance]
+    ui:
+      icon: "🧾"
+      color: "#0D9488"
+    description: >
+      An invoice the user or one of their companies issued (sales) or
+      received (costs). Seller and buyer are linked with `issued_by` and
+      `billed_to`; the agreement it bills under with `under_contract`; the
+      Obligation occurrence it settles with `settles`. For received invoices
+      paid automatically, record them only when they matter (disputes,
+      business costs, unusual amounts).
+    properties:
+      number:
+        type: string
+        description: Invoice number as printed (e.g. "FV 12/11/2026", "509755310326")
+      direction:
+        type: string
+        description: "issued (the user's company is the seller) or received (the user or company is the buyer)"
+        enum: [issued, received]
+      status:
+        type: string
+        description: Lifecycle status
+        enum: [draft, issued, sent, paid, partially_paid, overdue, disputed, cancelled]
+      issue_date:
+        type: date
+        title: Issue date
+        description: Date of issue
+      sale_date:
+        type: date
+        title: Sale / service date
+        description: Date or end of the period the invoice covers
+      due_date:
+        type: date
+        title: Due date
+        description: Payment due date
+      paid_on:
+        type: date
+        title: Paid on
+        description: Date the invoice was fully paid
+      net_amount:
+        type: number
+        title: Net amount
+        description: Amount excluding VAT
+      vat_amount:
+        type: number
+        title: VAT amount
+        description: VAT amount (0 if not VAT-registered / reverse charge)
+      gross_amount:
+        type: number
+        title: Gross amount
+        description: Total payable
+      currency:
+        type: string
+        format: currency
+        description: Currency (ISO 4217)
+      vat_treatment:
+        type: string
+        title: VAT treatment
+        description: How VAT applies
+        enum: [standard, exempt, reverse_charge, not_applicable]
+      description:
+        type: string
+        widget: textarea
+        description: What was sold or bought (lines, hours, period)
+      e_invoice_id:
+        type: string
+        title: E-invoice ID
+        description: KSeF number (PL) or EHF/PEPPOL reference (NO)
+      source:
+        type: string
+        description: "Where it came from: infakt, fiken, email, manual"
+      source_ref:
+        type: string
+        title: Source reference
+        description: ID in the source system or Gmail message ID
+      notes:
+        type: string
+        widget: textarea
+        description: Free-form notes
+
+
   - name: Account
     label: Account
     labels: [account, finance]
@@ -101,8 +185,8 @@ relationshipTypes:
 
   - name: has_obligation
     label: Has Obligation
-    description: An account carries a recurring charge or deadline (subscription, fee, card expiry).
-    sourceType: Account
+    description: An account carries a recurring charge or deadline (subscription, fee, card expiry), or an unpaid issued invoice carries a payment follow-up.
+    sourceTypes: [Account, Invoice]
     targetType: Obligation
 
   - name: paid_from
@@ -119,6 +203,38 @@ relationshipTypes:
 
   - name: sourced_from
     label: Sourced From
-    description: Provenance for account facts.
-    sourceType: Account
+    description: Provenance for account and invoice facts (the email or PDF the invoice came in).
+    sourceTypes: [Account, Invoice]
     targetTypes: [Note, File]
+
+  # ── v1.1.0: invoices ────────────────────────────────────────────────────
+
+  - name: issued_by
+    label: Issued By
+    description: The seller that issued the invoice (one of the user's companies, an organisation, or a person).
+    sourceType: Invoice
+    targetTypes: [LegalEntity, Organization, Person]
+
+  - name: billed_to
+    label: Billed To
+    description: The buyer the invoice is addressed to.
+    sourceType: Invoice
+    targetTypes: [LegalEntity, Organization, Person]
+
+  - name: under_contract
+    label: Under Contract
+    description: The agreement the invoice bills under (e.g. a consultancy or commission agreement).
+    sourceType: Invoice
+    targetType: Contract
+
+  - name: settles
+    label: Settles
+    description: The Obligation occurrence this invoice fulfils (an invoicing duty or a recurring charge).
+    sourceType: Invoice
+    targetType: Obligation
+
+  - name: paid_into
+    label: Paid Into
+    description: The account an issued invoice is paid into, or a received invoice is paid from.
+    sourceType: Invoice
+    targetType: Account

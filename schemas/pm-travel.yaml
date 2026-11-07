@@ -1,0 +1,280 @@
+name: pm-travel
+version: "1.0.0"
+author: memory
+repositoryUrl: https://github.com/mkucharz/personal-memory-blueprint
+description: >
+  Area pack of the personal-memory blueprint: identity documents and their
+  expiry dates, trips, the bookings that make them up, and claims against
+  carriers, insurers, or sellers. Expiry dates and claim follow-ups are core
+  Obligation objects linked with `has_obligation`, so the obligations-watcher
+  reminds the user in time.
+
+objectTypes:
+  - name: IdentityDocument
+    label: Identity Document
+    labels: [identity, travel]
+    ui:
+      icon: "🪪"
+      color: "#B91C1C"
+    description: >
+      An identity or travel document held by the user or a family member: ID
+      card, passport, driving licence, residence permit, EHIC, or visa. The
+      holder is linked with `holds`; the renewal deadline is an Obligation
+      (obligation_kind=document_expiry). The document number is optional and
+      sensitive — store it only if the user wants it in the knowledge base.
+    properties:
+      name:
+        type: string
+        description: Display name (e.g. "Passport — Maciej", "ID card — Magdalena")
+      document_kind:
+        type: string
+        title: Kind
+        description: What sort of document
+        enum: [id_card, passport, driving_licence, residence_permit, ehic, visa, other]
+      issuing_country:
+        type: string
+        format: country
+        title: Issuing country
+        description: Country that issued it (ISO 3166-1 code)
+      document_number:
+        type: string
+        title: Document number
+        description: Document number (sensitive; optional)
+      issued_on:
+        type: date
+        title: Issued on
+        description: Issue date
+      expires_on:
+        type: date
+        title: Expires on
+        description: Expiry date
+      status:
+        type: string
+        description: Lifecycle status
+        enum: [valid, expiring, expired, lost, replaced]
+      notes:
+        type: string
+        widget: textarea
+        description: Free-form notes (e.g. categories on a driving licence)
+
+  - name: Trip
+    label: Trip
+    labels: [trip, travel]
+    ui:
+      icon: "🧳"
+      color: "#0369A1"
+    description: >
+      A journey with a destination and dates. Bookings belong to it with
+      `part_of_trip`; travellers are linked with `involves_person`.
+    properties:
+      name:
+        type: string
+        description: Display name (e.g. "Red Sea kite trip, Jan 2026")
+      destination:
+        type: string
+        description: Main destination (city / region)
+      country:
+        type: string
+        format: country
+        description: Destination country (ISO 3166-1 code)
+      purpose:
+        type: string
+        description: Why the trip happens
+        enum: [leisure, business, family, sport, other]
+      start_date:
+        type: date
+        title: Start date
+        description: First day of travel
+      end_date:
+        type: date
+        title: End date
+        description: Last day of travel
+      status:
+        type: string
+        description: Lifecycle status
+        enum: [idea, planned, booked, ongoing, done, cancelled]
+      notes:
+        type: string
+        widget: textarea
+        description: Free-form notes (packing, documents needed, visas)
+
+  - name: Booking
+    label: Booking
+    labels: [booking, travel]
+    ui:
+      icon: "🎫"
+      color: "#7C3AED"
+    description: >
+      One reservation: a flight, train, ferry, hotel, package tour, car rental,
+      or event ticket. The provider is linked with `booked_with`; the trip with
+      `part_of_trip`.
+    properties:
+      name:
+        type: string
+        description: Display name (e.g. "DY1018 OSL–WAW 15 Mar 2026")
+      booking_kind:
+        type: string
+        title: Kind
+        description: What sort of booking
+        enum: [flight, train, ferry, bus, hotel, package, car_rental, event, other]
+      reference:
+        type: string
+        description: Booking reference / PNR / reservation number
+      start:
+        type: date
+        description: Departure / check-in (RFC 3339 or YYYY-MM-DD)
+      end:
+        type: date
+        description: Arrival / check-out
+      from_place:
+        type: string
+        title: From
+        description: Origin (airport/station code or city)
+      to_place:
+        type: string
+        title: To
+        description: Destination (airport/station code or city)
+      price:
+        type: number
+        description: Total price
+      currency:
+        type: string
+        format: currency
+        description: Currency (ISO 4217)
+      status:
+        type: string
+        description: Lifecycle status
+        enum: [held, confirmed, paid, cancelled, completed]
+      notes:
+        type: string
+        widget: textarea
+        description: Free-form notes (seats, baggage, payment deadline)
+
+  - name: Claim
+    label: Claim
+    labels: [claim, travel]
+    ui:
+      icon: "📮"
+      color: "#C2410C"
+    description: >
+      A complaint or compensation claim against a carrier, insurer, seller, or
+      authority: lost or damaged baggage, delay, cancellation, insurance,
+      refund, or warranty. The counterparty is linked with `claim_against`;
+      what it is about with `claim_for`. Follow-up deadlines are Obligations.
+    properties:
+      name:
+        type: string
+        description: Display name (e.g. "Norwegian — stolen equipment, DY1018")
+      claim_kind:
+        type: string
+        title: Kind
+        description: What sort of claim
+        enum: [baggage_lost, baggage_damaged, baggage_theft, delay, cancellation, insurance, refund, warranty, other]
+      reference:
+        type: string
+        description: Claim / case / ticket number at the counterparty
+      claimant:
+        type: string
+        description: Who the claim is for (name), if not the user
+      filed_on:
+        type: date
+        title: Filed on
+        description: When the claim was filed
+      amount_claimed:
+        type: number
+        title: Amount claimed
+        description: Amount claimed
+      amount_received:
+        type: number
+        title: Amount received
+        description: Amount paid out so far
+      currency:
+        type: string
+        format: currency
+        description: Currency (ISO 4217)
+      status:
+        type: string
+        description: Where the claim stands
+        enum: [draft, filed, in_review, escalated, accepted, rejected, paid, closed]
+      next_action:
+        type: string
+        title: Next action
+        description: What needs to happen next, and by whom
+      notes:
+        type: string
+        widget: textarea
+        description: History of the claim
+
+relationshipTypes:
+  - name: holds
+    label: Holds
+    description: A person holds an identity document.
+    sourceType: Person
+    targetType: IdentityDocument
+
+  - name: part_of_trip
+    label: Part Of Trip
+    description: A booking belongs to a trip.
+    sourceType: Booking
+    targetType: Trip
+
+  - name: booked_with
+    label: Booked With
+    description: The airline, operator, hotel, or agency a booking is with.
+    sourceType: Booking
+    targetType: Organization
+
+  - name: involves_person
+    label: Involves Person
+    description: A traveller on a trip or booking.
+    sourceTypes: [Trip, Booking]
+    targetType: Person
+    properties:
+      role:
+        type: string
+        title: Role
+        description: "Participant role: organizer, required, optional, resource"
+      response_status:
+        type: string
+        title: Response status
+        description: "Calendar response: accepted, declined, tentative, needsAction, none"
+
+  - name: claim_against
+    label: Claim Against
+    description: The organisation a claim is made against, or escalated to (e.g. ECC-Net).
+    sourceType: Claim
+    targetType: Organization
+
+  - name: claim_for
+    label: Claim For
+    description: What the claim is about — a booking, trip, insurance policy, or account.
+    sourceType: Claim
+    targetTypes: [Booking, Trip, InsurancePolicy, Account]
+
+  - name: party_to
+    label: Party To
+    description: The person filing or benefiting from a claim.
+    sourceTypes: [Person, LegalEntity, Organization]
+    targetType: Claim
+    properties:
+      role:
+        type: string
+        description: "Role of the party: client, provider, assignor, assignee, landlord, tenant, plaintiff, defendant, participant, appellant, respondent"
+
+  - name: located_at
+    label: Located At
+    description: Where a trip goes.
+    sourceType: Trip
+    targetType: Place
+
+  - name: has_obligation
+    label: Has Obligation
+    description: A document expiry or a claim follow-up deadline.
+    sourceTypes: [IdentityDocument, Claim, Booking]
+    targetType: Obligation
+
+  - name: sourced_from
+    label: Sourced From
+    description: Confirmation emails, scans, and claim correspondence.
+    sourceTypes: [IdentityDocument, Trip, Booking, Claim]
+    targetTypes: [Note, File]

@@ -1,11 +1,11 @@
 name: personal-memory
-version: "4.0.0"
+version: "4.1.0"
 author: memory
 description: >
   A personal AI agent's long-term knowledge graph over a person's life —
   people, organisations, deadlines, tasks, projects, events, finances, and
-  notes, plus area packs for companies, money, assets, legal cases, and
-  guides — and the four agents that build, watch, and query it.
+  notes, plus area packs for companies, money and invoices, assets,
+  legal cases, guides, and travel — and the four agents that build, watch, and query it.
 repositoryUrl: https://github.com/mkucharz/personal-memory-blueprint
 
 projectInfo: |
@@ -21,12 +21,13 @@ projectInfo: |
   File, Fact, Place, Contact, FinancialTransaction, Habit.
   Area types: LegalEntity, Contract (companies); Account (money); Vehicle,
   Property, InsurancePolicy, Domain, Server (assets); LegalCase (legal);
-  Guide (knowledge).
+  Guide (knowledge); Invoice (money); IdentityDocument, Trip, Booking,
+  Claim (travel).
 
   Every due date lives on an Obligation linked from its subject with
   `has_obligation`. The obligations-watcher turns upcoming obligations into
   Tasks each morning and rolls them forward when the Task is done; the
   daily-briefing shows the next 14 days. memory-extractor builds the graph
   from email, calendar, and conversations; personal-kb-agent saves and
-  recalls on request. Never store passwords, keys, tokens, full card or
-  account numbers, or identity document numbers.
+  recalls on request. Never store passwords, keys, tokens, or full card
+  or account numbers; identity document numbers only when the user wants them.
