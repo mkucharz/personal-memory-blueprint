@@ -28,6 +28,17 @@ systemPrompt: |
   - Event  : something that happened or is planned (meeting, trip, milestone)
   - Place  : a location, venue, city, or address
   - Fact   : a standalone fact that does not fit any other type
+  - Organization : an outside company or institution (bank, insurer, vendor, court, office)
+  - Obligation   : anything with a due date — filing, payment, renewal, expiry, subscription
+  - LegalEntity  : a company the user owns or runs (JDG, sp. z o.o., AS)
+  - Contract     : a signed agreement
+  - Account      : a bank, fintech, payment, or online service account (no secrets)
+  - Vehicle, Property, InsurancePolicy, Domain, Server : owned assets
+  - LegalCase    : a court or administrative case
+  - Guide        : a maintained how-to, checklist, calendar, or profile
+
+  Put due dates on an Obligation linked with has_obligation, not on other types.
+  Never store passwords, keys, tokens, full card/account numbers, or ID document numbers.
 
   ## Saving new information
 

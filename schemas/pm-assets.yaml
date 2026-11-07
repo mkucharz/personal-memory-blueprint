@@ -1,0 +1,315 @@
+name: pm-assets
+version: "1.0.0"
+author: memory
+repositoryUrl: https://github.com/mkucharz/personal-memory-blueprint
+description: >
+  Area pack of the personal-memory blueprint: things the user owns that must
+  stay legal, insured, and renewed — vehicles, property, insurance policies,
+  internet domains, and servers. Renewal, inspection, and expiry dates are
+  core Obligation objects linked with `has_obligation`. Server records are an
+  inventory only: never store passwords, private keys, or tokens.
+
+objectTypes:
+  - name: Vehicle
+    label: Vehicle
+    labels: [vehicle, asset]
+    ui:
+      icon: "🚐"
+      color: "#B45309"
+    description: >
+      A car, van, motorcycle, camper, or trailer owned by the user or one of
+      their companies, including sold ones (status=sold) so history is kept.
+    properties:
+      name:
+        type: string
+        description: Display name (e.g. "Renault Trafic", "Camping trailer")
+      vehicle_kind:
+        type: string
+        title: Kind
+        description: What sort of vehicle
+        enum: [car, van, camper, motorcycle, trailer, other]
+      make:
+        type: string
+        description: Manufacturer
+      model:
+        type: string
+        description: Model
+      year:
+        type: integer
+        description: Model year
+        minimum: 1900
+        maximum: 2100
+      registration_plate:
+        type: string
+        title: Registration plate
+        description: Registration plate number
+      vin:
+        type: string
+        title: VIN
+        description: Vehicle identification number
+      country:
+        type: string
+        format: country
+        description: Country of registration (ISO 3166-1 code)
+      status:
+        type: string
+        description: Lifecycle status
+        enum: [active, stored, sold, scrapped]
+      mileage_km:
+        type: integer
+        title: Mileage (km)
+        description: Last known odometer reading
+        minimum: 0
+      acquired_on:
+        type: date
+        title: Acquired on
+        description: Purchase or registration date
+      disposed_on:
+        type: date
+        title: Disposed on
+        description: Sale or scrapping date
+      notes:
+        type: string
+        widget: textarea
+        description: Free-form notes
+
+  - name: Property
+    label: Property
+    labels: [property, asset]
+    ui:
+      icon: "🏠"
+      color: "#A16207"
+    description: >
+      Real estate or a significant physical asset the user owns or rents: a
+      house, flat, plot, or storage unit.
+    properties:
+      name:
+        type: string
+        description: Display name (e.g. "House in Białystok")
+      property_kind:
+        type: string
+        title: Kind
+        description: What sort of property
+        enum: [house, flat, plot, cabin, storage, other]
+      tenure:
+        type: string
+        description: "Ownership: owned, co_owned, rented"
+        enum: [owned, co_owned, rented]
+      address:
+        type: string
+        description: Address
+      country:
+        type: string
+        format: country
+        description: Country (ISO 3166-1 code)
+      status:
+        type: string
+        description: Lifecycle status
+        enum: [active, sold, ended]
+      notes:
+        type: string
+        widget: textarea
+        description: Free-form notes
+
+  - name: InsurancePolicy
+    label: Insurance Policy
+    labels: [insurance]
+    ui:
+      icon: "🛡️"
+      color: "#0369A1"
+    description: >
+      An insurance policy: vehicle liability (OC) or comprehensive (AC), home,
+      travel, health, life, or business liability. The insurer is an
+      Organization linked with `issued_by`; renewal is an Obligation.
+    properties:
+      name:
+        type: string
+        description: Display name (e.g. "PZU OC — WZYW243")
+      policy_kind:
+        type: string
+        title: Kind
+        description: What the policy covers
+        enum: [vehicle_liability, vehicle_comprehensive, vehicle_combined, home, travel, health, life, business_liability, other]
+      policy_number:
+        type: string
+        title: Policy number
+        description: Policy number
+      status:
+        type: string
+        description: Lifecycle status
+        enum: [active, expired, cancelled]
+      start_date:
+        type: date
+        title: Start date
+        description: Cover start
+      end_date:
+        type: date
+        title: End date
+        description: Cover end
+      premium:
+        type: number
+        description: Premium per payment period
+      currency:
+        type: string
+        format: currency
+        description: Currency of premium (ISO 4217)
+      payment_frequency:
+        type: string
+        title: Payment frequency
+        description: How often the premium is paid
+        enum: [once, monthly, quarterly, biannual, yearly]
+      notes:
+        type: string
+        widget: textarea
+        description: Free-form notes
+
+  - name: Domain
+    label: Domain
+    labels: [domain, digital]
+    ui:
+      icon: "🌐"
+      color: "#0891B2"
+    description: An internet domain the user or one of their companies holds.
+    properties:
+      name:
+        type: string
+        description: Fully qualified domain name (e.g. kucharz.net)
+      registrar:
+        type: string
+        description: Registrar name (also link with `held_with`)
+      status:
+        type: string
+        description: Lifecycle status
+        enum: [active, expiring, transferred, lapsed]
+      expires_on:
+        type: date
+        title: Expires on
+        description: Registration expiry date
+      auto_renew:
+        type: boolean
+        title: Auto-renew
+        description: Whether auto-renew is on
+      dns_provider:
+        type: string
+        title: DNS provider
+        description: Where DNS is hosted
+      purpose:
+        type: string
+        description: What the domain is used for (email, website, family)
+      notes:
+        type: string
+        widget: textarea
+        description: Free-form notes
+
+  - name: Server
+    label: Server
+    labels: [server, digital]
+    ui:
+      icon: "🖥️"
+      color: "#475569"
+    description: >
+      A server, VM, or network appliance in the user's homelab or cloud.
+      Inventory only — never store passwords, private keys, or tokens.
+    properties:
+      name:
+        type: string
+        description: Display name (e.g. "zoidberg", "proxmox")
+      hostname:
+        type: string
+        description: Hostname or FQDN
+      ip_addresses:
+        type: array
+        title: IP addresses
+        description: IP addresses
+        items:
+          type: string
+      provider:
+        type: string
+        description: Hosting provider or location (Hetzner, homelab)
+      role:
+        type: string
+        description: What it does (hypervisor, proxy, VPN, home automation, gateway)
+      os:
+        type: string
+        title: OS
+        description: Operating system
+      status:
+        type: string
+        description: Lifecycle status
+        enum: [active, stopped, decommissioned]
+      notes:
+        type: string
+        widget: textarea
+        description: Free-form notes (no secrets)
+
+relationshipTypes:
+  - name: owns
+    label: Owns
+    description: A person or company owns a vehicle, property, domain, or server.
+    sourceTypes: [Person, LegalEntity]
+    targetTypes: [Vehicle, Property, Domain, Server]
+    properties:
+      share_percent:
+        type: number
+        title: Share (%)
+        description: Ownership share in percent, when shared
+        minimum: 0
+        maximum: 100
+      holder_role:
+        type: string
+        title: Holder role
+        description: "owner, joint_owner, authorised_user"
+
+  - name: insures
+    label: Insures
+    description: A policy insures a vehicle, property, or person.
+    sourceType: InsurancePolicy
+    targetTypes: [Vehicle, Property, Person]
+
+  - name: issued_by
+    label: Issued By
+    description: The insurer (and optionally the agent's organisation) that issued a policy.
+    sourceType: InsurancePolicy
+    targetType: Organization
+
+  - name: brokered_by
+    label: Brokered By
+    description: The person (insurance agent) who arranged a policy.
+    sourceType: InsurancePolicy
+    targetType: Person
+
+  - name: held_with
+    label: Held With
+    description: The registrar or hosting provider a domain or server is held with.
+    sourceTypes: [Domain, Server]
+    targetTypes: [Organization, Account]
+
+  - name: runs_on
+    label: Runs On
+    description: A server runs on another (VM on a hypervisor), or a domain points at a server.
+    sourceTypes: [Server, Domain]
+    targetType: Server
+
+  - name: used_by
+    label: Used By
+    description: An asset is used by a project or company.
+    sourceTypes: [Vehicle, Domain, Server, Property]
+    targetTypes: [Project, LegalEntity]
+
+  - name: has_obligation
+    label: Has Obligation
+    description: An asset or policy has a deadline (renewal, inspection, registration, expiry).
+    sourceTypes: [Vehicle, Property, InsurancePolicy, Domain, Server]
+    targetType: Obligation
+
+  - name: located_at
+    label: Located At
+    description: Where a property or vehicle is.
+    sourceTypes: [Property, Vehicle, Server]
+    targetType: Place
+
+  - name: sourced_from
+    label: Sourced From
+    description: Provenance for asset facts.
+    sourceTypes: [Vehicle, Property, InsurancePolicy, Domain, Server]
+    targetTypes: [Note, File]

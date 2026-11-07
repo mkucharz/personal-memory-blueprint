@@ -1,0 +1,124 @@
+name: pm-money
+version: "1.0.0"
+author: memory
+repositoryUrl: https://github.com/mkucharz/personal-memory-blueprint
+description: >
+  Area pack of the personal-memory blueprint: where the user's money and
+  online services live — bank and fintech accounts, tax and social-insurance
+  payment accounts, and online service accounts (cloud, SaaS, airline
+  profiles). Recurring charges are core Obligation objects
+  (obligation_kind=subscription) linked with `has_obligation`. Store only
+  account hints (last 4 digits), never full numbers or credentials.
+
+objectTypes:
+  - name: Account
+    label: Account
+    labels: [account, finance]
+    ui:
+      icon: "🏦"
+      color: "#059669"
+    description: >
+      An account the user or one of their companies holds with an outside
+      organisation: a bank or fintech account, a tax or ZUS payment account,
+      a card, or an online service account (AWS, Google Workspace, Apple ID,
+      an airline profile). Use status=closed rather than deleting closed
+      accounts.
+    properties:
+      name:
+        type: string
+        description: Display name (e.g. "Revolut (personal)", "mBank business current account")
+      account_kind:
+        type: string
+        title: Kind
+        description: What sort of account this is
+        enum: [bank, fintech, card, savings, brokerage, tax_payment, social_insurance, online_service, loyalty, other]
+      status:
+        type: string
+        description: Lifecycle status
+        enum: [open, closed, dormant]
+      holder:
+        type: string
+        description: "Who holds it: personal, joint, or the company name"
+      currency:
+        type: string
+        format: currency
+        description: Main currency (ISO 4217)
+      number_hint:
+        type: string
+        title: Number hint
+        description: Last 4 digits or a masked identifier only — never a full account or card number
+      account_id:
+        type: string
+        title: Account ID
+        description: Non-secret identifier in the provider's system (e.g. AWS account ID, customer number)
+      login_email:
+        type: string
+        format: email
+        title: Login email
+        description: Email used to sign in
+      opened_on:
+        type: date
+        title: Opened on
+        description: When the account was opened
+      closed_on:
+        type: date
+        title: Closed on
+        description: When the account was closed
+      notes:
+        type: string
+        widget: textarea
+        description: Free-form notes (no secrets)
+
+relationshipTypes:
+  - name: held_with
+    label: Held With
+    description: The organisation (bank, provider) an account is held with.
+    sourceType: Account
+    targetType: Organization
+
+  - name: owns
+    label: Owns
+    description: A person or company holds an account.
+    sourceTypes: [Person, LegalEntity]
+    targetType: Account
+    properties:
+      share_percent:
+        type: number
+        title: Share (%)
+        description: Ownership share in percent, when shared
+        minimum: 0
+        maximum: 100
+      holder_role:
+        type: string
+        title: Holder role
+        description: "owner, joint_owner, authorised_user"
+
+  - name: used_by
+    label: Used By
+    description: An account (e.g. a cloud or SaaS account) is used by a project or company.
+    sourceType: Account
+    targetTypes: [Project, LegalEntity]
+
+  - name: has_obligation
+    label: Has Obligation
+    description: An account carries a recurring charge or deadline (subscription, fee, card expiry).
+    sourceType: Account
+    targetType: Obligation
+
+  - name: paid_from
+    label: Paid From
+    description: An obligation is paid from this account.
+    sourceType: Obligation
+    targetType: Account
+
+  - name: has_transaction
+    label: Has Transaction
+    description: A transaction belongs to an account.
+    sourceType: Account
+    targetType: FinancialTransaction
+
+  - name: sourced_from
+    label: Sourced From
+    description: Provenance for account facts.
+    sourceType: Account
+    targetTypes: [Note, File]
