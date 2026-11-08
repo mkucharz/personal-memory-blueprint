@@ -1,5 +1,5 @@
 name: pm-belongings
-version: "1.2.0"
+version: "1.3.0"
 author: memory
 repositoryUrl: https://github.com/mkucharz/personal-memory-blueprint
 description: >
@@ -70,7 +70,7 @@ objectTypes:
       status:
         type: string
         description: Where the item stands
-        enum: [owned, in_use, stored, lent_out, in_repair, for_sale, sold, given_away, lost, stolen, broken, disposed]
+        enum: [owned, in_use, stored, lent_out, in_repair, for_sale, sold, given_away, returned, lost, stolen, broken, disposed]
       condition:
         type: string
         description: Physical condition
