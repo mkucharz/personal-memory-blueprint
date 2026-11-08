@@ -1,0 +1,83 @@
+name: pm-review
+version: "1.0.0"
+author: memory
+repositoryUrl: https://github.com/mkucharz/personal-memory-blueprint
+description: >
+  Area pack of the personal-memory blueprint: the knowledge base's own
+  to-do list. An OpenQuestion is something the agents could not establish
+  from sources and need the user to answer (which vehicle a policy covers,
+  whether an old item is still owned, whether a draft was signed). Agents
+  file a question instead of guessing; when the user answers, the agent
+  updates the records the question is about and closes it. Questions are
+  not the user's real-world tasks — those stay core Task objects.
+
+objectTypes:
+  - name: OpenQuestion
+    label: Open Question
+    labels: [question, review]
+    ui:
+      icon: "❓"
+      color: "#DB2777"
+    description: >
+      A question for the user about the knowledge base. Link the records it
+      is about with `asks_about`. Close it with status=answered (fill
+      `answer`, `answered_on`, update the records) or dropped.
+    properties:
+      question:
+        type: string
+        widget: textarea
+        description: The question, phrased so the user can answer in one line
+      context:
+        type: string
+        widget: textarea
+        description: What is known so far and why it is unclear (evidence, conflicting sources)
+      why_it_matters:
+        type: string
+        title: Why it matters
+        description: What depends on the answer (a deadline, a cost, a record that may be wrong)
+      area:
+        type: string
+        description: Area of life the question belongs to
+        enum: [vehicles, insurance, property, documents, money, subscriptions, companies, tax, legal, family, travel, belongings, health, other]
+      priority:
+        type: string
+        description: "high (blocks a deadline or a payment), medium, low (nice to know)"
+        enum: [high, medium, low]
+      status:
+        type: string
+        description: Lifecycle status
+        enum: [open, answered, dropped]
+      asked_on:
+        type: date
+        title: Asked on
+        description: When the question was filed
+      answer:
+        type: string
+        widget: textarea
+        description: The user's answer, verbatim or summarised
+      answered_on:
+        type: date
+        title: Answered on
+        description: When it was answered or dropped
+      suggested_answers:
+        type: string
+        title: Suggested answers
+        description: Likely options to offer the user, separated by " | "
+      source:
+        type: string
+        description: "Where the question came from: agent run, conversation, migration"
+      source_ref:
+        type: string
+        title: Source reference
+        description: Evidence that raised the question (Gmail thread, Drive file, record key)
+      confidence:
+        type: string
+        description: "confirmed (by the user or an official document), from_source (read from a source, not confirmed), unverified (old or indirect data; check before relying on it)"
+        enum: [confirmed, from_source, unverified]
+
+relationshipTypes:
+  - name: asks_about
+    label: Asks About
+    description: The record(s) a question concerns; update them when the question is answered.
+    sourceType: OpenQuestion
+    targetTypes: [Person, Organization, Obligation, Task, Project, Event, Note, File, Fact, Place, LegalEntity, Contract, Account, Invoice, Vehicle, Property, InsurancePolicy, Domain, Server, LegalCase, Guide, IdentityDocument, Trip, Booking, Claim, Document, Item]

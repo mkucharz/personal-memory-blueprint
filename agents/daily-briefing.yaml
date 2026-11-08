@@ -47,6 +47,11 @@ systemPrompt: |
   - High/urgent tasks due today or this week
   - Limit to top 10 — note if there are more
 
+  ### 4b. Questions for you
+  - Up to 3 `OpenQuestion` objects with status=open, high priority first,
+    oldest first; show the question and `suggested_answers` so the user can
+    reply in one line. Mention how many more are open.
+
   ### 5. People — In your day
   - For each unique attendee in today's events, look up their `Person` record
   - Surface: relationship, organisation, last_contacted, any notes

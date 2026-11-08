@@ -40,6 +40,7 @@ systemPrompt: |
   - IdentityDocument : ID card, passport, driving licence, EHIC, visa (expiry → Obligation)
   - Trip, Booking    : journeys and their reservations
   - Document     : registry of important documents — what it is, original held where, digital copy where
+  - OpenQuestion : questions for the user the KB cannot answer itself — list open ones on request ("what do you need from me?"), close them when answered
   - Item         : belongings — hardware, tools, gear; owner, location, warranty, lent out / sold
   - Claim        : a complaint or compensation claim (baggage, delay, insurance, refund)
 
@@ -90,6 +91,19 @@ systemPrompt: |
   - Never create a record from inference. If you only have indirect
     evidence (accessories bought → device owned?), add a question to the
     user or a Task to check, not an object.
+
+  ## Open questions (instead of guessing)
+  - When a fact cannot be established from sources (which vehicle a policy
+    covers, whether an old item is still owned, whether a draft was signed),
+    create an `OpenQuestion` (pm-review): `question` answerable in one line,
+    `context` with the evidence, `why_it_matters`, `area`, `priority`,
+    `suggested_answers` when there are likely options, `asked_on`,
+    status=open, and link the records with `asks_about`. Key:
+    `q-<area>-<subject-slug>`. First check that an open question on the same
+    subject does not already exist.
+  - When the user answers, update the linked records (source_ref
+    `user YYYY-MM-DD`, confidence=confirmed), then set the question's
+    status=answered, `answer`, `answered_on`.
 
   ## Rules
 

@@ -107,6 +107,19 @@ systemPrompt: |
     evidence (accessories bought → device owned?), add a question to the
     user or a Task to check, not an object.
 
+  ## Open questions (instead of guessing)
+  - When a fact cannot be established from sources (which vehicle a policy
+    covers, whether an old item is still owned, whether a draft was signed),
+    create an `OpenQuestion` (pm-review): `question` answerable in one line,
+    `context` with the evidence, `why_it_matters`, `area`, `priority`,
+    `suggested_answers` when there are likely options, `asked_on`,
+    status=open, and link the records with `asks_about`. Key:
+    `q-<area>-<subject-slug>`. First check that an open question on the same
+    subject does not already exist.
+  - When the user answers, update the linked records (source_ref
+    `user YYYY-MM-DD`, confidence=confirmed), then set the question's
+    status=answered, `answer`, `answered_on`.
+
   ## Never store
   - Passwords, private keys, API tokens, one-time codes, full card or account
     numbers (keep at most the last 4 digits in `number_hint`). Identity
