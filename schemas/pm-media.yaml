@@ -1,0 +1,148 @@
+name: pm-media
+version: "1.0.0"
+author: memory
+repositoryUrl: https://github.com/mkucharz/personal-memory-blueprint
+description: >
+  Area pack of the personal-memory blueprint: games (and other digital
+  titles) the household owns, claimed, or wants. One Game is one title on
+  one platform, bought, claimed with a subscription, free-to-play, or on the
+  wishlist. Because a console is often shared, every Game records who plays
+  it and how interested the user is, so recommendations and wishlists can
+  tell the user's games from the rest of the family's. Add-ons and DLC link
+  to their base game with `addon_of`.
+
+objectTypes:
+  - name: Game
+    label: Game
+    labels: [game, media]
+    ui:
+      icon: "🎮"
+      color: "#4F46E5"
+    description: >
+      One game title on one platform. Link the console with `played_on`
+      (pm-belongings Item), who plays it with `played_by` (Person), the store
+      with `bought_from`, a base game with `addon_of`, and the subscription
+      that gave it with `claimed_via` (core Obligation, e.g. PlayStation Plus).
+      `user_interest` is the user's own interest; a title bought for or played
+      by someone else gets `played_by_who` = daughter (or other) and
+      user_interest none/low.
+    properties:
+      title:
+        type: string
+        description: Title as in the store (e.g. "Baldur's Gate 3")
+      platform:
+        type: string
+        description: Platform the licence is for
+        enum: [ps5, ps4, ps4_ps5, switch, xbox, pc, steam_deck, mac, ios, android, vr, other]
+      kind:
+        type: string
+        description: What the store entry is
+        enum: [game, addon, dlc, season_pass, bundle, demo, virtual_currency, cosmetic, other]
+      format:
+        type: string
+        enum: [digital, disc, cartridge, streaming]
+      acquired_via:
+        type: string
+        title: Acquired via
+        description: "purchase, subscription_claim (PS Plus monthly or catalogue — playable while subscribed), free_to_play, gift, bundled (with hardware), demo"
+        enum: [purchase, subscription_claim, free_to_play, gift, bundled, demo, trial]
+      acquired_on:
+        type: date
+        title: Acquired on
+      price:
+        type: number
+        description: Price paid (0 for claims and free titles)
+      currency:
+        type: string
+        format: currency
+      order_ref:
+        type: string
+        title: Order number
+        description: Store order number from the receipt
+      account:
+        type: string
+        description: Store account it is on (e.g. PSN online ID)
+      status:
+        type: string
+        description: Where the title stands
+        enum: [owned, subscription_access, wishlist, considering, refunded, lost_access, sold]
+      played_by_who:
+        type: string
+        title: Played by
+        description: "Who plays it: user, daughter, both, family, nobody, unknown"
+        enum: [user, daughter, both, family, nobody, unknown]
+      user_interest:
+        type: string
+        title: User's interest
+        description: "The user's own interest: high, medium, low, none, unknown"
+        enum: [high, medium, low, none, unknown]
+      play_status:
+        type: string
+        title: Play status
+        enum: [not_started, playing, finished, completed_100, dropped, on_hold, multiplayer_ongoing, unknown]
+      genres:
+        type: string
+        description: Genres, comma-separated (RPG, roguelike, co-op, shooter, sandbox)
+      multiplayer:
+        type: string
+        enum: [single, local_coop, online_coop, local_and_online_coop, online_pvp, mmo, none_known]
+      age_rating:
+        type: string
+        title: Age rating
+        description: PEGI rating (3, 7, 12, 16, 18)
+      rating:
+        type: integer
+        description: User's own rating 1–10
+        minimum: 1
+        maximum: 10
+      notes:
+        type: string
+        widget: textarea
+      source:
+        type: string
+        description: "Where the facts came from: email (store receipt), user"
+      source_ref:
+        type: string
+        title: Source reference
+        description: "Pointer to the evidence: Gmail thread ID of the receipt, 'user YYYY-MM-DD'"
+      confidence:
+        type: string
+        description: "confirmed (by the user), from_source (read from a receipt), unverified (inferred)"
+        enum: [confirmed, from_source, unverified]
+
+relationshipTypes:
+  - name: played_on
+    label: Played On
+    description: The console or device the game is installed on or licensed for.
+    sourceType: Game
+    targetType: Item
+
+  - name: played_by
+    label: Played By
+    description: Who plays the game.
+    sourceType: Game
+    targetType: Person
+
+  - name: owned_by
+    label: Owned By
+    description: Whose account holds the licence.
+    sourceType: Game
+    targetType: Person
+
+  - name: bought_from
+    label: Bought From
+    description: The store (PlayStation Store, Steam, a shop).
+    sourceType: Game
+    targetTypes: [Organization, LegalEntity]
+
+  - name: addon_of
+    label: Add-on Of
+    description: The base game of an add-on, DLC or season pass.
+    sourceType: Game
+    targetType: Game
+
+  - name: claimed_via
+    label: Claimed Via
+    description: The subscription that gives access (core Obligation or Contract).
+    sourceType: Game
+    targetTypes: [Obligation, Contract, Account]

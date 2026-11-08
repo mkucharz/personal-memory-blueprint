@@ -1,0 +1,341 @@
+name: pm-shopping
+version: "1.0.0"
+author: memory
+repositoryUrl: https://github.com/mkucharz/personal-memory-blueprint
+description: >
+  Area pack of the personal-memory blueprint: the buying process. A
+  PurchaseIdea is one need ("webcam for the Mac mini"), worked as a card on
+  the Memory board from idea to bought. ProductOptions are the concrete
+  products considered for it, each with price, pros and cons, a value score,
+  a fit score, and compatibility with the things the user already owns
+  (pm-belongings Items). Preferences are the user's buying rules, one per
+  record, learned along the way and cited when a recommendation is made.
+
+objectTypes:
+  - name: PurchaseIdea
+    label: Purchase Idea
+    labels: [shopping, wishlist]
+    ui:
+      icon: "🛒"
+      color: "#0D9488"
+    description: >
+      One thing the user wants or is considering to buy. Link the owned
+      Items it must work with via `must_work_with`, an Item it replaces via
+      `replaces`, the person it is for via `for_person`, the options via
+      ProductOption `option_for`, the chosen option via `chose`, and — once
+      bought — the new Item or Game via `resulted_in`. Purchase ideas are
+      cards on the Memory board: move one to `ready` and the
+      purchase-advisor agent compares the options against the user's
+      Preferences and owned gear and returns it in `review` with a
+      recommendation Note. `waiting_for_deal` parks an idea until the price
+      drops to `target_price`.
+    boardEnabled: true
+    allowedStatuses: [idea, ready, in_progress, review, revision, blocked, waiting_for_deal, decided, bought, dropped]
+    properties:
+      title:
+        type: string
+        description: Short name of the need (e.g. "Webcam for the Mac mini")
+      category:
+        type: string
+        description: Area of the purchase
+        enum: [electronics, computer_accessory, apple, audio_video, smart_home, networking, gaming, game, software_subscription, tools, home, furniture, appliance, sports, kite_watersports, bike, camping_van, clothing, kids, travel, service, other]
+      status:
+        type: string
+        description: Board status
+        enum: [idea, ready, in_progress, review, revision, blocked, waiting_for_deal, decided, bought, dropped]
+      need:
+        type: string
+        widget: textarea
+        description: What problem it solves and how it will be used (where, how often, by whom)
+      must_have:
+        type: string
+        widget: textarea
+        description: Hard requirements, one per line
+      nice_to_have:
+        type: string
+        widget: textarea
+        title: Nice to have
+        description: Soft requirements, one per line
+      deal_breakers:
+        type: string
+        widget: textarea
+        title: Deal breakers
+        description: What rules an option out, one per line
+      budget_max:
+        type: number
+        title: Budget (max)
+        description: Most the user will pay
+      target_price:
+        type: number
+        title: Target price
+        description: Price at which to buy without further thought (for waiting_for_deal)
+      currency:
+        type: string
+        format: currency
+        description: Currency of the budget (ISO 4217)
+      priority:
+        type: string
+        enum: [low, medium, high, urgent]
+      needed_by:
+        type: date
+        title: Needed by
+        description: When it should be in hand, if there is a deadline
+      recommendation:
+        type: string
+        widget: textarea
+        description: Current recommendation in one or two sentences, with the reason
+      decision:
+        type: string
+        widget: textarea
+        description: What the user decided and why (the why becomes Preferences)
+      decided_on:
+        type: date
+        title: Decided on
+      bought_on:
+        type: date
+        title: Bought on
+      notes:
+        type: string
+        widget: textarea
+      source:
+        type: string
+        description: "Where the idea came from: conversation, email, user"
+      source_ref:
+        type: string
+        title: Source reference
+        description: "Pointer to the evidence: Gmail thread ID, 'user YYYY-MM-DD'"
+      confidence:
+        type: string
+        description: "confirmed (by the user), from_source, unverified"
+        enum: [confirmed, from_source, unverified]
+
+  - name: ProductOption
+    label: Product Option
+    labels: [shopping, comparison]
+    ui:
+      icon: "⚖️"
+      color: "#0891B2"
+    description: >
+      One concrete product considered for a PurchaseIdea (`option_for`).
+      Prices are a snapshot: always fill `price_checked_on`. Compatibility is
+      checked against owned Items and linked with `compatible_with` (put the
+      caveat in `compatibility_notes`). Scores: `value_score` = what it does
+      for the money (the user's main criterion), `fit_score` = how well it
+      meets this idea's must-haves and nice-to-haves; both 1–10.
+    properties:
+      name:
+        type: string
+        description: Product name as sold (e.g. "Logitech MX Brio 4K")
+      brand:
+        type: string
+      model:
+        type: string
+        description: Model name or number
+      price:
+        type: number
+        description: Lowest sensible price found (gross, new unless condition says otherwise)
+      currency:
+        type: string
+        format: currency
+      condition:
+        type: string
+        enum: [new, refurbished, used, open_box]
+      shop:
+        type: string
+        description: Where that price is (Allegro, x-kom, Apple, Amazon.pl)
+      product_url:
+        type: string
+        format: uri
+        title: Product URL
+      price_checked_on:
+        type: date
+        title: Price checked on
+      lowest_price_seen:
+        type: number
+        title: Lowest price seen
+        description: Lowest price observed so far (with the date in notes)
+      specs:
+        type: string
+        widget: textarea
+        description: Key specs relevant to the need
+      pros:
+        type: string
+        widget: textarea
+        description: One per line
+      cons:
+        type: string
+        widget: textarea
+        description: One per line
+      compatibility:
+        type: string
+        description: "Fit with the user's gear: native (made for it, e.g. Apple Continuity), works (standard, no setup), needs_adapter, partial (some features missing), incompatible, unknown"
+        enum: [native, works, needs_adapter, partial, incompatible, unknown]
+      compatibility_notes:
+        type: string
+        widget: textarea
+        title: Compatibility notes
+        description: What was checked against which owned Item, and any caveat (port, OS version, app support)
+      value_score:
+        type: integer
+        title: Value score
+        description: "1–10: what it does for the price"
+        minimum: 1
+        maximum: 10
+      fit_score:
+        type: integer
+        title: Fit score
+        description: "1–10: how well it meets the idea's requirements"
+        minimum: 1
+        maximum: 10
+      warranty_months:
+        type: integer
+        title: Warranty (months)
+        minimum: 0
+      review_summary:
+        type: string
+        widget: textarea
+        title: Review summary
+        description: What recent reviews say, with the sources named
+      verdict:
+        type: string
+        description: Where the option stands
+        enum: [top_pick, alternative, considered, rejected, chosen]
+      rejected_reason:
+        type: string
+        title: Rejected because
+      notes:
+        type: string
+        widget: textarea
+      source:
+        type: string
+        description: "Where the facts came from: web, shop, review, user"
+      source_ref:
+        type: string
+        title: Source reference
+        description: "URLs or document IDs behind the price, specs and reviews"
+      confidence:
+        type: string
+        enum: [confirmed, from_source, unverified]
+
+  - name: Preference
+    label: Preference
+    labels: [shopping, profile]
+    ui:
+      icon: "🎯"
+      color: "#7C3AED"
+    description: >
+      One buying preference or rule of the user (or of someone they buy for,
+      linked with `held_by`): "value for money over brand", "stays in the
+      Apple ecosystem", "Allegro first", "no games above PEGI 12 on the
+      shared console". Save one whenever the user states a preference or
+      explains a decision; cite the source. Retire it (status=retired)
+      instead of deleting it when it stops being true.
+    properties:
+      statement:
+        type: string
+        description: The preference in one sentence, as the user would say it
+      kind:
+        type: string
+        description: What sort of rule
+        enum: [value, budget, quality, ecosystem, brand_like, brand_avoid, shop, feature, design, sustainability, delivery, payment, content, other]
+      scope:
+        type: string
+        description: Where it applies
+        enum: [all, electronics, apple, computer_accessory, audio_video, smart_home, gaming, games, tools, home, sports, kite_watersports, bike, camping_van, clothing, kids, travel, food, services, other]
+      strength:
+        type: string
+        description: "must (never break), strong (break only with a reason), soft (tie-breaker)"
+        enum: [must, strong, soft]
+      reason:
+        type: string
+        widget: textarea
+        description: Why the user holds it, if known
+      status:
+        type: string
+        enum: [active, retired]
+      learned_on:
+        type: date
+        title: Learned on
+      source:
+        type: string
+        description: "conversation, guide, decision, email, user"
+      source_ref:
+        type: string
+        title: Source reference
+        description: "Pointer to the evidence: 'user YYYY-MM-DD', guide key, PurchaseIdea key"
+      confidence:
+        type: string
+        enum: [confirmed, from_source, unverified]
+
+relationshipTypes:
+  - name: option_for
+    label: Option For
+    description: The purchase idea this product is a candidate for.
+    sourceType: ProductOption
+    targetType: PurchaseIdea
+
+  - name: chose
+    label: Chose
+    description: The option the user decided on.
+    sourceType: PurchaseIdea
+    targetType: ProductOption
+
+  - name: must_work_with
+    label: Must Work With
+    description: Owned things the purchase has to be compatible with.
+    sourceType: PurchaseIdea
+    targetTypes: [Item, Vehicle, Property, Server, Game]
+
+  - name: replaces
+    label: Replaces
+    description: The owned thing the purchase would replace.
+    sourceType: PurchaseIdea
+    targetTypes: [Item, Vehicle, Game]
+
+  - name: for_person
+    label: For Person
+    description: Who the purchase is for, when not (only) the user.
+    sourceType: PurchaseIdea
+    targetType: Person
+
+  - name: resulted_in
+    label: Resulted In
+    description: The Item or Game that was bought.
+    sourceType: PurchaseIdea
+    targetTypes: [Item, Game, Vehicle]
+
+  - name: applies_preference
+    label: Applies Preference
+    description: Preferences that shaped the idea or its recommendation.
+    sourceType: PurchaseIdea
+    targetType: Preference
+
+  - name: compatible_with
+    label: Compatible With
+    description: Owned things this option was checked against (see compatibility_notes).
+    sourceType: ProductOption
+    targetTypes: [Item, Vehicle, Server, Game]
+
+  - name: sold_by
+    label: Sold By
+    description: The shop or seller of the option.
+    sourceType: ProductOption
+    targetTypes: [Organization, LegalEntity]
+
+  - name: held_by
+    label: Held By
+    description: Whose preference it is, when not the user's (e.g. the daughter's).
+    sourceType: Preference
+    targetType: Person
+
+  - name: about
+    label: About
+    description: The brand, shop, item or game the preference is about.
+    sourceType: Preference
+    targetTypes: [Organization, LegalEntity, Item, Game]
+
+  - name: documented_by
+    label: Documented By
+    description: Comparison notes, reviews, quotes.
+    sourceType: PurchaseIdea
+    targetTypes: [Note, Document, File]

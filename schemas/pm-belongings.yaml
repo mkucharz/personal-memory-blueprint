@@ -1,5 +1,5 @@
 name: pm-belongings
-version: "1.1.0"
+version: "1.2.0"
 author: memory
 repositoryUrl: https://github.com/mkucharz/personal-memory-blueprint
 description: >
@@ -34,7 +34,7 @@ objectTypes:
       category:
         type: string
         description: What sort of thing it is
-        enum: [computer, phone_tablet, networking, smart_home, audio_video, camera_photo, peripheral, power_tool, hand_tool, garden, appliance, heating_energy, furniture, sports, kite_watersports, bike, camping_van, vehicle_accessory, music_instrument, clothing_gear, jewelry_watch, art_collectible, other]
+        enum: [computer, phone_tablet, wearable, gaming_console, networking, smart_home, audio_video, camera_photo, peripheral, power_tool, hand_tool, garden, appliance, heating_energy, furniture, sports, kite_watersports, bike, camping_van, vehicle_accessory, music_instrument, clothing_gear, jewelry_watch, art_collectible, other]
       brand:
         type: string
         description: Manufacturer or brand
@@ -48,6 +48,14 @@ objectTypes:
       specs:
         type: string
         description: Key specifications as free text (CPU/RAM/storage, size, power, length)
+      ports:
+        type: string
+        title: Ports and connectivity
+        description: Ports and wireless standards that matter for compatibility (e.g. "2× Thunderbolt 4, 2× USB-A, HDMI 2.1, Wi-Fi 6E, BT 5.3")
+      ecosystem:
+        type: string
+        description: Ecosystem it belongs to, for compatibility checks
+        enum: [apple, google_android, microsoft, sony_playstation, nintendo, ubiquiti, home_assistant, none, other]
       os:
         type: string
         title: Operating system

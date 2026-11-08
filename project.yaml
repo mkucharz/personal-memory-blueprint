@@ -1,11 +1,11 @@
 name: personal-memory
-version: "4.8.0"
+version: "4.9.0"
 author: memory
 description: >
   A personal AI agent's long-term knowledge graph over a person's life —
   people, organisations, deadlines, tasks, projects, events, finances, and
   notes, plus area packs for companies, money and invoices, assets,
-  legal cases, guides, travel, a document registry, belongings, loans, service history, utilities, a question list for the user, and a task board — and the six agents that build, watch, query, and work it.
+  legal cases, guides, travel, a document registry, belongings, loans, service history, utilities, shopping (purchase ideas, compared options, buying preferences), games, a question list for the user, and a task board — and the seven agents that build, watch, query, and work it.
 repositoryUrl: https://github.com/mkucharz/personal-memory-blueprint
 
 projectInfo: |
@@ -27,7 +27,10 @@ projectInfo: |
   OpenQuestion (review — what the KB needs the user to answer); Loan
   (loans — mortgages and debts, incl. annulled CHF loans); ServiceRecord
   (maintenance — inspections, services, repairs of vehicles, property, items);
-  UtilityService (home — electricity, water, internet and other supply contracts).
+  UtilityService (home — electricity, water, internet and other supply contracts);
+  PurchaseIdea, ProductOption, Preference (shopping — what to buy, the options
+  compared, the user's buying rules); Game (media — games owned or wished for,
+  who plays them on the shared console).
 
   Every due date lives on an Obligation linked from its subject with
   `has_obligation`. The obligations-watcher turns upcoming obligations into
@@ -37,7 +40,7 @@ projectInfo: |
   Tasks and OpenQuestions are cards on the Memory board (boardEnabled, with
   their own status sets). The user works them by dragging cards; moving a
   card to `ready` hands it to a board worker (kb-task-worker for Tasks,
-  question-researcher for questions), which moves it to `review` for the
+  question-researcher for questions, purchase-advisor for purchase ideas), which moves it to `review` for the
   user to approve, or puts a blocked badge on it (status unchanged) with
   the reason; the user clears it with Retry/Unblock after adding what was
   missing. Agents never set board

@@ -4,8 +4,8 @@ Emergent Memory blueprint for a personal AI agent's knowledge graph — the
 agent's long-term memory about the user's life, built so that no deadline is
 missed and the facts behind each one are one search away.
 
-It installs **thirteen schema packs** — one core pack and twelve area packs — and
-**six agents**, two of which work Task and OpenQuestion cards on the Memory board.
+It installs **fifteen schema packs** — one core pack and fourteen area packs — and
+**seven agents**, three of which work Task, OpenQuestion and PurchaseIdea cards on the Memory board.
 
 ```bash
 memory blueprints install https://github.com/mkucharz/personal-memory-blueprint
@@ -36,6 +36,8 @@ schemas/
   pm-loans.yaml           Loan (mortgages and other debts)
   pm-maintenance.yaml     ServiceRecord (inspections, services, repairs)
   pm-home.yaml            UtilityService (electricity, water, internet, ... at a property)
+  pm-shopping.yaml        PurchaseIdea, ProductOption, Preference (the buying process)
+  pm-media.yaml           Game (owned, claimed or wished-for games; who plays them)
 agents/
   memory-extractor.yaml     builds and maintains the graph
   obligations-watcher.yaml  daily: upcoming obligations → tasks, roll forward when done
@@ -43,6 +45,7 @@ agents/
   personal-kb-agent.yaml    saves and recalls on request
   kb-task-worker.yaml       board worker: prepares Tasks moved to `ready`
   question-researcher.yaml  board worker: researches OpenQuestions moved to `ready`
+  purchase-advisor.yaml     board worker: compares the options of PurchaseIdeas moved to `ready`
 Taskfile.yml              the local authoring loop (validate / inspect / install)
 MIGRATION.md              moving a v3.x project (and personal-kb data) to v4
 ```
@@ -106,6 +109,8 @@ These keep the packs installable together without type-merge conflicts
 | `pm-loans` 1.0.0 | `Loan` | Mortgages and other debts: agreement number, principal, indexation (e.g. CHF), status incl. annulled / in dispute; `lent_by`, `borrowed_by` (role), `secured_by` a property, `disputed_in` a court case |
 | `pm-maintenance` 1.0.0 | `ServiceRecord` | Service history: technical inspections, heat-pump and boiler inspections (warranty conditions), repairs; `service_of` a vehicle, property, item or server, `serviced_by`, next due date as an Obligation |
 | `pm-home` 1.0.0 | `UtilityService` | Supply contracts at a property (electricity, water, waste, gas, internet, mobile): supplier, customer/meter numbers, contract holder and whether it must be transferred, billing cycle, last meter reading; `supplied_by`, `serves`, `held_by`, `billed_through` |
+| `pm-shopping` 1.0.0 | `PurchaseIdea`, `ProductOption`, `Preference` | The buying process: a need (board card: idea → ready → review → waiting_for_deal / decided → bought), the products compared for it (price + date checked, pros/cons, value and fit scores, compatibility with owned Items), and the user's buying rules, one per record with strength and source; `option_for`, `must_work_with`, `compatible_with`, `applies_preference`, `resulted_in` |
+| `pm-media` 1.0.0 | `Game` | Games owned, claimed with a subscription, or wished for — platform, how acquired, order number, who plays it (shared console) and the user's own interest; `played_on`, `played_by`, `addon_of`, `claimed_via` |
 | `pm-belongings` 1.1.0 | `Item` | Registry of belongings: hardware, tools, appliances, gear; owner (person or company for business assets), `kept_at` a property or vehicle, serials, purchase and warranty data, `lent_to`, `documented_by` a Document |
 
 ## Key links
@@ -141,6 +146,7 @@ The full list, with descriptions, is in each pack file.
 | `personal-kb-agent` | chat | Saves and recalls on request (`visibility: external`) |
 | `kb-task-worker` | board: Task → `ready` | Prepares the knowledge part of a Task (facts, drafts, checklist) as a `Note` deliverable; moves it to `review`, or blocks it (badge) with what is missing |
 | `question-researcher` | board: OpenQuestion → `ready` | Looks for the answer in the KB and its documents; writes `proposed_answer` and `proposed_updates`; moves it to `review` (approve → `answered`), or blocks it (badge) with what would answer it |
+| `purchase-advisor` | board: PurchaseIdea → `ready` | Checks each ProductOption against the user's active Preferences and owned Items, scores value and fit, writes a comparison Note and the recommendation; moves it to `review` (approve → `decided`), or blocks it when options or fresh prices are missing (web research happens in a Claude session) |
 
 No agent pins a model: each inherits the project's default model at run time.
 
@@ -152,6 +158,7 @@ No agent pins a model: each inherits the project's default model at run time.
 |---|---|
 | `Task` | `pending` (your backlog) · `ready` (hand to `kb-task-worker`) · `in_progress` · `waiting` (on someone else) · `review` · `revision` · `blocked` · `done` · `cancelled` |
 | `OpenQuestion` | `open` (for you) · `ready` (hand to `question-researcher`) · `in_progress` · `review` · `revision` · `blocked` · `answered` · `dropped` |
+| `PurchaseIdea` | `idea` (for you) · `ready` (hand to `purchase-advisor`) · `in_progress` · `review` · `revision` · `blocked` · `waiting_for_deal` · `decided` · `bought` · `dropped` |
 
 - **Working a card yourself:** drag it between your own statuses.
 - **Handing a card to an agent:** drag it to `ready`. The worker runs on it, and the card stays in `ready` while it works. The run then either:

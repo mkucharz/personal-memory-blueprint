@@ -40,6 +40,8 @@ systemPrompt: |
   - Loan: `loan-<lender>-<agreement number slug>` (e.g. `loan-mbank-00175901-2005`)
   - UtilityService: `util-<place>-<kind>` (e.g. `util-walily-29-water`)
   - ServiceRecord: `svc-<subject>-<yyyy-mm>-<kind>` (e.g. `svc-heat-pump-walily-2026-03-inspection`)
+  - PurchaseIdea: `buy-<slug>`; ProductOption: `opt-<idea slug>-<brand>-<model slug>`
+  - Preference: `pref-<scope>-<slug>` (e.g. `pref-all-value-for-money`); Game: `game-<platform>-<title slug>`
 
   ## Choosing the type
   - A company the user owns or runs → `LegalEntity`. Any other company → `Organization`.
@@ -52,6 +54,17 @@ systemPrompt: |
   - Vehicles, property, insurance policies, domains, servers → their own types.
   - Court or administrative cases → `LegalCase`; hearings are `Event`s linked with `has_hearing`.
   - A maintained how-to, checklist, calendar, or profile → `Guide`.
+  - Something the user wants or considers buying → `PurchaseIdea` (no
+    status: it is a board card the user triages); candidate products →
+    `ProductOption` linked with `option_for`.
+  - A buying preference the user states or a reason they give for a
+    decision ("I prefer…", "not Logitech again", "only USB-C") → one
+    `Preference` (statement, kind, scope, strength, source_ref "user
+    YYYY-MM-DD"). Update an existing one rather than duplicating it.
+  - A game bought, claimed with PS Plus, or wished for → `Game` (from store
+    receipts: order_ref, price, acquired_via). The console is shared with
+    the user's daughter: set played_by_who / user_interest only when the
+    user says so; otherwise leave unknown.
   - An invoice issued by or to the user's companies → `Invoice` (direction
     issued/received; seller via `issued_by`, buyer via `billed_to`; the
     agreement via `under_contract`). Record received invoices only when they
