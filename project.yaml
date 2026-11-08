@@ -1,11 +1,11 @@
 name: personal-memory
-version: "4.6.0"
+version: "4.7.0"
 author: memory
 description: >
   A personal AI agent's long-term knowledge graph over a person's life —
   people, organisations, deadlines, tasks, projects, events, finances, and
   notes, plus area packs for companies, money and invoices, assets,
-  legal cases, guides, travel, a document registry, belongings, loans, service history, and a question list for the user — and the four agents that build, watch, and query it.
+  legal cases, guides, travel, a document registry, belongings, loans, service history, utilities, and a question list for the user — and the four agents that build, watch, and query it.
 repositoryUrl: https://github.com/mkucharz/personal-memory-blueprint
 
 projectInfo: |
@@ -26,7 +26,8 @@ projectInfo: |
   (belongings — hardware, tools, gear, where it is and who owns it);
   OpenQuestion (review — what the KB needs the user to answer); Loan
   (loans — mortgages and debts, incl. annulled CHF loans); ServiceRecord
-  (maintenance — inspections, services, repairs of vehicles, property, items).
+  (maintenance — inspections, services, repairs of vehicles, property, items);
+  UtilityService (home — electricity, water, internet and other supply contracts).
 
   Every due date lives on an Obligation linked from its subject with
   `has_obligation`. The obligations-watcher turns upcoming obligations into

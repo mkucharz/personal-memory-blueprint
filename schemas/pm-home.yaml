@@ -1,0 +1,151 @@
+name: pm-home
+version: "1.0.0"
+author: memory
+repositoryUrl: https://github.com/mkucharz/personal-memory-blueprint
+description: >
+  Area pack of the personal-memory blueprint: the supply contracts that keep a
+  home running — electricity, water and sewage, waste collection, gas,
+  heating, internet, mobile. One UtilityService is one supply contract at one
+  place, with the supplier, the customer and meter numbers, who holds the
+  contract (and whether it still has to be transferred, e.g. after a property
+  changed hands), the billing rhythm, and the last meter reading. Bills are
+  core Obligations linked with `has_obligation`; the payment account is a
+  pm-money Account.
+
+objectTypes:
+  - name: UtilityService
+    label: Utility Service
+    labels: [utility, home]
+    ui:
+      icon: "🔌"
+      color: "#CA8A04"
+    description: >
+      One supply contract. Link the supplier with `supplied_by`, the property
+      it supplies with `serves`, the contract holder with `held_by`, the
+      customer account with `billed_through`, bills and reading deadlines with
+      `has_obligation`, and the contract or invoices with `documented_by`.
+    properties:
+      name:
+        type: string
+        description: Display name (e.g. "Electricity — Waliły 29 (PGE)")
+      service_kind:
+        type: string
+        title: Kind
+        description: What is supplied
+        enum: [electricity, water, sewage, water_and_sewage, waste, gas, heating, internet, mobile, landline, tv, security, other]
+      status:
+        type: string
+        description: Contract status
+        enum: [active, suspended, ended]
+      customer_number:
+        type: string
+        title: Customer number
+        description: Customer number in the supplier's system
+      contract_number:
+        type: string
+        title: Contract number
+        description: Contract or agreement number
+      point_id:
+        type: string
+        title: Supply point ID
+        description: Point-of-delivery identifier (PPE for electricity, gas point number)
+      meter_number:
+        type: string
+        title: Meter number
+        description: Serial number of the meter
+      holder:
+        type: string
+        description: Name of the contract holder as printed on the bills
+      holder_status:
+        type: string
+        title: Holder status
+        description: "user (in the user's or their company's name), other (someone else's name), transfer_pending (must move to the user), transferred (moved recently)"
+        enum: [user, other, transfer_pending, transferred]
+      billing_cycle:
+        type: string
+        title: Billing cycle
+        enum: [monthly, bimonthly, quarterly, semiannual, annual, prepaid, irregular]
+      typical_amount:
+        type: number
+        title: Typical bill
+        description: A typical bill amount (gross)
+      currency:
+        type: string
+        format: currency
+        description: Currency of the bills (ISO 4217)
+      payment_method:
+        type: string
+        title: Payment method
+        enum: [direct_debit, card_autopay, bank_transfer, online_payment, cash, included]
+      last_reading:
+        type: number
+        title: Last meter reading
+        description: Last known meter reading
+      reading_unit:
+        type: string
+        title: Reading unit
+        description: "Unit of the reading (kWh, m3, GJ)"
+      last_reading_on:
+        type: date
+        title: Last reading on
+        description: Date of the last reading
+      started_on:
+        type: date
+        title: Started on
+        description: When the contract started
+      ended_on:
+        type: date
+        title: Ended on
+        description: When the contract ended
+      notes:
+        type: string
+        widget: textarea
+        description: Free-form notes (no passwords or full account numbers)
+      source:
+        type: string
+        description: "Where the facts came from: email, drive, invoice, user"
+      source_ref:
+        type: string
+        title: Source reference
+        description: "Pointer to the evidence: Gmail thread ID, Drive file ID, invoice number, or 'user YYYY-MM-DD'"
+      confidence:
+        type: string
+        description: "confirmed (by the user or an official document), from_source (read from a source, not confirmed), unverified (old or indirect data; check before relying on it)"
+        enum: [confirmed, from_source, unverified]
+
+relationshipTypes:
+  - name: supplied_by
+    label: Supplied By
+    description: The supplier or operator of the service.
+    sourceType: UtilityService
+    targetTypes: [Organization, LegalEntity]
+
+  - name: serves
+    label: Serves
+    description: The property (or vehicle, for mobile internet) the service supplies.
+    sourceType: UtilityService
+    targetTypes: [Property, Vehicle, Place]
+
+  - name: held_by
+    label: Held By
+    description: The person or company the contract is in the name of.
+    sourceType: UtilityService
+    targetTypes: [Person, LegalEntity]
+
+  - name: billed_through
+    label: Billed Through
+    description: The customer account at the supplier (pm-money Account).
+    sourceType: UtilityService
+    targetType: Account
+
+  - name: has_obligation
+    label: Has Obligation
+    description: A recurring bill, meter-reading deadline, or contract end.
+    sourceType: UtilityService
+    targetType: Obligation
+
+  - name: documented_by
+    label: Documented By
+    description: The supply contract, invoices, or meter photos.
+    sourceType: UtilityService
+    targetTypes: [Document, File, Invoice]

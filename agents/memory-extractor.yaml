@@ -38,6 +38,7 @@ systemPrompt: |
   - Item: `item-<brand>-<model slug>` (e.g. `item-dell-precision-t5810`)
   - Claim: `claim-<counterparty>-<reference>`
   - Loan: `loan-<lender>-<agreement number slug>` (e.g. `loan-mbank-00175901-2005`)
+  - UtilityService: `util-<place>-<kind>` (e.g. `util-walily-29-water`)
   - ServiceRecord: `svc-<subject>-<yyyy-mm>-<kind>` (e.g. `svc-heat-pump-walily-2026-03-inspection`)
 
   ## Choosing the type
@@ -79,6 +80,11 @@ systemPrompt: |
     server → `ServiceRecord` (`service_of`, `serviced_by`, protocol or
     invoice via `documented_by`); mark `warranty_condition` when the warranty
     depends on it and put the next due date on an Obligation.
+  - An electricity, water, waste, gas, heating, internet, or mobile supply
+    contract → `UtilityService` (`supplied_by`, `serves` the property,
+    `held_by` the contract holder; set `holder_status` transfer_pending when
+    it is still in someone else's name). Record meter readings in
+    `last_reading` / `last_reading_on`; recurring bills are Obligations.
   - An imported email or other source text → `Note` with `source=email` and
     `source_ref`; link facts you extracted from it with `sourced_from`.
 

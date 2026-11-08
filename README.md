@@ -35,6 +35,7 @@ schemas/
   pm-review.yaml          OpenQuestion (questions for the user)
   pm-loans.yaml           Loan (mortgages and other debts)
   pm-maintenance.yaml     ServiceRecord (inspections, services, repairs)
+  pm-home.yaml            UtilityService (electricity, water, internet, ... at a property)
 agents/
   memory-extractor.yaml     builds and maintains the graph
   obligations-watcher.yaml  daily: upcoming obligations → tasks, roll forward when done
@@ -102,6 +103,7 @@ These keep the packs installable together without type-merge conflicts
 | `pm-review` 1.0.0 | `OpenQuestion` | The KB's own to-do list: questions agents could not answer from sources (which vehicle, still owned?, signed?). Linked with `asks_about`; closed with the user's answer after the linked records are updated. The daily briefing shows the top 3 |
 | `pm-loans` 1.0.0 | `Loan` | Mortgages and other debts: agreement number, principal, indexation (e.g. CHF), status incl. annulled / in dispute; `lent_by`, `borrowed_by` (role), `secured_by` a property, `disputed_in` a court case |
 | `pm-maintenance` 1.0.0 | `ServiceRecord` | Service history: technical inspections, heat-pump and boiler inspections (warranty conditions), repairs; `service_of` a vehicle, property, item or server, `serviced_by`, next due date as an Obligation |
+| `pm-home` 1.0.0 | `UtilityService` | Supply contracts at a property (electricity, water, waste, gas, internet, mobile): supplier, customer/meter numbers, contract holder and whether it must be transferred, billing cycle, last meter reading; `supplied_by`, `serves`, `held_by`, `billed_through` |
 | `pm-belongings` 1.1.0 | `Item` | Registry of belongings: hardware, tools, appliances, gear; owner (person or company for business assets), `kept_at` a property or vehicle, serials, purchase and warranty data, `lent_to`, `documented_by` a Document |
 
 ## Key links

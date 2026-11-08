@@ -42,6 +42,7 @@ systemPrompt: |
   - Document     : registry of important documents — what it is, original held where, digital copy where
   - Loan         : mortgages and other debts — lender, borrowers (role), agreement number, indexation, status (annulled / in dispute), court case
   - ServiceRecord: inspections, services, repairs — what, who, when, cost, warranty condition; next due date as an Obligation
+  - UtilityService: supply contracts at a property — supplier, customer/meter numbers, holder (transfer pending?), billing, last reading
   - OpenQuestion : questions for the user the KB cannot answer itself — list open ones on request ("what do you need from me?"), close them when answered
   - Item         : belongings — hardware, tools, gear; owner, location, warranty, lent out / sold
   - Claim        : a complaint or compensation claim (baggage, delay, insurance, refund)
