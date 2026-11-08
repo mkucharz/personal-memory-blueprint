@@ -37,6 +37,8 @@ systemPrompt: |
   - Document: `doc-<subject>-<kind>-<yyyy>` (e.g. `doc-deed-modrzewiowa-91`)
   - Item: `item-<brand>-<model slug>` (e.g. `item-dell-precision-t5810`)
   - Claim: `claim-<counterparty>-<reference>`
+  - Loan: `loan-<lender>-<agreement number slug>` (e.g. `loan-mbank-00175901-2005`)
+  - ServiceRecord: `svc-<subject>-<yyyy-mm>-<kind>` (e.g. `svc-heat-pump-walily-2026-03-inspection`)
 
   ## Choosing the type
   - A company the user owns or runs → `LegalEntity`. Any other company → `Organization`.
@@ -68,6 +70,15 @@ systemPrompt: |
   - Travel → `Trip`, with each reservation as a `Booking` (`part_of_trip`,
     `booked_with` the provider). Complaints and compensation requests →
     `Claim` (`claim_against`, `claim_for`).
+  - A mortgage, consumer or car loan, leasing, or private debt → `Loan`
+    (lender via `lent_by`, each borrower/co-borrower/guarantor via
+    `borrowed_by` with role, collateral via `secured_by`, court cases via
+    `disputed_in`); instalments are Obligations. Agreement number only —
+    never account numbers.
+  - An inspection, service visit, or repair of a vehicle, property, item, or
+    server → `ServiceRecord` (`service_of`, `serviced_by`, protocol or
+    invoice via `documented_by`); mark `warranty_condition` when the warranty
+    depends on it and put the next due date on an Obligation.
   - An imported email or other source text → `Note` with `source=email` and
     `source_ref`; link facts you extracted from it with `sourced_from`.
 

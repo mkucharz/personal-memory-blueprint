@@ -1,0 +1,114 @@
+name: pm-maintenance
+version: "1.0.0"
+author: memory
+repositoryUrl: https://github.com/mkucharz/personal-memory-blueprint
+description: >
+  Area pack of the personal-memory blueprint: the service history of things
+  the user owns — vehicle technical inspections and repairs, heat-pump and
+  boiler inspections (often a warranty condition), chimney sweeps, appliance
+  repairs, server hardware swaps. One ServiceRecord is one visit or job. The
+  next due inspection is a core Obligation linked with `has_obligation`, so
+  the obligations-watcher reminds before it lapses.
+
+objectTypes:
+  - name: ServiceRecord
+    label: Service Record
+    labels: [service, maintenance]
+    ui:
+      icon: "🔧"
+      color: "#0369A1"
+    description: >
+      One inspection, maintenance job, or repair. Link what was serviced with
+      `service_of` (a vehicle, property, item, or server), who did it with
+      `serviced_by`, the protocol or invoice with `documented_by`, and the
+      next due date with `has_obligation`.
+    properties:
+      title:
+        type: string
+        description: Short description (e.g. "NIBE heat pump annual inspection 2026")
+      service_kind:
+        type: string
+        title: Kind
+        description: What sort of job
+        enum: [inspection, technical_inspection, maintenance, repair, warranty_repair, installation, chimney_sweep, cleaning, diy, other]
+      service_date:
+        type: date
+        title: Service date
+        description: Date the work was done
+      status:
+        type: string
+        description: Where the job stands
+        enum: [planned, done, needs_follow_up, cancelled]
+      warranty_condition:
+        type: boolean
+        title: Warranty condition
+        description: True when the job is required to keep the warranty valid
+      registered_with_manufacturer:
+        type: boolean
+        title: Registered with manufacturer
+        description: True once the manufacturer or warranty provider has confirmed the record
+      mileage_km:
+        type: integer
+        title: Mileage (km)
+        description: Odometer reading at the visit (vehicles)
+        minimum: 0
+      work_done:
+        type: string
+        widget: textarea
+        title: Work done
+        description: What was checked, replaced, or repaired; parts used
+      findings:
+        type: string
+        widget: textarea
+        description: Faults found and recommendations
+      cost:
+        type: number
+        description: Total cost (gross)
+      currency:
+        type: string
+        format: currency
+        description: Currency of the cost (ISO 4217)
+      next_due:
+        type: date
+        title: Next due
+        description: When the next inspection or service is due (mirror it in an Obligation)
+      notes:
+        type: string
+        widget: textarea
+        description: Free-form notes
+      source:
+        type: string
+        description: "Where the facts came from: email, drive, invoice, user"
+      source_ref:
+        type: string
+        title: Source reference
+        description: "Pointer to the evidence: Gmail thread ID, Drive file ID, invoice number, or 'user YYYY-MM-DD'"
+      confidence:
+        type: string
+        description: "confirmed (by the user or an official document), from_source (read from a source, not confirmed), unverified (old or indirect data; check before relying on it)"
+        enum: [confirmed, from_source, unverified]
+
+relationshipTypes:
+  - name: service_of
+    label: Service Of
+    description: What was serviced or inspected.
+    sourceType: ServiceRecord
+    targetTypes: [Vehicle, Property, Item, Server]
+
+  - name: serviced_by
+    label: Serviced By
+    description: The workshop, installer, manufacturer service, or person that did the job.
+    sourceType: ServiceRecord
+    targetTypes: [Organization, Person]
+
+  - name: documented_by
+    label: Documented By
+    description: The protocol, report, or invoice for the job.
+    sourceType: ServiceRecord
+    targetTypes: [Document, File, Invoice]
+
+  - name: has_obligation
+    label: Has Obligation
+    description: The next inspection or service deadline.
+    sourceType: ServiceRecord
+    targetType: Obligation

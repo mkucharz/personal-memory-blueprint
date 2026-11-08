@@ -1,0 +1,142 @@
+name: pm-loans
+version: "1.0.0"
+author: memory
+repositoryUrl: https://github.com/mkucharz/personal-memory-blueprint
+description: >
+  Area pack of the personal-memory blueprint: loans and other debts — mortgages
+  (including foreign-currency indexed ones), consumer and car loans, leasing,
+  private loans — with who borrowed, who lent, what secures them, and the court
+  cases that decide them (an annulled CHF loan, a bank's restitution claim).
+  Instalments and repayment deadlines are core Obligation objects linked with
+  `has_obligation`. Store the agreement number, never account or card numbers.
+
+objectTypes:
+  - name: Loan
+    label: Loan
+    labels: [loan, debt, finance]
+    ui:
+      icon: "💳"
+      color: "#7C3AED"
+    description: >
+      One loan or debt agreement. Link the lender with `lent_by`, each borrower,
+      co-borrower or guarantor with `borrowed_by` (role on the edge), the
+      property it is secured on with `secured_by`, a court case about it with
+      `disputed_in`, the agreement scan with `documented_by`, and instalments
+      or deadlines with `has_obligation`.
+    properties:
+      name:
+        type: string
+        description: Display name (e.g. "mBank MultiPlan CHF mortgage 00175901/2005")
+      loan_kind:
+        type: string
+        title: Kind
+        description: What sort of loan
+        enum: [mortgage, consumer, car, leasing, overdraft, credit_card, business, private, student, other]
+      agreement_number:
+        type: string
+        title: Agreement number
+        description: Loan agreement number as printed (not an account number)
+      signed_on:
+        type: date
+        title: Signed on
+        description: Date the agreement was signed
+      principal:
+        type: number
+        description: Amount borrowed
+      currency:
+        type: string
+        format: currency
+        description: Currency the principal was paid out in (ISO 4217)
+      indexation:
+        type: string
+        description: "Index or denomination currency, if any (e.g. \"CHF-indexed\", \"EUR-denominated\")"
+      interest_type:
+        type: string
+        title: Interest
+        description: How interest is set
+        enum: [fixed, variable, mixed, none]
+      term_months:
+        type: integer
+        title: Term (months)
+        description: Agreed term in months
+        minimum: 0
+      maturity_date:
+        type: date
+        title: Maturity date
+        description: Final repayment date
+      status:
+        type: string
+        description: Where the loan stands
+        enum: [active, repaid, refinanced, in_dispute, annulled, settled, written_off, sold_to_collector]
+      outstanding:
+        type: number
+        description: Outstanding balance at the last known date (same currency)
+      outstanding_as_of:
+        type: date
+        title: Outstanding as of
+        description: Date of the outstanding balance
+      annexes:
+        type: string
+        description: Annexes to the agreement and their dates (free text)
+      notes:
+        type: string
+        widget: textarea
+        description: Free-form notes (no account numbers)
+      source:
+        type: string
+        description: "Where the facts came from: drive, email, court, user, migration"
+      source_ref:
+        type: string
+        title: Source reference
+        description: "Pointer to the evidence: Gmail thread ID, Drive file ID, case number, or 'user YYYY-MM-DD'"
+      confidence:
+        type: string
+        description: "confirmed (by the user or an official document), from_source (read from a source, not confirmed), unverified (old or indirect data; check before relying on it)"
+        enum: [confirmed, from_source, unverified]
+
+relationshipTypes:
+  - name: lent_by
+    label: Lent By
+    description: The bank, company, or person that lent the money.
+    sourceType: Loan
+    targetTypes: [Organization, LegalEntity, Person]
+
+  - name: borrowed_by
+    label: Borrowed By
+    description: A borrower, co-borrower, or guarantor of the loan.
+    sourceType: Loan
+    targetTypes: [Person, LegalEntity]
+    properties:
+      role:
+        type: string
+        description: "borrower, co_borrower, guarantor"
+
+  - name: secured_by
+    label: Secured By
+    description: The property or vehicle the loan is secured on (mortgage, lien).
+    sourceType: Loan
+    targetTypes: [Property, Vehicle]
+
+  - name: disputed_in
+    label: Disputed In
+    description: A court case about the loan (validity, restitution, enforcement).
+    sourceType: Loan
+    targetType: LegalCase
+
+  - name: documented_by
+    label: Documented By
+    description: The agreement, annexes, schedules, or statements for the loan.
+    sourceType: Loan
+    targetTypes: [Document, File]
+
+  - name: has_obligation
+    label: Has Obligation
+    description: An instalment, repayment, or settlement deadline of the loan.
+    sourceType: Loan
+    targetType: Obligation
+
+  - name: paid_from
+    label: Paid From
+    description: The account instalments are paid from.
+    sourceType: Loan
+    targetType: Account
