@@ -1,5 +1,5 @@
 name: pm-travel
-version: "1.1.0"
+version: "1.2.0"
 author: memory
 repositoryUrl: https://github.com/mkucharz/personal-memory-blueprint
 description: >
@@ -291,9 +291,9 @@ relationshipTypes:
 
   - name: claim_for
     label: Claim For
-    description: What the claim is about — a booking, trip, insurance policy, or account.
+    description: What the claim is about — a booking, trip, insurance policy, account, or the item (e.g. a stolen laptop) it concerns.
     sourceType: Claim
-    targetTypes: [Booking, Trip, InsurancePolicy, Account]
+    targetTypes: [Booking, Trip, InsurancePolicy, Account, Item, Vehicle]
 
   - name: party_to
     label: Party To
