@@ -1,11 +1,11 @@
 name: personal-memory
-version: "4.7.0"
+version: "4.8.0"
 author: memory
 description: >
   A personal AI agent's long-term knowledge graph over a person's life —
   people, organisations, deadlines, tasks, projects, events, finances, and
   notes, plus area packs for companies, money and invoices, assets,
-  legal cases, guides, travel, a document registry, belongings, loans, service history, utilities, and a question list for the user — and the four agents that build, watch, and query it.
+  legal cases, guides, travel, a document registry, belongings, loans, service history, utilities, a question list for the user, and a task board — and the six agents that build, watch, query, and work it.
 repositoryUrl: https://github.com/mkucharz/personal-memory-blueprint
 
 projectInfo: |
@@ -32,7 +32,17 @@ projectInfo: |
   Every due date lives on an Obligation linked from its subject with
   `has_obligation`. The obligations-watcher turns upcoming obligations into
   Tasks each morning and rolls them forward when the Task is done; the
-  daily-briefing shows the next 14 days. memory-extractor builds the graph
+  daily-briefing shows the next 14 days.
+
+  Tasks and OpenQuestions are cards on the Memory board (boardEnabled, with
+  their own status sets). The user works them by dragging cards; moving a
+  card to `ready` hands it to a board worker (kb-task-worker for Tasks,
+  question-researcher for questions), which moves it to `review` for the
+  user to approve, or puts a blocked badge on it (status unchanged) with
+  the reason; the user clears it with Retry/Unblock after adding what was
+  missing. Agents never set board
+  status themselves — the platform owns it — so agent-created cards start
+  without a status and wait to be triaged. memory-extractor builds the graph
   from email, calendar, and conversations; personal-kb-agent saves and
   recalls on request. Never store passwords, keys, tokens, or full card
   or account numbers; identity document numbers only when the user wants them.

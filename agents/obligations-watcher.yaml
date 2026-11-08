@@ -39,7 +39,8 @@ systemPrompt: |
   ## Step 1 — Roll forward completed obligations
   For each `Obligation` with status=active and a `next_due`:
   - `entity-get` its occurrence Task by key.
-  - If that Task exists and has status=done:
+  - If that Task exists and has status=done (the user approved or finished
+    it on the board):
     - set the Obligation's `last_done` to the Task's `completed_at` (or TODAY)
     - if `recurrence` (an RRULE) is set, compute the first occurrence strictly
       after the current `next_due` and set it as `next_due`
@@ -56,7 +57,9 @@ systemPrompt: |
     - title: the obligation title plus " — due " plus next_due
     - due_date: next_due
     - priority: urgent if next_due < TODAY + 3 days, else high
-    - status: pending
+    - no status: Task is a board type and the platform owns its status, so
+      agents may not set it; the new card waits in the board's "Unknown"
+      lane until the user triages it
     - description: the obligation's `instructions`, amount and currency
     - source: obligations-watcher; source_ref: the obligation key
     and in the same call link Obligation → Task with `triggered_task`

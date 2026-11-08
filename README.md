@@ -4,8 +4,8 @@ Emergent Memory blueprint for a personal AI agent's knowledge graph — the
 agent's long-term memory about the user's life, built so that no deadline is
 missed and the facts behind each one are one search away.
 
-It installs **seven schema packs** — one core pack and six area packs — and
-**four agents**.
+It installs **thirteen schema packs** — one core pack and twelve area packs — and
+**six agents**, two of which work Task and OpenQuestion cards on the Memory board.
 
 ```bash
 memory blueprints install https://github.com/mkucharz/personal-memory-blueprint
@@ -41,6 +41,8 @@ agents/
   obligations-watcher.yaml  daily: upcoming obligations → tasks, roll forward when done
   daily-briefing.yaml       read-only morning briefing
   personal-kb-agent.yaml    saves and recalls on request
+  kb-task-worker.yaml       board worker: prepares Tasks moved to `ready`
+  question-researcher.yaml  board worker: researches OpenQuestions moved to `ready`
 Taskfile.yml              the local authoring loop (validate / inspect / install)
 MIGRATION.md              moving a v3.x project (and personal-kb data) to v4
 ```
@@ -137,8 +139,27 @@ The full list, with descriptions, is in each pack file.
 | `obligations-watcher` | daily 05:00 (server time) | Creates one Task per upcoming Obligation occurrence; rolls the Obligation forward when that Task is done; reports gaps |
 | `daily-briefing` | manual | Read-only briefing: events, deadlines in the next 14 days, tasks, people, finance, habits, notes |
 | `personal-kb-agent` | chat | Saves and recalls on request (`visibility: external`) |
+| `kb-task-worker` | board: Task → `ready` | Prepares the knowledge part of a Task (facts, drafts, checklist) as a `Note` deliverable; moves it to `review`, or blocks it (badge) with what is missing |
+| `question-researcher` | board: OpenQuestion → `ready` | Looks for the answer in the KB and its documents; writes `proposed_answer` and `proposed_updates`; moves it to `review` (approve → `answered`), or blocks it (badge) with what would answer it |
 
 No agent pins a model: each inherits the project's default model at run time.
+
+## Board
+
+`Task` and `OpenQuestion` are board types (`boardEnabled` with their own `allowedStatuses`), so both appear as swimlanes on the Memory board.
+
+| Type | Statuses (lane order) |
+|---|---|
+| `Task` | `pending` (your backlog) · `ready` (hand to `kb-task-worker`) · `in_progress` · `waiting` (on someone else) · `review` · `revision` · `blocked` · `done` · `cancelled` |
+| `OpenQuestion` | `open` (for you) · `ready` (hand to `question-researcher`) · `in_progress` · `review` · `revision` · `blocked` · `answered` · `dropped` |
+
+- **Working a card yourself:** drag it between your own statuses.
+- **Handing a card to an agent:** drag it to `ready`. The worker runs on it, and the card stays in `ready` while it works. The run then either:
+  - calls `work_complete`, which moves the card to `review`. Approve it (→ `done` / `answered`) or request changes (→ `revision`, which starts a rework run); or
+  - calls `work_block`, which puts a **blocked badge** on the card in its current lane, with the reason. Blocking doesn't change the status, and a blocked card is never picked up again until you clear it. Add what was missing (a document, an answer in `context`), then use **Retry/Unblock** on the card. Or drag it to your own lane (`pending` / `open`) and work it yourself.
+- **`blocked` as a lane:** it is for your own use, e.g. a task stuck on someone else.
+- **What agents can't do:** the platform owns board status, so agents can't set it. They may set it only through the work tools, on the item they were woken for. Cards created by the obligations-watcher or the extractor therefore start without a status, in the **Unknown** lane, until you triage them ([emergent.memory#422](https://github.com/emergent-company/emergent.memory/issues/422)).
+- **Approved answers:** after approving a researched question, ask `personal-kb-agent` to apply answered questions. It writes each question's `proposed_updates` to the linked records and sets `applied_on`.
 
 ## Keys
 

@@ -42,15 +42,22 @@ systemPrompt: |
   - Open `Claim`s (filed / in_review / escalated) with their next_action
 
   ### 4. Tasks — Action required
-  - `Task` objects with status=pending or in_progress, ordered by priority then due_date
+  - `Task` objects with status pending, in_progress, waiting, or no status
+    yet (new, untriaged cards in the board's "Unknown" lane — say how many),
+    ordered by priority then due_date
+  - Board cards waiting on the user: Tasks and OpenQuestions in `review`
+    (an agent finished — approve or request changes), and cards an agent
+    blocked (a blocked badge on the card in its lane; show the reason and
+    what the user can add before pressing Retry/Unblock)
   - Overdue tasks first (due_date < today)
   - High/urgent tasks due today or this week
   - Limit to top 10 — note if there are more
 
   ### 4b. Questions for you
-  - Up to 3 `OpenQuestion` objects with status=open, high priority first,
+  - Up to 3 `OpenQuestion` objects with status open or no status, high priority first,
     oldest first; show the question and `suggested_answers` so the user can
-    reply in one line. Mention how many more are open.
+    reply in one line. Mention how many more are open, and that any question
+    can be moved to `ready` on the board for the question-researcher agent.
 
   ### 5. People — In your day
   - For each unique attendee in today's events, look up their `Person` record

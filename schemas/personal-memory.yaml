@@ -1,5 +1,5 @@
 name: personal-memory
-version: "4.1.0"
+version: "4.2.0"
 author: memory
 repositoryUrl: https://github.com/mkucharz/personal-memory-blueprint
 description: >
@@ -277,7 +277,15 @@ objectTypes:
       color: "#10B981"
     description: >
       A to-do item or action the user needs to complete. Created from
-      conversations, emails, or explicitly by the user.
+      conversations, emails, or explicitly by the user. Tasks are cards on
+      the Memory board: the user drags them between statuses; moving a card
+      to `ready` hands it to the kb-task-worker agent, which works it and
+      returns it in `review` (approve → done, request changes → revision) or puts a
+      blocked badge on it (status unchanged) until the user clears it. Agents cannot set the status themselves (the platform owns
+      it), so agent-created tasks arrive without a status (the board's
+      "Unknown" lane) until the user triages them.
+    boardEnabled: true
+    allowedStatuses: [pending, ready, in_progress, waiting, review, revision, blocked, done, cancelled]
     properties:
       title:
         type: string
@@ -288,7 +296,7 @@ objectTypes:
         description: Detailed description or context for the task
       status:
         type: string
-        description: "Current status: pending, in_progress, blocked, done, cancelled"
+        description: "Board status: pending (the user's backlog), ready (hand to the kb-task-worker agent), in_progress, waiting (on someone else), review (agent finished, user to approve), revision (changes requested), blocked, done, cancelled"
       priority:
         type: string
         description: "Priority level: low, medium, high, urgent"

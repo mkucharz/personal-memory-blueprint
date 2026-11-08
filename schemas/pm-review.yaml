@@ -1,5 +1,5 @@
 name: pm-review
-version: "1.0.0"
+version: "1.1.0"
 author: memory
 repositoryUrl: https://github.com/mkucharz/personal-memory-blueprint
 description: >
@@ -21,7 +21,15 @@ objectTypes:
     description: >
       A question for the user about the knowledge base. Link the records it
       is about with `asks_about`. Close it with status=answered (fill
-      `answer`, `answered_on`, update the records) or dropped.
+      `answer`, `answered_on`, update the records) or dropped. Questions are
+      cards on the Memory board: the user works them directly (open →
+      in_progress → answered), or moves one to `ready` so the
+      question-researcher agent looks for the answer in the KB and its
+      documents and returns it in `review` with a `proposed_answer`;
+      approving moves it to `answered`. When nothing answers it, the agent
+      puts a blocked badge on the card (status unchanged) with what is needed.
+    boardEnabled: true
+    allowedStatuses: [open, ready, in_progress, review, revision, blocked, answered, dropped]
     properties:
       question:
         type: string
@@ -45,12 +53,26 @@ objectTypes:
         enum: [high, medium, low]
       status:
         type: string
-        description: Lifecycle status
-        enum: [open, answered, dropped]
+        description: "Board status: open (for the user), ready (hand to the question-researcher agent), in_progress, review (agent proposed an answer), revision, blocked (no evidence found; needs the user), answered, dropped"
+        enum: [open, ready, in_progress, review, revision, blocked, answered, dropped]
       asked_on:
         type: date
         title: Asked on
         description: When the question was filed
+      proposed_answer:
+        type: string
+        widget: textarea
+        title: Proposed answer
+        description: The answer an agent found, with the evidence (record keys, Gmail/Drive IDs), for the user to approve
+      proposed_updates:
+        type: string
+        widget: textarea
+        title: Proposed record updates
+        description: The record changes the answer implies (key → field = value), applied after approval
+      applied_on:
+        type: date
+        title: Applied on
+        description: When the answer was applied to the linked records
       answer:
         type: string
         widget: textarea
