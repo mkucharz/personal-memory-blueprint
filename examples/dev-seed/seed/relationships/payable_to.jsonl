@@ -1,3 +1,5 @@
+{"type": "payable_to", "srcKey": "ob-prop-tax", "dstKey": "tax-office"}
+{"type": "payable_to", "srcKey": "ob-building-ins", "dstKey": "northgate-ins"}
 {"type": "payable_to", "srcKey": "ob-pit", "dstKey": "tax-office"}
 {"type": "payable_to", "srcKey": "ob-zus", "dstKey": "zus-office"}
 {"type": "payable_to", "srcKey": "ob-insure-truck", "dstKey": "northgate-ins"}

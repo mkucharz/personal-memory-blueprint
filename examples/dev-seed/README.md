@@ -4,12 +4,14 @@ A small, completely fictional personal-memory graph for trying the blueprint
 out — every person, company, account and case below is invented, and no value
 here came from a real person's data.
 
-It carries 60 objects covering **all 23 types** and 112 relationships covering
+It carries 65 objects covering **all 23 types** and 119 relationships covering
 **all 36 link types**, shaped so that every `ui.view` section has something to
 show: a person who owns assets and a company, a truck with insurance and a
-renewal, a flat with rent and a deposit dispute, a court case with a hearing and
-an appeal, an account with transactions, and a runbook three objects are
-documented in.
+renewal, a flat with rent, tax, inspections and a deposit dispute, a court case
+with a hearing and an appeal, an account with transactions, and a runbook three
+objects are documented in. The flat carries six obligations against a section
+limit of five, so the collapsed group and its "Show more" control are exercised
+too.
 
 ## It is not part of the blueprint
 
