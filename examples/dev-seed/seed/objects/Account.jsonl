@@ -1,0 +1,1 @@
+{"type": "Account", "key": "acc-business", "properties": {"name": "Business account", "account_kind": "bank", "status": "open", "holder": "Nowak Consulting", "currency": "PLN", "number_hint": "•••• 0000", "login_email": "alex@example.test", "opened_on": "2019-02-11"}}

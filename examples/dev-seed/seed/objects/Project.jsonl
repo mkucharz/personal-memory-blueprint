@@ -1,0 +1,2 @@
+{"type": "Project", "key": "proj-books", "properties": {"name": "Self-accounting 2026", "status": "active", "start_date": "2026-01-01", "target_date": "2027-04-30", "description": "Keep the JDG books, filings and payments on time."}}
+{"type": "Project", "key": "proj-renovation", "properties": {"name": "Flat renovation", "status": "planned", "start_date": "2027-03-01", "target_date": "2027-08-31"}}

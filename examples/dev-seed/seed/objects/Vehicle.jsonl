@@ -1,0 +1,1 @@
+{"type": "Vehicle", "key": "veh-truck", "properties": {"name": "Renault Trafic", "vehicle_kind": "van", "make": "Renault", "model": "Trafic", "year": 2019, "registration_plate": "WX 0000A", "country": "PL", "status": "active", "mileage_km": 184000}}

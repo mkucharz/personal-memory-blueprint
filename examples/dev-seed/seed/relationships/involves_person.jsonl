@@ -1,0 +1,5 @@
+{"type": "involves_person", "srcKey": "ev-hearing", "dstKey": "alex", "properties": {"role": "required", "response_status": "accepted"}}
+{"type": "involves_person", "srcKey": "ev-hearing", "dstKey": "anna", "properties": {"role": "required", "response_status": "accepted"}}
+{"type": "involves_person", "srcKey": "ev-accountant", "dstKey": "alex", "properties": {"role": "organizer", "response_status": "accepted"}}
+{"type": "involves_person", "srcKey": "ev-accountant", "dstKey": "piotr", "properties": {"role": "required", "response_status": "accepted"}}
+{"type": "involves_person", "srcKey": "note-insurance", "dstKey": "piotr"}

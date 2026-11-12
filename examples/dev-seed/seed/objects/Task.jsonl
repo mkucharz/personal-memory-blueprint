@@ -1,0 +1,4 @@
+{"type": "Task", "key": "task-file-pit", "properties": {"title": "Prepare PIT-36 for 2026", "status": "open", "priority": "high", "due_date": "2027-04-20", "tags": ["tax", "annual"]}}
+{"type": "Task", "key": "task-renew-domain", "properties": {"title": "Confirm domain auto-renew", "status": "done", "priority": "low", "due_date": "2026-03-01", "completed_at": "2026-02-24"}}
+{"type": "Task", "key": "task-review-policy", "properties": {"title": "Review truck policy scope", "status": "in_progress", "priority": "medium", "due_date": "2027-01-08"}}
+{"type": "Task", "key": "task-attend-hearing", "properties": {"title": "Attend the rental hearing", "status": "open", "priority": "high", "due_date": "2027-01-22"}}

@@ -1,0 +1,1 @@
+{"type": "Server", "key": "server-homelab", "properties": {"name": "homelab-1", "hostname": "homelab-1.example.test", "provider": "Northgate Hosting", "role": "self-hosted services", "os": "Debian 13", "status": "active"}}

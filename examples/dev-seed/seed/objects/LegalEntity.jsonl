@@ -1,0 +1,1 @@
+{"type": "LegalEntity", "key": "le-consulting", "properties": {"name": "Nowak Consulting", "legal_form": "jdg", "country": "PL", "status": "active", "tax_id": "0000000000", "registration_number": "000000000", "vat_registered": true, "vat_period": "monthly", "tax_regime": "lump_sum", "social_insurance_scheme": "full", "founded_on": "2019-02-01", "accounting_system": "self"}}

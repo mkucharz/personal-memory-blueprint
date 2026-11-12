@@ -1,0 +1,3 @@
+{"type": "insures", "srcKey": "pol-truck", "dstKey": "veh-truck"}
+{"type": "insures", "srcKey": "pol-home", "dstKey": "prop-flat"}
+{"type": "insures", "srcKey": "pol-home", "dstKey": "alex"}

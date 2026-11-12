@@ -1,5 +1,5 @@
 name: pm-legal
-version: "1.0.0"
+version: "1.1.0"
 author: memory
 repositoryUrl: https://github.com/mkucharz/personal-memory-blueprint
 description: >
@@ -13,8 +13,39 @@ objectTypes:
     label: Legal Case
     labels: [legal]
     ui:
-      icon: "⚖️"
+      icon: "shield"
       color: "#9F1239"
+      view:
+        inline: [case_number, status]
+        sections:
+          - title: Parties
+            relation: party_to
+            dir: in
+            limit: 8
+          - title: Represented by
+            relation: represented_by
+            dir: out
+          - title: Court
+            relation: heard_by
+            dir: out
+          - title: Hearings
+            relation: has_hearing
+            dir: out
+            limit: 5
+          - title: Appeals
+            relation: appeal_of
+            dir: out
+          - title: Appeals of this
+            relation: appeal_of
+            dir: in
+          - title: Concerns
+            relation: concerns
+            dir: out
+            limit: 5
+          - title: Obligations
+            relation: has_obligation
+            dir: out
+            limit: 5
     description: >
       A court, administrative, or enforcement case, identified by its case
       number (sygnatura akt). Appeals are separate cases linked with

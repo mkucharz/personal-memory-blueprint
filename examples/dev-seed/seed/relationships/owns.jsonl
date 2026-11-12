@@ -1,0 +1,11 @@
+{"type": "owns", "srcKey": "alex", "dstKey": "le-consulting"}
+{"type": "owns", "srcKey": "alex", "dstKey": "acc-business"}
+{"type": "owns", "srcKey": "alex", "dstKey": "prop-flat", "properties": {"share_percent": 100}}
+{"type": "owns", "srcKey": "alex", "dstKey": "veh-truck", "properties": {"share_percent": 100}}
+{"type": "owns", "srcKey": "alex", "dstKey": "domain-alexdev"}
+{"type": "owns", "srcKey": "alex", "dstKey": "server-homelab"}
+{"type": "owns", "srcKey": "alex", "dstKey": "guide-books"}
+{"type": "owns", "srcKey": "alex", "dstKey": "place-warsaw"}
+{"type": "owns", "srcKey": "le-consulting", "dstKey": "acc-business", "properties": {"holder_role": "owner"}}
+{"type": "owns", "srcKey": "le-consulting", "dstKey": "domain-alexdev"}
+{"type": "owns", "srcKey": "le-consulting", "dstKey": "server-homelab"}

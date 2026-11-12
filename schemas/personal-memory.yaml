@@ -1,5 +1,5 @@
 name: personal-memory
-version: "4.0.0"
+version: "4.1.0"
 author: memory
 repositoryUrl: https://github.com/mkucharz/personal-memory-blueprint
 description: >
@@ -16,8 +16,45 @@ objectTypes:
     label: Person
     labels: [person]
     ui:
-      icon: "👤"
+      icon: "user"
       color: "#6366F1"
+      view:
+        inline: [job_title, email]
+        sections:
+          - title: Works for
+            relation: works_for
+            dir: out
+          - title: Roles
+            relation: [board_role_in, works_on, manages, advises]
+            dir: out
+            limit: 5
+          - title: Owns
+            relation: owns
+            dir: out
+            limit: 5
+          - title: Obligations
+            relation: has_obligation
+            dir: out
+            limit: 5
+          - title: Assigned tasks
+            relation: assigned_to
+            dir: in
+            limit: 5
+          - title: Insurance
+            relation: insures
+            dir: in
+            limit: 3
+          - title: Legal
+            relation: party_to
+            dir: out
+            limit: 3
+          - title: Related
+            relation: related_to
+            dir: both
+            limit: 5
+          - title: Contact record
+            relation: related_to_contact
+            dir: out
     description: >
       A person in the user's life — family, friend, colleague, or public figure.
       Built and enriched from email, calendar, contacts, and conversation context.
@@ -108,8 +145,33 @@ objectTypes:
     label: Organisation
     labels: [organization]
     ui:
-      icon: "🏢"
+      icon: "briefcase"
       color: "#0F766E"
+      view:
+        inline: [org_kind, country]
+        sections:
+          - title: People
+            relation: works_for
+            dir: in
+            limit: 8
+          - title: Obligations
+            relation: has_obligation
+            dir: out
+            limit: 5
+          - title: Accounts and assets held
+            relation: held_with
+            dir: in
+          - title: Policies issued
+            relation: issued_by
+            dir: in
+          - title: Legal
+            relation: [represented_by, heard_by, payable_to]
+            dir: in
+            limit: 5
+          - title: Related
+            relation: related_to
+            dir: both
+            limit: 5
     description: >
       An outside organisation the user deals with: a bank, insurer, vendor,
       service provider, government office, court, law or accounting firm,
@@ -159,8 +221,31 @@ objectTypes:
     label: Obligation
     labels: [obligation, deadline]
     ui:
-      icon: "⏰"
+      icon: "clock"
       color: "#DC2626"
+      view:
+        inline: [next_due, status]
+        sections:
+          - title: Attached to
+            relation: has_obligation
+            dir: in
+          - title: Paid from
+            relation: paid_from
+            dir: out
+          - title: Payable to
+            relation: payable_to
+            dir: out
+          - title: Triggers
+            relation: triggered_task
+            dir: out
+            limit: 5
+          - title: Documented in
+            relation: documented_in
+            dir: out
+          - title: Related
+            relation: related_to
+            dir: both
+            limit: 5
     description: >
       Anything with a due date the user must not miss: a tax filing or payment,
       a social-insurance contribution, a subscription renewal, an insurance or
@@ -250,8 +335,27 @@ objectTypes:
     label: Task
     labels: [task]
     ui:
-      icon: "✅"
+      icon: "check-circle"
       color: "#10B981"
+      view:
+        inline: [status, due_date]
+        sections:
+          - title: Project
+            relation: belongs_to_project
+            dir: out
+          - title: Assigned to
+            relation: assigned_to
+            dir: out
+          - title: Triggered by
+            relation: triggered_task
+            dir: in
+          - title: Files
+            relation: references_file
+            dir: out
+          - title: Related
+            relation: related_to
+            dir: both
+            limit: 5
     description: >
       A to-do item or action the user needs to complete. Created from
       conversations, emails, or explicitly by the user.
@@ -294,8 +398,34 @@ objectTypes:
     label: Project
     labels: [project]
     ui:
-      icon: "📁"
+      icon: "folder"
       color: "#0EA5E9"
+      view:
+        inline: [status, target_date]
+        sections:
+          - title: Tasks
+            relation: belongs_to_project
+            dir: in
+            limit: 8
+          - title: People
+            relation: [manages, works_on, advises]
+            dir: in
+            limit: 5
+          - title: Transactions
+            relation: has_transaction
+            dir: out
+            limit: 5
+          - title: Obligations
+            relation: has_obligation
+            dir: out
+            limit: 5
+          - title: Guides
+            relation: documented_in
+            dir: out
+          - title: Related
+            relation: related_to
+            dir: both
+            limit: 5
     description: >
       A collection of related tasks and goals with a defined objective.
       Can represent work projects, personal goals, or life areas.
@@ -332,8 +462,29 @@ objectTypes:
     label: Event
     labels: [event]
     ui:
-      icon: "📅"
+      icon: "calendar"
       color: "#F59E0B"
+      view:
+        inline: [date, location]
+        sections:
+          - title: People
+            relation: involves_person
+            dir: out
+            limit: 8
+          - title: Place
+            relation: located_at
+            dir: out
+          - title: Tasks
+            relation: triggered_task
+            dir: out
+            limit: 5
+          - title: Case hearings
+            relation: has_hearing
+            dir: in
+          - title: Related
+            relation: related_to
+            dir: both
+            limit: 5
     description: >
       Something that happened or is planned — a meeting, appointment, trip, or
       milestone. Also covers calendar events synced from any provider (Google
@@ -427,8 +578,14 @@ objectTypes:
     label: Financial Transaction
     labels: [finance]
     ui:
-      icon: "💳"
+      icon: "hash"
       color: "#EF4444"
+      view:
+        inline: [date, amount, payee]
+        sections:
+          - title: Account
+            relation: has_transaction
+            dir: in
     description: >
       A financial transaction from Actual Budget or Enable Banking.
     properties:
@@ -481,8 +638,14 @@ objectTypes:
     label: Contact
     labels: [contact]
     ui:
-      icon: "📇"
+      icon: "phone"
       color: "#8B5CF6"
+      view:
+        inline: [display_name, organization]
+        sections:
+          - title: Person record
+            relation: related_to_contact
+            dir: in
     description: >
       A raw address-book contact from Apple Contacts, Gmail, or another source,
       distinct from the enriched Person entity.
@@ -540,8 +703,21 @@ objectTypes:
     label: Place
     labels: [place]
     ui:
-      icon: "📍"
+      icon: "map-pin"
       color: "#14B8A6"
+      view:
+        inline: [address, country]
+        sections:
+          - title: Located here
+            relation: located_at
+            dir: in
+          - title: Owned by
+            relation: owns
+            dir: in
+          - title: Related
+            relation: related_to
+            dir: both
+            limit: 5
     description: >
       A physical location, city, venue, or address.
     properties:
@@ -601,8 +777,30 @@ objectTypes:
     label: Note
     labels: [note]
     ui:
-      icon: "🗒️"
+      icon: "edit"
       color: "#64748B"
+      view:
+        inline: [title, source]
+        sections:
+          - title: Mentions
+            relation: mentions
+            dir: out
+            limit: 8
+          - title: People
+            relation: involves_person
+            dir: out
+            limit: 5
+          - title: Tasks
+            relation: triggered_task
+            dir: out
+            limit: 5
+          - title: Files
+            relation: references_file
+            dir: out
+          - title: Related
+            relation: related_to
+            dir: both
+            limit: 5
     description: >
       A free-form note, idea, thought, reference, or captured memory — created
       by the user or extracted from conversations, emails, or documents.
@@ -634,8 +832,19 @@ objectTypes:
     label: File
     labels: [file]
     ui:
-      icon: "📄"
+      icon: "paperclip"
       color: "#3B82F6"
+      view:
+        inline: [mime_type, size]
+        sections:
+          - title: Referenced by
+            relation: references_file
+            dir: in
+            limit: 8
+          - title: Evidence for
+            relation: sourced_from
+            dir: in
+            limit: 8
     description: >
       A supporting document, attachment, or file referenced by another object in
       the knowledge graph, such as a note's source document or a task attachment.
@@ -673,8 +882,15 @@ objectTypes:
     label: Fact
     labels: [fact]
     ui:
-      icon: "💡"
+      icon: "info"
       color: "#EAB308"
+      view:
+        inline: [statement]
+        sections:
+          - title: Sourced from
+            relation: sourced_from
+            dir: out
+            limit: 3
     description: >
       A standalone fact that does not fit any other category — a durable piece
       of information the agent should recall verbatim.
@@ -691,8 +907,10 @@ objectTypes:
     label: Habit
     labels: [habit]
     ui:
-      icon: "🔁"
+      icon: "check"
       color: "#EC4899"
+      view:
+        inline: [frequency, status]
     description: >
       A recurring behaviour or routine the user is tracking. Completion is
       monitored and streaks and gaps surface in the daily briefing.

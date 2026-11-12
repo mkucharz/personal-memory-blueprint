@@ -1,0 +1,11 @@
+{"type": "Organization", "key": "millbrook-bank", "properties": {"name": "Millbrook Bank", "org_kind": "bank", "country": "PL", "website": "https://bank.example.test"}}
+{"type": "Organization", "key": "northgate-ins", "properties": {"name": "Northgate Insurance", "org_kind": "insurer", "country": "PL"}}
+{"type": "Organization", "key": "northgate-agency", "properties": {"name": "Northgate Agency", "org_kind": "service_provider", "country": "PL"}}
+{"type": "Organization", "key": "northgate-host", "properties": {"name": "Northgate Hosting", "org_kind": "vendor", "country": "DE"}}
+{"type": "Organization", "key": "hex-registrar", "properties": {"name": "Hex Registrar", "org_kind": "registrar", "country": "NL"}}
+{"type": "Organization", "key": "acme-cloud", "properties": {"name": "Acme Cloud", "org_kind": "employer", "country": "PL"}}
+{"type": "Organization", "key": "tax-office", "properties": {"name": "Second Tax Office", "org_kind": "tax_office", "country": "PL"}}
+{"type": "Organization", "key": "zus-office", "properties": {"name": "Social Insurance Office", "org_kind": "government", "country": "PL"}}
+{"type": "Organization", "key": "district-court", "properties": {"name": "District Court Millbrook", "org_kind": "court", "country": "PL"}}
+{"type": "Organization", "key": "bright-law", "properties": {"name": "Bright & Co Law", "org_kind": "law_firm", "country": "PL"}}
+{"type": "Organization", "key": "millbrook-estates", "properties": {"name": "Millbrook Estates", "org_kind": "service_provider", "country": "PL"}}

@@ -1,0 +1,5 @@
+{"type": "located_at", "srcKey": "ev-hearing", "dstKey": "place-court"}
+{"type": "located_at", "srcKey": "ev-accountant", "dstKey": "place-office"}
+{"type": "located_at", "srcKey": "prop-flat", "dstKey": "place-warsaw"}
+{"type": "located_at", "srcKey": "veh-truck", "dstKey": "place-warsaw"}
+{"type": "located_at", "srcKey": "server-homelab", "dstKey": "place-warsaw"}

@@ -1,0 +1,1 @@
+{"type": "Habit", "key": "habit-books", "properties": {"name": "Weekly bookkeeping", "description": "Reconcile the account every Friday.", "frequency": "weekly", "target_time": "17:00", "status": "active", "streak_current": 7, "streak_best": 19}}

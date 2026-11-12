@@ -1,0 +1,2 @@
+{"type": "Contact", "key": "contact-alex", "properties": {"display_name": "Alex Nowak", "first_name": "Alex", "last_name": "Nowak", "emails": [{"label": "work", "value": "alex@example.test"}], "organization": "Nowak Consulting", "source": "demo"}}
+{"type": "Contact", "key": "contact-piotr", "properties": {"display_name": "Piotr Zielinski", "first_name": "Piotr", "last_name": "Zielinski", "emails": [{"label": "work", "value": "piotr@example.test"}], "organization": "Northgate Agency", "source": "demo"}}

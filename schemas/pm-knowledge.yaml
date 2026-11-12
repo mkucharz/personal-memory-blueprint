@@ -1,5 +1,5 @@
 name: pm-knowledge
-version: "1.0.0"
+version: "1.1.0"
 author: memory
 repositoryUrl: https://github.com/mkucharz/personal-memory-blueprint
 description: >
@@ -13,8 +13,23 @@ objectTypes:
     label: Guide
     labels: [guide, reference]
     ui:
-      icon: "📘"
+      icon: "book"
       color: "#4338CA"
+      view:
+        inline: [guide_kind, last_reviewed]
+        sections:
+          - title: Documents
+            relation: documented_in
+            dir: in
+            limit: 8
+          - title: Created by
+            relation: created
+            dir: in
+            limit: 3
+          - title: Owned by
+            relation: owns
+            dir: in
+            limit: 3
     description: >
       A maintained reference document: a how-to (self-accounting for the JDG),
       a yearly calendar (business and tax obligations), a checklist, or a

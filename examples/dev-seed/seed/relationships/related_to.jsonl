@@ -1,0 +1,4 @@
+{"type": "related_to", "srcKey": "alex", "dstKey": "maria", "properties": {"kind": "family"}}
+{"type": "related_to", "srcKey": "alex", "dstKey": "northgate-ins"}
+{"type": "related_to", "srcKey": "proj-books", "dstKey": "proj-renovation"}
+{"type": "related_to", "srcKey": "note-tax-rules", "dstKey": "proj-books"}

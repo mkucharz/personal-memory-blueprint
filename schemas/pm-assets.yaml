@@ -1,5 +1,5 @@
 name: pm-assets
-version: "1.0.0"
+version: "1.1.0"
 author: memory
 repositoryUrl: https://github.com/mkucharz/personal-memory-blueprint
 description: >
@@ -14,8 +14,31 @@ objectTypes:
     label: Vehicle
     labels: [vehicle, asset]
     ui:
-      icon: "🚐"
+      icon: "package"
       color: "#B45309"
+      view:
+        inline: [make, model, year]
+        sections:
+          - title: Insurance
+            relation: insures
+            dir: in
+          - title: Obligations
+            relation: has_obligation
+            dir: out
+            limit: 5
+          - title: Owned by
+            relation: owns
+            dir: in
+          - title: Located at
+            relation: located_at
+            dir: out
+          - title: Used by
+            relation: used_by
+            dir: out
+          - title: Legal
+            relation: concerns
+            dir: in
+            limit: 3
     description: >
       A car, van, motorcycle, camper, or trailer owned by the user or one of
       their companies, including sold ones (status=sold) so history is kept.
@@ -77,8 +100,31 @@ objectTypes:
     label: Property
     labels: [property, asset]
     ui:
-      icon: "🏠"
+      icon: "home"
       color: "#A16207"
+      view:
+        inline: [property_kind, tenure]
+        sections:
+          - title: Insurance
+            relation: insures
+            dir: in
+          - title: Obligations
+            relation: has_obligation
+            dir: out
+            limit: 5
+          - title: Owned by
+            relation: owns
+            dir: in
+          - title: Located at
+            relation: located_at
+            dir: out
+          - title: Used by
+            relation: used_by
+            dir: out
+          - title: Legal
+            relation: concerns
+            dir: in
+            limit: 3
     description: >
       Real estate or a significant physical asset the user owns or rents: a
       house, flat, plot, or storage unit.
@@ -115,8 +161,25 @@ objectTypes:
     label: Insurance Policy
     labels: [insurance]
     ui:
-      icon: "🛡️"
+      icon: "shield-check"
       color: "#0369A1"
+      view:
+        inline: [policy_kind, status]
+        sections:
+          - title: Insures
+            relation: insures
+            dir: out
+            limit: 5
+          - title: Issued by
+            relation: issued_by
+            dir: out
+          - title: Brokered by
+            relation: brokered_by
+            dir: out
+          - title: Obligations
+            relation: has_obligation
+            dir: out
+            limit: 5
     description: >
       An insurance policy: vehicle liability (OC) or comprehensive (AC), home,
       travel, health, life, or business liability. The insurer is an
@@ -167,8 +230,27 @@ objectTypes:
     label: Domain
     labels: [domain, digital]
     ui:
-      icon: "🌐"
+      icon: "globe"
       color: "#0891B2"
+      view:
+        inline: [registrar, expires_on]
+        sections:
+          - title: Obligations
+            relation: has_obligation
+            dir: out
+            limit: 5
+          - title: Held with
+            relation: held_with
+            dir: out
+          - title: Runs on
+            relation: runs_on
+            dir: out
+          - title: Used by
+            relation: used_by
+            dir: out
+          - title: Owned by
+            relation: owns
+            dir: in
     description: An internet domain the user or one of their companies holds.
     properties:
       name:
@@ -205,8 +287,34 @@ objectTypes:
     label: Server
     labels: [server, digital]
     ui:
-      icon: "🖥️"
+      icon: "server"
       color: "#475569"
+      view:
+        inline: [hostname, provider]
+        sections:
+          - title: Hosts
+            relation: runs_on
+            dir: in
+            limit: 8
+          - title: Obligations
+            relation: has_obligation
+            dir: out
+            limit: 5
+          - title: Held with
+            relation: held_with
+            dir: out
+          - title: Located at
+            relation: located_at
+            dir: out
+          - title: Used by
+            relation: used_by
+            dir: out
+          - title: Owned by
+            relation: owns
+            dir: in
+          - title: Guides
+            relation: documented_in
+            dir: out
     description: >
       A server, VM, or network appliance in the user's homelab or cloud.
       Inventory only — never store passwords, private keys, or tokens.

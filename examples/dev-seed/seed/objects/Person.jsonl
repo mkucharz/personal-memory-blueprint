@@ -1,0 +1,4 @@
+{"type": "Person", "key": "alex", "properties": {"name": "Alex Nowak", "first_name": "Alex", "last_name": "Nowak", "display_name": "Alex Nowak", "is_self": true, "job_title": "Consultant", "email": "alex@example.test", "birthday": "1988-04-12", "notes": "Demo record."}}
+{"type": "Person", "key": "maria", "properties": {"name": "Maria Nowak", "first_name": "Maria", "job_title": "Product designer", "email": "maria@example.test"}}
+{"type": "Person", "key": "piotr", "properties": {"name": "Piotr Zielinski", "first_name": "Piotr", "job_title": "Accountant", "email": "piotr@example.test"}}
+{"type": "Person", "key": "anna", "properties": {"name": "Anna Kowalska", "first_name": "Anna", "job_title": "Attorney", "email": "anna@example.test"}}
