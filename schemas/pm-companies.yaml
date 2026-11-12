@@ -1,5 +1,5 @@
 name: pm-companies
-version: "1.0.0"
+version: "1.1.0"
 author: memory
 repositoryUrl: https://github.com/mkucharz/personal-memory-blueprint
 description: >
@@ -15,8 +15,39 @@ objectTypes:
     label: Company
     labels: [company, business]
     ui:
-      icon: "🏛️"
+      icon: "book-open"
       color: "#1D4ED8"
+      view:
+        inline: [legal_form, country]
+        sections:
+          - title: Obligations
+            relation: has_obligation
+            dir: out
+            limit: 5
+          - title: Owns
+            relation: owns
+            dir: out
+            limit: 8
+          - title: Owned by
+            relation: owns
+            dir: in
+            limit: 3
+          - title: Board roles
+            relation: board_role_in
+            dir: in
+            limit: 5
+          - title: "Contracts and cases"
+            relation: party_to
+            dir: out
+            limit: 5
+          - title: Used by
+            relation: used_by
+            dir: in
+            limit: 3
+          - title: Services
+            relation: serviced_by
+            dir: out
+            limit: 3
     description: >
       A company the user owns, co-owns, or runs: a Polish JDG or sp. z o.o.,
       a Norwegian AS, a holding company. Covers active, dormant, liquidating,
@@ -101,8 +132,28 @@ objectTypes:
     label: Contract
     labels: [contract]
     ui:
-      icon: "📜"
+      icon: "file-text"
       color: "#7C3AED"
+      view:
+        inline: [contract_kind, status]
+        sections:
+          - title: Parties
+            relation: party_to
+            dir: in
+            limit: 5
+          - title: Obligations
+            relation: has_obligation
+            dir: out
+            limit: 5
+          - title: Supersedes
+            relation: supersedes
+            dir: out
+          - title: Superseded by
+            relation: supersedes
+            dir: in
+          - title: Legal cases
+            relation: concerns
+            dir: in
     description: >
       A signed agreement: a service or intermediary agreement, an assignment
       (cesja), a lease, an NDA. Parties are linked with `party_to`; the notice

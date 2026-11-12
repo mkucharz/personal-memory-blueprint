@@ -1,0 +1,1 @@
+{"type": "Domain", "key": "domain-alexdev", "properties": {"name": "alexdev.example", "registrar": "Hex Registrar", "status": "active", "expires_on": "2027-03-02", "auto_renew": true, "dns_provider": "Hex Registrar", "purpose": "consulting site"}}

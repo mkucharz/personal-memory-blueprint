@@ -1,0 +1,4 @@
+{"type": "has_transaction", "srcKey": "acc-business", "dstKey": "tx-2"}
+{"type": "has_transaction", "srcKey": "proj-books", "dstKey": "tx-2"}
+{"type": "has_transaction", "srcKey": "acc-business", "dstKey": "tx-1"}
+{"type": "has_transaction", "srcKey": "acc-business", "dstKey": "tx-3"}

@@ -1,0 +1,5 @@
+{"type": "party_to", "srcKey": "alex", "dstKey": "case-rental", "properties": {"role": "plaintiff"}}
+{"type": "party_to", "srcKey": "millbrook-estates", "dstKey": "case-rental", "properties": {"role": "defendant"}}
+{"type": "party_to", "srcKey": "le-consulting", "dstKey": "contract-agency"}
+{"type": "party_to", "srcKey": "le-consulting", "dstKey": "contract-rent"}
+{"type": "party_to", "srcKey": "le-consulting", "dstKey": "case-rental", "properties": {"role": "witness"}}

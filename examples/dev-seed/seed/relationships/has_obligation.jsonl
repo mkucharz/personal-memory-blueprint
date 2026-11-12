@@ -1,0 +1,12 @@
+{"type": "has_obligation", "srcKey": "alex", "dstKey": "ob-pit"}
+{"type": "has_obligation", "srcKey": "prop-flat", "dstKey": "ob-rent"}
+{"type": "has_obligation", "srcKey": "veh-truck", "dstKey": "ob-insure-truck"}
+{"type": "has_obligation", "srcKey": "domain-alexdev", "dstKey": "ob-domain"}
+{"type": "has_obligation", "srcKey": "le-consulting", "dstKey": "ob-zus"}
+{"type": "has_obligation", "srcKey": "le-consulting", "dstKey": "ob-contract"}
+{"type": "has_obligation", "srcKey": "case-rental", "dstKey": "ob-hearing"}
+{"type": "has_obligation", "srcKey": "prop-flat", "dstKey": "ob-prop-tax"}
+{"type": "has_obligation", "srcKey": "prop-flat", "dstKey": "ob-building-ins"}
+{"type": "has_obligation", "srcKey": "prop-flat", "dstKey": "ob-chimney"}
+{"type": "has_obligation", "srcKey": "prop-flat", "dstKey": "ob-boiler"}
+{"type": "has_obligation", "srcKey": "prop-flat", "dstKey": "ob-energy"}

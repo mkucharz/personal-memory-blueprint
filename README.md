@@ -36,6 +36,7 @@ agents/
   personal-kb-agent.yaml    saves and recalls on request
 Taskfile.yml              the local authoring loop (validate / inspect / install)
 MIGRATION.md              moving a v3.x project (and personal-kb data) to v4
+examples/dev-seed/        fictional demo graph — NOT part of the blueprint
 ```
 
 ## Pack rules
@@ -59,9 +60,53 @@ These keep the packs installable together without type-merge conflicts
    or identity document numbers — `Account.number_hint` holds at most the last
    four digits; `Server` is an inventory only.
 
+## Typed pages (`ui.view`)
+
+Every object type declares how its own page is laid out, next to the data type
+itself — there is no per-project page configuration and no separate registry.
+The block sits in the `ui` object that already carries the type's icon and
+colour:
+
+```yaml
+ui:
+  icon: "home"                    # a name from the Memory icon catalog
+  color: "#A16207"
+  view:
+    inline: [property_kind, tenure]   # how a Property looks as a neighbour row
+    sections:
+      - title: Insurance
+        relation: insures             # a relationship type this blueprint declares
+        dir: in                       # in | out | both
+      - title: Obligations
+        relation: has_obligation
+        dir: out
+        limit: 5
+```
+
+- `inline` is the depth-1 preview shown when this type appears on another
+  object's page.
+- `sections` are the relationship groups on this type's own page, in reading
+  order. `dir` is from this type's side: `out` = edges leaving it, `in` = edges
+  arriving at it.
+- A section that outgrows its `limit` collapses behind a "Show N more" control
+  that also works without JavaScript; "Show all" stops at 200 rows and links to
+  a filtered browse when there are more.
+- Relations the view does not name still appear in a trailing "More
+  connections" group, so adopting a view never hides an edge. That is why
+  `sourced_from` is deliberately not claimed anywhere: provenance edges stay
+  reachable without crowding the useful ones.
+- Every `relation` must be declared by an installed pack; `task
+  validate:strict` fails when one is not.
+
+Icons are **names from the closed Memory icon catalog**, not emoji: the web UI
+compiles a fixed set of glyphs, so a name outside it renders as a generic box
+and an emoji renders as literal text. As of v4.1 every type here uses a catalog
+name; the catalog is available over MCP as `schema-icon-list` and is defined in
+`apps/server/pkg/sdk/schemaicon/schemaicon.go` of the Memory server repo.
+
 ## Object types
 
-### Core — `personal-memory` 4.0.0
+### Core — `personal-memory` 4.1.0
 
 | Type | Description |
 |---|---|
@@ -83,11 +128,11 @@ These keep the packs installable together without type-merge conflicts
 
 | Pack | Types | Purpose |
 |---|---|---|
-| `pm-companies` 1.0.0 | `LegalEntity`, `Contract` | Companies the user owns or runs (JDG, sp. z o.o., AS) and their agreements |
-| `pm-money` 1.0.0 | `Account` | Bank, fintech, tax/ZUS payment, and online service accounts |
-| `pm-assets` 1.0.0 | `Vehicle`, `Property`, `InsurancePolicy`, `Domain`, `Server` | Things that must stay legal, insured, and renewed |
-| `pm-legal` 1.0.0 | `LegalCase` | Court and administrative cases |
-| `pm-knowledge` 1.0.0 | `Guide` | Maintained how-tos, checklists, calendars, profiles |
+| `pm-companies` 1.1.0 | `LegalEntity`, `Contract` | Companies the user owns or runs (JDG, sp. z o.o., AS) and their agreements |
+| `pm-money` 1.1.0 | `Account` | Bank, fintech, tax/ZUS payment, and online service accounts |
+| `pm-assets` 1.1.0 | `Vehicle`, `Property`, `InsurancePolicy`, `Domain`, `Server` | Things that must stay legal, insured, and renewed |
+| `pm-legal` 1.1.0 | `LegalCase` | Court and administrative cases |
+| `pm-knowledge` 1.1.0 | `Guide` | Maintained how-tos, checklists, calendars, profiles |
 
 ## Key links
 

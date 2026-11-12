@@ -45,3 +45,10 @@ tasks:
       vars: [PROJECT]
     cmds:
       - '{{.MEMORY}} blueprints install . --project {{.PROJECT}} --upgrade'
+
+  demo:seed:
+    desc: 'Load the fictional demo graph (examples/dev-seed) into a project: task demo:seed PROJECT=<project>'
+    requires:
+      vars: [PROJECT]
+    cmds:
+      - '{{.MEMORY}} graph objects create-batch --file examples/dev-seed --project {{.PROJECT}}'

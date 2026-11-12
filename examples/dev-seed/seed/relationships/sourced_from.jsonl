@@ -1,0 +1,4 @@
+{"type": "sourced_from", "srcKey": "ob-pit", "dstKey": "file-pit-form"}
+{"type": "sourced_from", "srcKey": "pol-truck", "dstKey": "file-policy"}
+{"type": "sourced_from", "srcKey": "ob-zus", "dstKey": "file-invoice"}
+{"type": "sourced_from", "srcKey": "fact-vat", "dstKey": "note-tax-rules"}

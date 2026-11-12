@@ -1,5 +1,5 @@
 name: pm-money
-version: "1.0.0"
+version: "1.1.0"
 author: memory
 repositoryUrl: https://github.com/mkucharz/personal-memory-blueprint
 description: >
@@ -15,8 +15,33 @@ objectTypes:
     label: Account
     labels: [account, finance]
     ui:
-      icon: "🏦"
+      icon: "database"
       color: "#059669"
+      view:
+        inline: [account_kind, status]
+        sections:
+          - title: Transactions
+            relation: has_transaction
+            dir: out
+            limit: 5
+          - title: Obligations
+            relation: has_obligation
+            dir: out
+            limit: 5
+          - title: Owners
+            relation: owns
+            dir: in
+            limit: 3
+          - title: Held with
+            relation: held_with
+            dir: out
+          - title: Used by
+            relation: used_by
+            dir: out
+          - title: Paid from this account
+            relation: paid_from
+            dir: in
+            limit: 5
     description: >
       An account the user or one of their companies holds with an outside
       organisation: a bank or fintech account, a tax or ZUS payment account,

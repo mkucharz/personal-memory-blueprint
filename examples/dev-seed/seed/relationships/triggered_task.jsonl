@@ -1,0 +1,4 @@
+{"type": "triggered_task", "srcKey": "ob-pit", "dstKey": "task-file-pit"}
+{"type": "triggered_task", "srcKey": "ob-hearing", "dstKey": "task-attend-hearing"}
+{"type": "triggered_task", "srcKey": "ev-accountant", "dstKey": "task-file-pit"}
+{"type": "triggered_task", "srcKey": "note-tax-rules", "dstKey": "task-file-pit"}

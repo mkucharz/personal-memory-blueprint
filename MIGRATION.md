@@ -1,5 +1,33 @@
 # Migrating to v4.0.0
 
+## 4.0.0 → 4.1.0 (page layouts and icon names)
+
+v4.1 is a presentation-only change: every object type gains a `ui.view` block
+describing its own page, and every type's `ui.icon` switches from an emoji to a
+name from the Memory icon catalog. No type is added, renamed, removed, or given
+a new property, so existing data needs no migration.
+
+Applying it to an existing v4.0 project is a normal re-install:
+
+```bash
+memory blueprints install . --project <project> --upgrade
+```
+
+If the project's object pages do not change afterwards, the type registry kept
+the first-installed definitions ([#294](https://github.com/emergent-company/emergent.memory/issues/294)):
+unassign the six packs and install again, exactly as in the v3 → v4 procedure
+below. Graph data is untouched either way.
+
+Two rendering details worth knowing:
+
+- A gateway older than the `ui.view` feature ignores the block and still reads
+  `icon`/`color`, so installing 4.1 is safe before the server is upgraded — the
+  pages simply stay on the generic layout.
+- An emoji in `ui.icon` renders as literal text on a current gateway, which is
+  why v4.1 replaces them; a name outside the catalog renders as a generic box.
+
+---
+
 v4 splits the blueprint into a core pack plus five area packs and adds
 `Organization`, `Obligation`, and the area types. A project already on v3.x
 (and/or the older `personal-kb` pack) cannot simply run
