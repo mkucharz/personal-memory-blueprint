@@ -1,5 +1,5 @@
 name: pm-knowledge
-version: "1.1.0"
+version: "1.1.1"
 author: memory
 repositoryUrl: https://github.com/mkucharz/personal-memory-blueprint
 description: >
@@ -51,6 +51,7 @@ objectTypes:
         description: Area it belongs to (business, tax, health, shopping, infrastructure, travel)
       content:
         type: string
+        format: markdown
         widget: textarea
         description: Full text (markdown)
       sensitive:

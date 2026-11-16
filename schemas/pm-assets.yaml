@@ -1,5 +1,5 @@
 name: pm-assets
-version: "1.1.0"
+version: "1.1.1"
 author: memory
 repositoryUrl: https://github.com/mkucharz/personal-memory-blueprint
 description: >
@@ -93,6 +93,7 @@ objectTypes:
         description: Sale or scrapping date
       notes:
         type: string
+        format: markdown
         widget: textarea
         description: Free-form notes
 
@@ -154,6 +155,7 @@ objectTypes:
         enum: [active, sold, ended]
       notes:
         type: string
+        format: markdown
         widget: textarea
         description: Free-form notes
 
@@ -223,6 +225,7 @@ objectTypes:
         enum: [once, monthly, quarterly, biannual, yearly]
       notes:
         type: string
+        format: markdown
         widget: textarea
         description: Free-form notes
 
@@ -280,6 +283,7 @@ objectTypes:
         description: What the domain is used for (email, website, family)
       notes:
         type: string
+        format: markdown
         widget: textarea
         description: Free-form notes
 
@@ -347,6 +351,7 @@ objectTypes:
         enum: [active, stopped, decommissioned]
       notes:
         type: string
+        format: markdown
         widget: textarea
         description: Free-form notes (no secrets)
 

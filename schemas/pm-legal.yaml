@@ -1,5 +1,5 @@
 name: pm-legal
-version: "1.1.0"
+version: "1.1.1"
 author: memory
 repositoryUrl: https://github.com/mkucharz/personal-memory-blueprint
 description: >
@@ -85,6 +85,7 @@ objectTypes:
         description: When the case was finally closed
       subject:
         type: string
+        format: markdown
         widget: textarea
         description: What the case is about
       portal_url:
@@ -93,6 +94,7 @@ objectTypes:
         description: Link to the case in the court portal
       notes:
         type: string
+        format: markdown
         widget: textarea
         description: Free-form notes
 

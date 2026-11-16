@@ -1,5 +1,5 @@
 name: personal-memory
-version: "4.1.0"
+version: "4.1.1"
 author: memory
 repositoryUrl: https://github.com/mkucharz/personal-memory-blueprint
 description: >
@@ -129,6 +129,7 @@ objectTypes:
         description: Birthday (YYYY-MM-DD, stored as RFC 3339)
       notes:
         type: string
+        format: markdown
         widget: textarea
         title: Notes
         description: Free-form notes about this person
@@ -214,6 +215,7 @@ objectTypes:
         description: The user's customer or client number with this organisation
       notes:
         type: string
+        format: markdown
         widget: textarea
         description: Free-form notes
 
@@ -317,6 +319,7 @@ objectTypes:
         minimum: 0
       instructions:
         type: string
+        format: markdown
         widget: textarea
         description: How to do it (form name, portal, who to send what to)
       source:
@@ -328,6 +331,7 @@ objectTypes:
         description: Reference in the source system (e.g. Gmail message ID)
       notes:
         type: string
+        format: markdown
         widget: textarea
         description: Free-form notes
 
@@ -365,6 +369,7 @@ objectTypes:
         description: Short task title
       description:
         type: string
+        format: markdown
         widget: textarea
         description: Detailed description or context for the task
       status:
@@ -435,6 +440,7 @@ objectTypes:
         description: Project name
       description:
         type: string
+        format: markdown
         widget: textarea
         description: Purpose and scope of the project
       status:
@@ -502,10 +508,12 @@ objectTypes:
         description: Physical or virtual location of the event
       notes:
         type: string
+        format: markdown
         widget: textarea
         description: Additional context about the event
       description:
         type: string
+        format: markdown
         widget: textarea
         description: Event description or agenda
       event_id:
@@ -622,6 +630,7 @@ objectTypes:
         description: Budget category assigned to this transaction
       memo:
         type: string
+        format: markdown
         widget: textarea
         description: Transaction memo or notes
       cleared:
@@ -691,6 +700,7 @@ objectTypes:
         description: Job title or role
       notes:
         type: string
+        format: markdown
         widget: textarea
         description: Free-form notes field from the contact
       groups:
@@ -770,6 +780,7 @@ objectTypes:
         description: Google Maps URL for this place
       notes:
         type: string
+        format: markdown
         widget: textarea
         description: Free-form notes about this place
 
@@ -813,6 +824,7 @@ objectTypes:
         description: Short title (accepted alias of title; personal-kb compatibility)
       content:
         type: string
+        format: markdown
         widget: textarea
         description: Full content of the note (markdown supported)
       source:
@@ -875,6 +887,7 @@ objectTypes:
         description: Reference in the source system (e.g. attachment ID, message ID)
       description:
         type: string
+        format: markdown
         widget: textarea
         description: Description of the file contents
 
@@ -900,6 +913,7 @@ objectTypes:
         description: Short label for the fact
       statement:
         type: string
+        format: markdown
         widget: textarea
         description: The fact itself
 
@@ -920,6 +934,7 @@ objectTypes:
         description: Habit name (e.g. Morning run, Read 30 minutes)
       description:
         type: string
+        format: markdown
         widget: textarea
         description: Details about the habit and its goal
       frequency:

@@ -1,5 +1,5 @@
 name: pm-companies
-version: "1.1.0"
+version: "1.1.1"
 author: memory
 repositoryUrl: https://github.com/mkucharz/personal-memory-blueprint
 description: >
@@ -125,6 +125,7 @@ objectTypes:
         description: Where the books are kept (e.g. inFakt, Fiken, external accountant)
       notes:
         type: string
+        format: markdown
         widget: textarea
         description: Free-form notes
 
@@ -201,10 +202,12 @@ objectTypes:
         description: Currency of value (ISO 4217)
       terms:
         type: string
+        format: markdown
         widget: textarea
         description: Key commercial terms (e.g. "10% commission on client revenue")
       notes:
         type: string
+        format: markdown
         widget: textarea
         description: Free-form notes
 
