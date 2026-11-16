@@ -1,5 +1,5 @@
 name: pm-money
-version: "1.1.0"
+version: "1.1.1"
 author: memory
 repositoryUrl: https://github.com/mkucharz/personal-memory-blueprint
 description: >
@@ -91,6 +91,7 @@ objectTypes:
         description: When the account was closed
       notes:
         type: string
+        format: markdown
         widget: textarea
         description: Free-form notes (no secrets)
 
