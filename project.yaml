@@ -1,11 +1,11 @@
 name: personal-memory
-version: "4.9.0"
+version: "4.10.0"
 author: memory
 description: >
   A personal AI agent's long-term knowledge graph over a person's life —
   people, organisations, deadlines, tasks, projects, events, finances, and
   notes, plus area packs for companies, money and invoices, assets,
-  legal cases, guides, travel, a document registry, belongings, loans, service history, utilities, shopping (purchase ideas, compared options, buying preferences), games, a question list for the user, and a task board — and the seven agents that build, watch, query, and work it.
+  legal cases, guides, travel, a document registry, belongings, loans, service history, utilities, shopping (purchase ideas, compared options, buying preferences, a register of every online order), games, a question list for the user, and a task board — and the seven agents that build, watch, query, and work it.
 repositoryUrl: https://github.com/mkucharz/personal-memory-blueprint
 
 projectInfo: |
@@ -28,8 +28,8 @@ projectInfo: |
   (loans — mortgages and debts, incl. annulled CHF loans); ServiceRecord
   (maintenance — inspections, services, repairs of vehicles, property, items);
   UtilityService (home — electricity, water, internet and other supply contracts);
-  PurchaseIdea, ProductOption, Preference (shopping — what to buy, the options
-  compared, the user's buying rules); Game (media — games owned or wished for,
+  PurchaseIdea, ProductOption, Preference, Purchase (shopping — what to buy, the
+  options compared, the user's buying rules, every online order); Game (media — games owned or wished for,
   who plays them on the shared console).
 
   Every due date lives on an Obligation linked from its subject with

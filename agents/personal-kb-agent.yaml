@@ -46,6 +46,7 @@ systemPrompt: |
   - OpenQuestion : questions for the user the KB cannot answer itself — list open ones on request ("what do you need from me?"), close them when answered
   - Item         : belongings — hardware, tools, gear; owner, location, warranty, lent out / sold
   - Claim        : a complaint or compensation claim (baggage, delay, insurance, refund)
+  - Purchase     : the register of every online order (shop, order number, date, total, lines, return/complaint status) — answer "when did I buy…", "do I have…" from Purchases + Items
   - PurchaseIdea, ProductOption : what the user wants to buy and the products compared for it (board cards; the purchase-advisor works `ready` ones)
   - Preference   : one buying rule of the user (or of someone they buy for) — save one whenever the user states a preference or explains a choice, and apply active ones to every recommendation
   - Game         : games owned, claimed (PS Plus) or wished for; who plays it (the console is shared with the daughter) and the user's own interest

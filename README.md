@@ -36,7 +36,7 @@ schemas/
   pm-loans.yaml           Loan (mortgages and other debts)
   pm-maintenance.yaml     ServiceRecord (inspections, services, repairs)
   pm-home.yaml            UtilityService (electricity, water, internet, ... at a property)
-  pm-shopping.yaml        PurchaseIdea, ProductOption, Preference (the buying process)
+  pm-shopping.yaml        PurchaseIdea, ProductOption, Preference, Purchase (buying process + order register)
   pm-media.yaml           Game (owned, claimed or wished-for games; who plays them)
 agents/
   memory-extractor.yaml     builds and maintains the graph
@@ -109,7 +109,7 @@ These keep the packs installable together without type-merge conflicts
 | `pm-loans` 1.0.0 | `Loan` | Mortgages and other debts: agreement number, principal, indexation (e.g. CHF), status incl. annulled / in dispute; `lent_by`, `borrowed_by` (role), `secured_by` a property, `disputed_in` a court case |
 | `pm-maintenance` 1.0.0 | `ServiceRecord` | Service history: technical inspections, heat-pump and boiler inspections (warranty conditions), repairs; `service_of` a vehicle, property, item or server, `serviced_by`, next due date as an Obligation |
 | `pm-home` 1.0.0 | `UtilityService` | Supply contracts at a property (electricity, water, waste, gas, internet, mobile): supplier, customer/meter numbers, contract holder and whether it must be transferred, billing cycle, last meter reading; `supplied_by`, `serves`, `held_by`, `billed_through` |
-| `pm-shopping` 1.0.0 | `PurchaseIdea`, `ProductOption`, `Preference` | The buying process: a need (board card: idea → ready → review → waiting_for_deal / decided → bought), the products compared for it (price + date checked, pros/cons, value and fit scores, compatibility with owned Items), and the user's buying rules, one per record with strength and source; `option_for`, `must_work_with`, `compatible_with`, `applies_preference`, `resulted_in` |
+| `pm-shopping` 1.1.0 | `PurchaseIdea`, `ProductOption`, `Preference`, `Purchase` | The buying process: a need (board card: idea → ready → review → waiting_for_deal / decided → bought), the products compared for it (price + date checked, pros/cons, value and fit scores, compatibility with owned Items), and the user's buying rules, one per record with strength and source; `option_for`, `must_work_with`, `compatible_with`, `applies_preference`, `resulted_in`. **Purchase** is the register of every online order — consumables, clothing and food delivery included (`purchase_of` → Items) |
 | `pm-media` 1.0.0 | `Game` | Games owned, claimed with a subscription, or wished for — platform, how acquired, order number, who plays it (shared console) and the user's own interest; `played_on`, `played_by`, `addon_of`, `claimed_via` |
 | `pm-belongings` 1.1.0 | `Item` | Registry of belongings: hardware, tools, appliances, gear; owner (person or company for business assets), `kept_at` a property or vehicle, serials, purchase and warranty data, `lent_to`, `documented_by` a Document |
 

@@ -1,5 +1,5 @@
 name: pm-shopping
-version: "1.0.0"
+version: "1.1.0"
 author: memory
 repositoryUrl: https://github.com/mkucharz/personal-memory-blueprint
 description: >
@@ -10,6 +10,9 @@ description: >
   a fit score, and compatibility with the things the user already owns
   (pm-belongings Items). Preferences are the user's buying rules, one per
   record, learned along the way and cited when a recommendation is made.
+  Purchases are the register of every online order — goods, consumables,
+  clothing, food delivery — with shop, order number, date, total, the lines
+  bought, and what happened next (delivered, returned, exchanged, complaint).
 
 objectTypes:
   - name: PurchaseIdea
@@ -267,6 +270,86 @@ objectTypes:
         type: string
         enum: [confirmed, from_source, unverified]
 
+  - name: Purchase
+    label: Purchase
+    labels: [shopping, order]
+    ui:
+      icon: "🧾"
+      color: "#0F766E"
+    description: >
+      One online order (or one in-shop receipt worth keeping): Allegro, IKEA,
+      Apple, Answear, Jula, food delivery, app stores. Record every order, small
+      ones too — the register answers "when did I buy batteries?", "what did I
+      order from X?", "is there a return window still open?". Put each line in
+      `lines` (one per row: qty × name — unit price). Physical goods are also
+      Items linked with `purchase_of`; food and services are Purchases only.
+      Returns, exchanges and complaints update `status` and link a pm-travel
+      Claim when one is filed.
+    properties:
+      name:
+        type: string
+        description: Short label (e.g. "Allegro — Brandit M51 parka + 3 more, 9 Nov 2026")
+      shop:
+        type: string
+        description: Platform or shop (Allegro, IKEA, Apple Store, Answear, Jula, Pyszne)
+      seller:
+        type: string
+        description: Seller on a marketplace (Allegro seller login), if different from the shop
+      order_ref:
+        type: string
+        title: Order number
+      ordered_on:
+        type: date
+        title: Ordered on
+      delivered_on:
+        type: date
+        title: Delivered on
+      total:
+        type: number
+        description: Amount paid, gross, incl. delivery
+      currency:
+        type: string
+        format: currency
+      payment_method:
+        type: string
+        title: Payment method
+        description: "Method only (card, Apple Pay, BLIK, transfer, Allegro Pay) — never card numbers"
+      category:
+        type: string
+        description: What the order mainly was
+        enum: [electronics, home, furniture, appliance, tools, building, garden, clothing, footwear, sports, consumables, groceries, food_delivery, health_beauty, kids, vehicle, travel, digital, services, other]
+      lines:
+        type: string
+        widget: textarea
+        description: "One line per product: qty × name — unit price"
+      status:
+        type: string
+        enum: [ordered, paid, shipped, delivered, returned, partially_returned, exchanged, complaint, cancelled]
+      return_by:
+        type: date
+        title: Return by
+        description: Last day to withdraw (usually delivery + 14 days)
+      for_whom:
+        type: string
+        title: For whom
+        description: Who it was bought for, if not the user (e.g. Magda)
+      business:
+        type: boolean
+        description: Bought for a company (invoice to the JDG / AS)
+      notes:
+        type: string
+        widget: textarea
+      source:
+        type: string
+        description: "Where the facts came from: email, allegro, ikea, user"
+      source_ref:
+        type: string
+        title: Source reference
+        description: "Gmail thread ID(s) or shop order page"
+      confidence:
+        type: string
+        enum: [confirmed, from_source, unverified]
+
 relationshipTypes:
   - name: option_for
     label: Option For
@@ -339,3 +422,27 @@ relationshipTypes:
     description: Comparison notes, reviews, quotes.
     sourceType: PurchaseIdea
     targetTypes: [Note, Document, File]
+
+  - name: purchase_of
+    label: Purchase Of
+    description: The Items (or Games) this order bought.
+    sourceType: Purchase
+    targetTypes: [Item, Game]
+
+  - name: bought_at
+    label: Bought At
+    description: The shop or seller organisation.
+    sourceType: Purchase
+    targetTypes: [Organization, LegalEntity]
+
+  - name: purchase_for_idea
+    label: For Idea
+    description: The PurchaseIdea this order fulfilled.
+    sourceType: Purchase
+    targetType: PurchaseIdea
+
+  - name: purchase_claim
+    label: Claim
+    description: A complaint or return claim about this order (pm-travel Claim).
+    sourceType: Purchase
+    targetType: Claim

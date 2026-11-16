@@ -1,5 +1,5 @@
 name: pm-belongings
-version: "1.3.0"
+version: "1.4.0"
 author: memory
 repositoryUrl: https://github.com/mkucharz/personal-memory-blueprint
 description: >
@@ -21,8 +21,11 @@ objectTypes:
       color: "#B45309"
     description: >
       One belonging (or a set counted as one: "Milwaukee wood drill bit set").
-      Register things worth knowing about later — valuable, warranty-bearing,
-      lendable, insurable, or business assets — not consumables. Link the
+      Register every physical thing bought — devices, tools, furniture,
+      clothing, and consumables and supplies too (batteries, filters, cleaning
+      products), so "do I still have X?" can be answered. Consumables carry a
+      `quantity` and move to status `used_up` when gone. Food and services are
+      not Items — they are only Purchases (pm-shopping). Link the
       owner with `owns`, its location with `kept_at`, the seller with
       `bought_from`, receipts and manuals with `documented_by`, accessories
       with `part_of`, a borrower with `lent_to`, and a warranty end with
@@ -34,7 +37,7 @@ objectTypes:
       category:
         type: string
         description: What sort of thing it is
-        enum: [computer, phone_tablet, wearable, gaming_console, networking, smart_home, audio_video, camera_photo, peripheral, power_tool, hand_tool, garden, appliance, heating_energy, furniture, sports, kite_watersports, bike, camping_van, vehicle_accessory, music_instrument, clothing_gear, jewelry_watch, art_collectible, other]
+        enum: [computer, phone_tablet, wearable, gaming_console, networking, smart_home, audio_video, camera_photo, peripheral, power_tool, hand_tool, garden, appliance, heating_energy, furniture, sports, kite_watersports, bike, camping_van, vehicle_accessory, music_instrument, clothing_gear, clothing, footwear, jewelry_watch, art_collectible, batteries_power, consumable, household_supplies, cosmetics_health, kitchenware, books_media, toys_hobby, vehicle_part, building_material, other]
       brand:
         type: string
         description: Manufacturer or brand
@@ -70,7 +73,10 @@ objectTypes:
       status:
         type: string
         description: Where the item stands
-        enum: [owned, in_use, stored, lent_out, in_repair, for_sale, sold, given_away, returned, lost, stolen, broken, disposed]
+        enum: [ordered, owned, in_use, stored, lent_out, in_repair, for_sale, sold, given_away, returned, exchanged, used_up, lost, stolen, broken, disposed]
+      size:
+        type: string
+        description: Size for clothing and footwear (e.g. "M", "42", "27/27.5")
       condition:
         type: string
         description: Physical condition
